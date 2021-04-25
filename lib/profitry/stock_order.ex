@@ -1,5 +1,5 @@
 defmodule Profitry.StockOrder do
-  # stock orders are either buy or sell
+  # stock orders are either a buy or a sell
   defstruct(
     type: :buy,
     quantity: 0,
