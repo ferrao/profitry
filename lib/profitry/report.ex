@@ -10,6 +10,7 @@ defmodule Profitry.Report do
   def make_report(%{orders: orders, ticker: ticker}) do
     Enum.reduce(orders, %{investment: 0, shares: 0, cost_basis: 0}, fn order, report ->
       calculate_order(report, order)
+      # |> IO.inspect()
     end)
     |> calculate_cost_basis
     |> stringify_decimals
@@ -36,7 +37,7 @@ defmodule Profitry.Report do
   defp calculate_order(report, %{type: :buy, premium: premium}) do
     %{
       report
-      | investment: Decimal.sub(report.investment, Decimal.mult(premium, 100))
+      | investment: Decimal.add(report.investment, Decimal.mult(premium, 100))
     }
   end
 
@@ -44,7 +45,7 @@ defmodule Profitry.Report do
   defp calculate_order(report, %{type: :sell, premium: premium}) do
     %{
       report
-      | investment: Decimal.add(report.investment, Decimal.mult(premium, 100))
+      | investment: Decimal.sub(report.investment, Decimal.mult(premium, 100))
     }
   end
 

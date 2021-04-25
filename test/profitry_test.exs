@@ -55,8 +55,8 @@ defmodule ProfitryTest do
     report = Profitry.make_report(position)
 
     assert report.ticker == "aapl"
-    assert report.investment == "790.00"
+    assert report.investment == "590.00"
     assert report.shares == "7.00"
-    assert report.cost_basis == "112.86"
+    assert report.cost_basis == "84.29"
   end
 end
