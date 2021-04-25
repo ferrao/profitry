@@ -49,6 +49,11 @@ defmodule Profitry.Report do
     }
   end
 
+  # calculates the cost basis for a position report with no shares
+  defp calculate_cost_basis(report = %{shares: 0}) do
+    Map.put(report, :cost_basis, "0.00")
+  end
+
   # calculates the cost basis for a position report
   defp calculate_cost_basis(report) do
     Map.put(report, :cost_basis, Decimal.div(report.investment, report.shares))

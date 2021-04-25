@@ -59,4 +59,16 @@ defmodule ProfitryTest do
     assert report.shares == "7.00"
     assert report.cost_basis == "84.29"
   end
+
+  test "creates a position report with stock options only" do
+    position = Profitry.new_position("aapl", %{type: :sell, premium: 1.5})
+    position = Profitry.make_order(position, %{type: :buy, premium: 0.5})
+
+    report = Profitry.make_report(position)
+
+    assert report.ticker == "aapl"
+    assert report.investment == "-100.00"
+    assert report.shares == "0.00"
+    assert report.cost_basis == "0.00"
+  end
 end
