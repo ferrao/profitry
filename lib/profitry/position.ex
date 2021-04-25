@@ -1,6 +1,6 @@
 defmodule Profitry.Position do
   defstruct(
-    ticker: "",
+    ticker: nil,
     orders: []
   )
 
