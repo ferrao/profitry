@@ -15,33 +15,31 @@ defmodule Profitry.Report do
     |> Map.put(:ticker, ticker)
   end
 
-  defp add_order(report, order = %{type: :buy, quantity: quantity, price: price})
-       when quantity > 0 and price >= 0 do
+  defp add_order(report, %{type: :buy, quantity: quantity, price: price}) do
     %{
-      investment: Decimal.add(report.investment, Decimal.mult(order.quantity, order.price)),
-      shares: Decimal.add(report.shares, order.quantity)
+      investment: Decimal.add(report.investment, Decimal.mult(quantity, price)),
+      shares: Decimal.add(report.shares, quantity)
     }
   end
 
-  defp add_order(report, order = %{type: :sell, quantity: quantity, price: price})
-       when quantity > 0 and price >= 0 do
+  defp add_order(report, %{type: :sell, quantity: quantity, price: price}) do
     %{
-      investment: Decimal.sub(report.investment, Decimal.mult(order.quantity, order.price)),
-      shares: Decimal.sub(report.shares, order.quantity)
+      investment: Decimal.sub(report.investment, Decimal.mult(quantity, price)),
+      shares: Decimal.sub(report.shares, quantity)
     }
   end
 
-  defp add_order(report, order = %{type: :buy, premium: premium}) when premium > 0 do
+  defp add_order(report, %{type: :buy, premium: premium}) do
     %{
       report
-      | investment: Decimal.sub(report.investment, Decimal.mult(order.premium, 100))
+      | investment: Decimal.sub(report.investment, Decimal.mult(premium, 100))
     }
   end
 
-  defp add_order(report, order = %{type: :sell, premium: premium}) when premium > 0 do
+  defp add_order(report, %{type: :sell, premium: premium}) do
     %{
       report
-      | investment: Decimal.add(report.investment, Decimal.mult(order.premium, 100))
+      | investment: Decimal.add(report.investment, Decimal.mult(premium, 100))
     }
   end
 
