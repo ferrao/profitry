@@ -60,7 +60,7 @@ defmodule ProfitryTest do
     assert report.cost_basis == "84.29"
   end
 
-  test "creates a position report with stock options only" do
+  test "creates a report for a position with stock options only" do
     position = Profitry.new_position("aapl", %{type: :sell, premium: 1.5})
     position = Profitry.make_order(position, %{type: :buy, premium: 0.5})
 
@@ -68,6 +68,18 @@ defmodule ProfitryTest do
 
     assert report.ticker == "aapl"
     assert report.investment == "-100.00"
+    assert report.shares == "0.00"
+    assert report.cost_basis == "0.00"
+  end
+
+  test "creates a report for a position with no stocks" do
+    position = Profitry.new_position("aapl", %{type: :sell, quantity: 10, price: 100})
+    position = Profitry.make_order(position, %{type: :buy, quantity: 10, price: 50})
+
+    report = Profitry.make_report(position)
+
+    assert report.ticker == "aapl"
+    assert report.investment == "-500.00"
     assert report.shares == "0.00"
     assert report.cost_basis == "0.00"
   end

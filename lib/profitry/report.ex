@@ -8,11 +8,15 @@ defmodule Profitry.Report do
 
   # Creates a position report
   def make_report(%{orders: orders, ticker: ticker}) do
-    Enum.reduce(orders, %{investment: 0, shares: 0, cost_basis: 0}, fn order, report ->
-      calculate_order(report, order)
-      # |> IO.inspect()
-    end)
-    |> calculate_cost_basis
+    order_calculation =
+      Enum.reduce(orders, %{investment: 0, shares: 0, cost_basis: 0}, fn order, report ->
+        calculate_order(report, order)
+      end)
+
+    has_shares = Decimal.gt?(order_calculation.shares, 0)
+
+    order_calculation
+    |> calculate_cost_basis(has_shares)
     |> stringify_decimals
     |> Map.put(:ticker, ticker)
   end
@@ -50,12 +54,12 @@ defmodule Profitry.Report do
   end
 
   # calculates the cost basis for a position report with no shares
-  defp calculate_cost_basis(report = %{shares: 0}) do
+  defp calculate_cost_basis(report, _has_shares = false) do
     Map.put(report, :cost_basis, "0.00")
   end
 
-  # calculates the cost basis for a position report
-  defp calculate_cost_basis(report) do
+  # calculates the cost basis for a position report with shares
+  defp calculate_cost_basis(report, _has_shares) do
     Map.put(report, :cost_basis, Decimal.div(report.investment, report.shares))
   end
 
