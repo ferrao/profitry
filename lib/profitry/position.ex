@@ -4,8 +4,10 @@ defmodule Profitry.Position do
     orders: []
   )
 
+  alias Profitry.{StockOrder, OptionsOrder}
+
   # Creates a new position on an underlying using stocks
-  def new_position(ticker, order = %{quantity: quantity, price: price})
+  def new_position(ticker, order = %StockOrder{quantity: quantity, price: price})
       when quantity > 0 and
              price >= 0 do
     %Profitry.Position{
@@ -15,7 +17,7 @@ defmodule Profitry.Position do
   end
 
   # Creates a new position on an underlying using stock options
-  def new_position(ticker, order = %{premium: premium})
+  def new_position(ticker, order = %OptionsOrder{premium: premium})
       when premium > 0 do
     %Profitry.Position{
       ticker: ticker,
@@ -24,7 +26,7 @@ defmodule Profitry.Position do
   end
 
   # Adds a new stocks order to an existing position
-  def make_order(position, order = %{quantity: quantity, price: price})
+  def make_order(position, order = %StockOrder{quantity: quantity, price: price})
       when quantity > 0 and price >= 0 do
     Map.put(position, :orders, [
       %{order | quantity: to_string(quantity), price: to_string(price)} | position.orders
@@ -32,7 +34,7 @@ defmodule Profitry.Position do
   end
 
   # Adds a new stock options order to an existing position
-  def make_order(position, order = %{premium: premium})
+  def make_order(position, order = %OptionsOrder{premium: premium})
       when premium > 0 do
     Map.put(position, :orders, [%{order | premium: to_string(premium)} | position.orders])
   end

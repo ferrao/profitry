@@ -1,10 +1,10 @@
 defmodule ProfitryTest do
   use ExUnit.Case
 
-  alias Profitry
+  alias Profitry.{StockOrder, OptionsOrder}
 
   test "creates a new position with stocks" do
-    position = Profitry.new_position("aapl", %{type: :buy, quantity: 10, price: 100})
+    position = Profitry.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
 
     assert position.ticker == "aapl"
     assert length(position.orders) == 1
@@ -16,7 +16,7 @@ defmodule ProfitryTest do
   end
 
   test "creates a new position with stock options" do
-    position = Profitry.new_position("aapl", %{type: :buy, premium: 2.6})
+    position = Profitry.new_position("aapl", %OptionsOrder{type: :buy, premium: 2.6})
 
     assert position.ticker == "aapl"
     assert length(position.orders) == 1
@@ -27,8 +27,8 @@ defmodule ProfitryTest do
   end
 
   test "adds a stocks order to an existing position" do
-    position = Profitry.new_position("aapl", %{type: :buy, quantity: 10, price: 100})
-    position = Profitry.make_order(position, %{type: :sell, quantity: 5, price: 110})
+    position = Profitry.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Profitry.make_order(position, %StockOrder{type: :sell, quantity: 5, price: 110})
 
     order = List.first(position.orders)
     assert order.type == :sell
@@ -37,8 +37,8 @@ defmodule ProfitryTest do
   end
 
   test "adds a stock options order to an existing position" do
-    position = Profitry.new_position("aapl", %{type: :buy, quantity: 10, price: 100})
-    position = Profitry.make_order(position, %{type: :sell, premium: 1.5})
+    position = Profitry.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Profitry.make_order(position, %OptionsOrder{type: :sell, premium: 1.5})
 
     order = List.first(position.orders)
     assert order.type == :sell
@@ -46,11 +46,11 @@ defmodule ProfitryTest do
   end
 
   test "creates a position report" do
-    position = Profitry.new_position("aapl", %{type: :buy, quantity: 10, price: 100})
-    position = Profitry.make_order(position, %{type: :sell, premium: 1.5})
-    position = Profitry.make_order(position, %{type: :sell, quantity: 5, price: 110})
-    position = Profitry.make_order(position, %{type: :buy, quantity: 2, price: 120})
-    position = Profitry.make_order(position, %{type: :buy, premium: 0.5})
+    position = Profitry.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Profitry.make_order(position, %OptionsOrder{type: :sell, premium: 1.5})
+    position = Profitry.make_order(position, %StockOrder{type: :sell, quantity: 5, price: 110})
+    position = Profitry.make_order(position, %StockOrder{type: :buy, quantity: 2, price: 120})
+    position = Profitry.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
 
     report = Profitry.make_report(position)
 
@@ -61,8 +61,8 @@ defmodule ProfitryTest do
   end
 
   test "creates a report for a position with stock options only" do
-    position = Profitry.new_position("aapl", %{type: :sell, premium: 1.5})
-    position = Profitry.make_order(position, %{type: :buy, premium: 0.5})
+    position = Profitry.new_position("aapl", %OptionsOrder{type: :sell, premium: 1.5})
+    position = Profitry.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
 
     report = Profitry.make_report(position)
 
@@ -73,8 +73,8 @@ defmodule ProfitryTest do
   end
 
   test "creates a report for a position with no stocks" do
-    position = Profitry.new_position("aapl", %{type: :sell, quantity: 10, price: 100})
-    position = Profitry.make_order(position, %{type: :buy, quantity: 10, price: 50})
+    position = Profitry.new_position("aapl", %StockOrder{type: :sell, quantity: 10, price: 100})
+    position = Profitry.make_order(position, %StockOrder{type: :buy, quantity: 10, price: 50})
 
     report = Profitry.make_report(position)
 
