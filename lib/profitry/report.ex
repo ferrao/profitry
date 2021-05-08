@@ -1,4 +1,6 @@
 defmodule Profitry.Report do
+  alias Profitry.Position
+
   defstruct(
     ticker: nil,
     investment: 0,
@@ -7,7 +9,7 @@ defmodule Profitry.Report do
   )
 
   # Creates a position report
-  def make_report(%{orders: orders, ticker: ticker}) do
+  def make_report(%Position{orders: orders, ticker: ticker}) do
     order_calculation =
       Enum.reduce(orders, %{investment: 0, shares: 0, cost_basis: 0}, fn order, report ->
         calculate_order(report, order)

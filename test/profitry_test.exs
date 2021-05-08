@@ -1,7 +1,7 @@
 defmodule ProfitryTest do
   use ExUnit.Case
 
-  alias Profitry.{StockOrder, OptionsOrder, Position}
+  alias Profitry.{StockOrder, OptionsOrder, Position, Report}
 
   test "creates a new position with stocks" do
     position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
@@ -52,7 +52,7 @@ defmodule ProfitryTest do
     position = Position.make_order(position, %StockOrder{type: :buy, quantity: 2, price: 120})
     position = Position.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
 
-    report = Profitry.make_report(position)
+    report = Report.make_report(position)
 
     assert report.ticker == "aapl"
     assert report.investment == "590.00"
@@ -64,7 +64,7 @@ defmodule ProfitryTest do
     position = Position.new_position("aapl", %OptionsOrder{type: :sell, premium: 1.5})
     position = Position.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
 
-    report = Profitry.make_report(position)
+    report = Report.make_report(position)
 
     assert report.ticker == "aapl"
     assert report.investment == "-100.00"
@@ -76,7 +76,7 @@ defmodule ProfitryTest do
     position = Position.new_position("aapl", %StockOrder{type: :sell, quantity: 10, price: 100})
     position = Position.make_order(position, %StockOrder{type: :buy, quantity: 10, price: 50})
 
-    report = Profitry.make_report(position)
+    report = Report.make_report(position)
 
     assert report.ticker == "aapl"
     assert report.investment == "-500.00"
@@ -91,13 +91,28 @@ defmodule ProfitryTest do
     assert portfolio.description == "TastyWorks Portfolio"
   end
 
-  test "creates a new position on a portfolio" do
+  test "creates a new position on an empty portfolio" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
     portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
     portfolio = Profitry.make_order(portfolio, "aapl", order)
     position = portfolio.positions[:AAPL]
 
     assert position.ticker == "aapl"
+    assert length(position.orders) == 1
+    assert hd(position.orders).type == :buy
+    assert hd(position.orders).quantity == "10"
+    assert hd(position.orders).price == "100"
+  end
+
+  test "creates a new position on an non empty portfolio" do
+    order = %StockOrder{type: :buy, quantity: 10, price: 100}
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "tsla", order)
+
+    position = portfolio.positions[:TSLA]
+
+    assert position.ticker == "tsla"
     assert length(position.orders) == 1
     assert hd(position.orders).type == :buy
     assert hd(position.orders).quantity == "10"
@@ -116,5 +131,25 @@ defmodule ProfitryTest do
     assert hd(position.orders).type == :buy
     assert hd(position.orders).quantity == "1"
     assert hd(position.orders).price == "10"
+  end
+
+  test "creates a portfolio report" do
+    order = %StockOrder{type: :buy, quantity: 10, price: 100}
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
+    portfolio = Profitry.make_order(portfolio, "tsla", order)
+    portfolio = Profitry.make_order(portfolio, "tsla", %{order | quantity: 2, price: 20})
+
+    [apple_report, tesla_report] = Profitry.make_report(portfolio)
+
+    assert apple_report.cost_basis == "91.82"
+    assert apple_report.investment == "1010.00"
+    assert apple_report.shares == "11.00"
+    assert apple_report.ticker == "aapl"
+    assert tesla_report.cost_basis == "86.67"
+    assert tesla_report.investment == "1040.00"
+    assert tesla_report.shares == "12.00"
+    assert tesla_report.ticker == "tsla"
   end
 end
