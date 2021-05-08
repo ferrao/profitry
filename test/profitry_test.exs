@@ -94,7 +94,7 @@ defmodule ProfitryTest do
   test "creates a new position on a portfolio" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
     portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
-    portfolio = Profitry.new_position(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
     position = portfolio.positions[:AAPL]
 
     assert position.ticker == "aapl"
@@ -107,7 +107,7 @@ defmodule ProfitryTest do
   test "adds an order to a portfolio position" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
     portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
-    portfolio = Profitry.new_position(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
     portfolio = Profitry.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
     position = portfolio.positions[:AAPL]
 

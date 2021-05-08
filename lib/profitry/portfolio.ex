@@ -13,7 +13,8 @@ defmodule Profitry.Portfolio do
   end
 
   # Adds a new position to a portfolio
-  def new_position(portfolio = %Portfolio{positions: positions}, ticker, order) do
+  def make_order(portfolio = %Portfolio{positions: positions}, ticker, order)
+      when positions == %{} do
     position = Position.new_position(ticker, order)
 
     %Portfolio{portfolio | positions: Map.put(positions, ticker_key(ticker), position)}
