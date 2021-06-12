@@ -16,7 +16,7 @@ defmodule Profitry.ServerWeb.Router do
 
   scope "/", Profitry.ServerWeb do
     pipe_through :browser
-
+    resources "/portfolios", PortfolioController
     live "/", PageLive, :index
   end
 
