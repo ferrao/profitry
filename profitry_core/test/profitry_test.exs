@@ -1,0 +1,156 @@
+defmodule ProfitryTest do
+  use ExUnit.Case
+
+  alias Profitry.Core.{StockOrder, OptionsOrder, Position, Report}
+  alias Profitry.Core, as: Profitry
+
+  test "creates a new position with stocks" do
+    position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+
+    assert position.ticker == "aapl"
+    assert length(position.orders) == 1
+
+    order = List.first(position.orders)
+    assert order.type == :buy
+    assert order.quantity == "10"
+    assert order.price == "100"
+  end
+
+  test "creates a new position with stock options" do
+    position = Position.new_position("aapl", %OptionsOrder{type: :buy, premium: 2.6})
+
+    assert position.ticker == "aapl"
+    assert length(position.orders) == 1
+
+    order = List.first(position.orders)
+    assert order.type == :buy
+    assert order.premium == "2.6"
+  end
+
+  test "adds a stocks order to an existing position" do
+    position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Position.make_order(position, %StockOrder{type: :sell, quantity: 5, price: 110})
+
+    order = List.first(position.orders)
+    assert order.type == :sell
+    assert order.quantity == "5"
+    assert order.price == "110"
+  end
+
+  test "adds a stock options order to an existing position" do
+    position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Position.make_order(position, %OptionsOrder{type: :sell, premium: 1.5})
+
+    order = List.first(position.orders)
+    assert order.type == :sell
+    assert order.premium == "1.5"
+  end
+
+  test "creates a position report" do
+    position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Position.make_order(position, %OptionsOrder{type: :sell, premium: 1.5})
+    position = Position.make_order(position, %StockOrder{type: :sell, quantity: 5, price: 110})
+    position = Position.make_order(position, %StockOrder{type: :buy, quantity: 2, price: 120})
+    position = Position.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
+
+    report = Report.make_report(position)
+
+    assert report.ticker == "aapl"
+    assert report.investment == "590.00"
+    assert report.shares == "7.00"
+    assert report.cost_basis == "84.29"
+  end
+
+  test "creates a report for a position with stock options only" do
+    position = Position.new_position("aapl", %OptionsOrder{type: :sell, premium: 1.5})
+    position = Position.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
+
+    report = Report.make_report(position)
+
+    assert report.ticker == "aapl"
+    assert report.investment == "-100.00"
+    assert report.shares == "0.00"
+    assert report.cost_basis == "0.00"
+  end
+
+  test "creates a report for a position with no stocks" do
+    position = Position.new_position("aapl", %StockOrder{type: :sell, quantity: 10, price: 100})
+    position = Position.make_order(position, %StockOrder{type: :buy, quantity: 10, price: 50})
+
+    report = Report.make_report(position)
+
+    assert report.ticker == "aapl"
+    assert report.investment == "-500.00"
+    assert report.shares == "0.00"
+    assert report.cost_basis == "0.00"
+  end
+
+  test "creates a new portfolio" do
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+
+    assert portfolio.id == :tasty
+    assert portfolio.description == "TastyWorks Portfolio"
+  end
+
+  test "creates a new position on an empty portfolio" do
+    order = %StockOrder{type: :buy, quantity: 10, price: 100}
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    position = portfolio.positions[:AAPL]
+
+    assert position.ticker == "aapl"
+    assert length(position.orders) == 1
+    assert hd(position.orders).type == :buy
+    assert hd(position.orders).quantity == "10"
+    assert hd(position.orders).price == "100"
+  end
+
+  test "creates a new position on an non empty portfolio" do
+    order = %StockOrder{type: :buy, quantity: 10, price: 100}
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "tsla", order)
+
+    position = portfolio.positions[:TSLA]
+
+    assert position.ticker == "tsla"
+    assert length(position.orders) == 1
+    assert hd(position.orders).type == :buy
+    assert hd(position.orders).quantity == "10"
+    assert hd(position.orders).price == "100"
+  end
+
+  test "adds an order to a portfolio position" do
+    order = %StockOrder{type: :buy, quantity: 10, price: 100}
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
+    position = portfolio.positions[:AAPL]
+
+    assert position.ticker == "aapl"
+    assert length(position.orders) == 2
+    assert hd(position.orders).type == :buy
+    assert hd(position.orders).quantity == "1"
+    assert hd(position.orders).price == "10"
+  end
+
+  test "creates a portfolio report" do
+    order = %StockOrder{type: :buy, quantity: 10, price: 100}
+    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    portfolio = Profitry.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
+    portfolio = Profitry.make_order(portfolio, "tsla", order)
+    portfolio = Profitry.make_order(portfolio, "tsla", %{order | quantity: 2, price: 20})
+
+    [apple_report, tesla_report] = Profitry.make_report(portfolio)
+
+    assert apple_report.cost_basis == "91.82"
+    assert apple_report.investment == "1010.00"
+    assert apple_report.shares == "11.00"
+    assert apple_report.ticker == "aapl"
+    assert tesla_report.cost_basis == "86.67"
+    assert tesla_report.investment == "1040.00"
+    assert tesla_report.shares == "12.00"
+    assert tesla_report.ticker == "tsla"
+  end
+end

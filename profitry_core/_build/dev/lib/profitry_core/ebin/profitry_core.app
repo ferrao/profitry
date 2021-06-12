@@ -1,0 +1,11 @@
+{application,profitry_core,
+             [{applications,[kernel,stdlib,elixir,logger,decimal]},
+              {description,"profitry_core"},
+              {modules,['Elixir.Profitry.Core',
+                        'Elixir.Profitry.Core.OptionsOrder',
+                        'Elixir.Profitry.Core.Portfolio',
+                        'Elixir.Profitry.Core.Position',
+                        'Elixir.Profitry.Core.Report',
+                        'Elixir.Profitry.Core.StockOrder']},
+              {registered,[]},
+              {vsn,"0.1.0"}]}.
