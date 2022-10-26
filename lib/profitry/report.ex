@@ -1,6 +1,13 @@
 defmodule Profitry.Report do
   alias Profitry.Position
 
+  @type t :: %__MODULE__{
+          ticker: String.t(),
+          investment: String.t(),
+          shares: String.t(),
+          cost_basis: String.t()
+        }
+
   defstruct(
     ticker: nil,
     investment: 0,
@@ -9,6 +16,7 @@ defmodule Profitry.Report do
   )
 
   # Creates a position report
+  @spec make_report(Position.t()) :: Report.t()
   def make_report(%Position{orders: orders, ticker: ticker}) do
     order_calculation =
       Enum.reduce(orders, %{investment: 0, shares: 0, cost_basis: 0}, fn order, report ->

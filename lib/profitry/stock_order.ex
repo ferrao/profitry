@@ -1,5 +1,10 @@
 defmodule Profitry.StockOrder do
-  # stock orders are either a buy or a sell
+  @type t :: %__MODULE__{
+          type: Profitry.Portfolio.order(),
+          quantity: integer(),
+          price: Decimal.t()
+        }
+
   defstruct(
     type: :buy,
     quantity: 0,

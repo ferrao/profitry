@@ -1,6 +1,12 @@
 defmodule Profitry.Portfolio do
   alias Profitry.{Portfolio, Position, Report}
 
+  @type t :: %__MODULE__{
+          id: atom(),
+          description: String.t(),
+          positions: Map.t(Position.t())
+        }
+
   defstruct(
     id: nil,
     description: nil,

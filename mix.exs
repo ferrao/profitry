@@ -5,7 +5,7 @@ defmodule Profitry.MixProject do
     [
       app: :profitry,
       version: "0.1.0",
-      elixir: "~> 1.11",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -19,7 +19,8 @@ defmodule Profitry.MixProject do
 
   defp deps do
     [
-      {:decimal, "~> 2.0.0"}
+      {:decimal, "~> 2.0.0"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 end

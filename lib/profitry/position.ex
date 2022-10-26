@@ -1,14 +1,18 @@
 defmodule Profitry.Position do
-  alias Profitry.Position
+  alias Profitry.{Position, StockOrder, OptionsOrder}
+
+  @type t :: %__MODULE__{
+          ticker: atom(),
+          orders: list(StockOrder.t() | OptionsOrder.t())
+        }
 
   defstruct(
     ticker: nil,
     orders: []
   )
 
-  alias Profitry.{StockOrder, OptionsOrder}
-
   # Creates a new position on an underlying using stocks
+  @spec new_position(String.t(), StockOrder.t()) :: Profitry.t()
   def new_position(ticker, order = %StockOrder{quantity: quantity, price: price})
       when quantity > 0 and
              price >= 0 do
@@ -19,6 +23,7 @@ defmodule Profitry.Position do
   end
 
   # Creates a new position on an underlying using stock options
+  @spec new_position(String.t(), OptionsOrder.t()) :: Profitry.t()
   def new_position(ticker, order = %OptionsOrder{premium: premium})
       when premium > 0 do
     %Position{
@@ -28,6 +33,7 @@ defmodule Profitry.Position do
   end
 
   # Adds a new stocks order to an existing position
+  @spec make_order(Position.t(), StockOrder.t()) :: Position.t()
   def make_order(position, order = %StockOrder{quantity: quantity, price: price})
       when quantity > 0 and price >= 0 do
     Map.put(position, :orders, [
@@ -36,6 +42,7 @@ defmodule Profitry.Position do
   end
 
   # Adds a new stock options order to an existing position
+  @spec make_order(Position.t(), OptionsOrder.t()) :: Position.t()
   def make_order(position, order = %OptionsOrder{premium: premium})
       when premium > 0 do
     Map.put(position, :orders, [%{order | premium: to_string(premium)} | position.orders])
