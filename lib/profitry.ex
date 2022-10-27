@@ -9,6 +9,6 @@ defmodule Profitry do
   @spec make_order(Portfolio.t(), String.t(), StockOrder.t() | OptionsOrder.t()) :: Portfolio.t()
   defdelegate make_order(portfolio, ticker, order), to: Portfolio
 
-  @spec make_report(Portfolio.t()) :: Report.t()
+  @spec make_report(Portfolio.t()) :: list(Report.t())
   defdelegate make_report(portfolio), to: Portfolio
 end
