@@ -14,11 +14,13 @@ defmodule Profitry.Portfolio do
   )
 
   # Creates a new empty portfolio
+  @spec new_portfolio(atom, String.t()) :: Portfolio.t()
   def new_portfolio(id, description) do
     %Portfolio{id: id, description: description}
   end
 
   # Creates a portfolio report
+  @spec make_report(Portfolio.t()) :: list(Report.t())
   def make_report(%Portfolio{positions: positions}) do
     for {_ticker, position} <- positions do
       position
@@ -27,6 +29,7 @@ defmodule Profitry.Portfolio do
   end
 
   # Makes a new order in a portfolio position
+  @spec make_order(Portfolio.t(), String.t(), any) :: Portfolio.t()
   def make_order(portfolio = %Portfolio{positions: positions}, ticker, order) do
     position = positions[ticker_key(ticker)]
     make_position_order(portfolio, ticker, order, position == nil)

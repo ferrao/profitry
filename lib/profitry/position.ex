@@ -12,7 +12,7 @@ defmodule Profitry.Position do
   )
 
   # Creates a new position on an underlying using stocks
-  @spec new_position(String.t(), StockOrder.t()) :: Profitry.t()
+  @spec new_position(String.t(), StockOrder.t()) :: Position.t()
   def new_position(ticker, order = %StockOrder{quantity: quantity, price: price})
       when quantity > 0 and
              price >= 0 do
@@ -23,7 +23,7 @@ defmodule Profitry.Position do
   end
 
   # Creates a new position on an underlying using stock options
-  @spec new_position(String.t(), OptionsOrder.t()) :: Profitry.t()
+  @spec new_position(String.t(), OptionsOrder.t()) :: Position.t()
   def new_position(ticker, order = %OptionsOrder{premium: premium})
       when premium > 0 do
     %Position{
