@@ -1,5 +1,5 @@
 defmodule Profitry do
-  alias Profitry.{Portfolio, StockOrder, OptionsOrder}
+  alias Profitry.{Portfolio, Report, StockOrder, OptionsOrder}
 
   @type order :: :buy | :sell
 

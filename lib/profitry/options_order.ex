@@ -1,6 +1,6 @@
 defmodule Profitry.OptionsOrder do
   @type t :: %__MODULE__{
-          type: Profitry.Portfolio.order(),
+          type: Profitry.order(),
           premium: Decimal.t()
         }
 

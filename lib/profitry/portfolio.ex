@@ -4,7 +4,7 @@ defmodule Profitry.Portfolio do
   @type t :: %__MODULE__{
           id: atom(),
           description: String.t(),
-          positions: Map.t(Position.t())
+          positions: %{atom() => Position.t()}
         }
 
   defstruct(
