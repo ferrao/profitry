@@ -16,13 +16,15 @@ defmodule ProfitryTest do
   end
 
   test "creates a new position with stock options" do
-    position = Position.new_position("aapl", %OptionsOrder{type: :buy, premium: 2.6})
+    position =
+      Position.new_position("aapl", %OptionsOrder{type: :buy, contracts: 3, premium: 2.6})
 
     assert position.ticker == "aapl"
     assert length(position.orders) == 1
 
     order = List.first(position.orders)
     assert order.type == :buy
+    assert order.contracts == "3"
     assert order.premium == "2.6"
   end
 
@@ -38,19 +40,27 @@ defmodule ProfitryTest do
 
   test "adds a stock options order to an existing position" do
     position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
-    position = Position.make_order(position, %OptionsOrder{type: :sell, premium: 1.5})
+
+    position =
+      Position.make_order(position, %OptionsOrder{type: :sell, contracts: 3, premium: 1.5})
 
     order = List.first(position.orders)
     assert order.type == :sell
+    assert order.contracts == "3"
     assert order.premium == "1.5"
   end
 
   test "creates a position report" do
     position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
-    position = Position.make_order(position, %OptionsOrder{type: :sell, premium: 1.5})
+
+    position =
+      Position.make_order(position, %OptionsOrder{type: :sell, contracts: 2, premium: 0.75})
+
     position = Position.make_order(position, %StockOrder{type: :sell, quantity: 5, price: 110})
     position = Position.make_order(position, %StockOrder{type: :buy, quantity: 2, price: 120})
-    position = Position.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
+
+    position =
+      Position.make_order(position, %OptionsOrder{type: :buy, contracts: 2, premium: 0.25})
 
     report = Report.make_report(position)
 
@@ -61,8 +71,11 @@ defmodule ProfitryTest do
   end
 
   test "creates a report for a position with stock options only" do
-    position = Position.new_position("aapl", %OptionsOrder{type: :sell, premium: 1.5})
-    position = Position.make_order(position, %OptionsOrder{type: :buy, premium: 0.5})
+    position =
+      Position.new_position("aapl", %OptionsOrder{type: :sell, contracts: 1, premium: 1.5})
+
+    position =
+      Position.make_order(position, %OptionsOrder{type: :buy, contracts: 2, premium: 0.25})
 
     report = Report.make_report(position)
 

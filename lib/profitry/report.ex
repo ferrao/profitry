@@ -48,18 +48,30 @@ defmodule Profitry.Report do
   end
 
   # calculates impact of buying premium on an existing position
-  defp calculate_order(report, %{type: :buy, premium: premium}) do
+  defp calculate_order(report, %{type: :buy, contracts: contracts, premium: premium}) do
     %{
       report
-      | investment: Decimal.add(report.investment, Decimal.mult(premium, 100))
+      | investment:
+          Decimal.add(
+            report.investment,
+            contracts
+            |> Decimal.mult(premium)
+            |> Decimal.mult(100)
+          )
     }
   end
 
   # calculates impact of selling premium on an existing position
-  defp calculate_order(report, %{type: :sell, premium: premium}) do
+  defp calculate_order(report, %{type: :sell, contracts: contracts, premium: premium}) do
     %{
       report
-      | investment: Decimal.sub(report.investment, Decimal.mult(premium, 100))
+      | investment:
+          Decimal.sub(
+            report.investment,
+            contracts
+            |> Decimal.mult(premium)
+            |> Decimal.mult(100)
+          )
     }
   end
 

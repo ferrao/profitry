@@ -24,11 +24,11 @@ defmodule Profitry.Position do
 
   # Creates a new position on an underlying using stock options
   @spec new_position(String.t(), OptionsOrder.t()) :: Position.t()
-  def new_position(ticker, order = %OptionsOrder{premium: premium})
-      when premium > 0 do
+  def new_position(ticker, order = %OptionsOrder{contracts: contracts, premium: premium})
+      when contracts > 0 and premium > 0 do
     %Position{
       ticker: ticker,
-      orders: [%{order | premium: to_string(premium)}]
+      orders: [%{order | contracts: to_string(contracts), premium: to_string(premium)}]
     }
   end
 
@@ -43,8 +43,10 @@ defmodule Profitry.Position do
 
   # Adds a new stock options order to an existing position
   @spec make_order(Position.t(), OptionsOrder.t()) :: Position.t()
-  def make_order(position, order = %OptionsOrder{premium: premium})
+  def make_order(position, order = %OptionsOrder{contracts: contracts, premium: premium})
       when premium > 0 do
-    Map.put(position, :orders, [%{order | premium: to_string(premium)} | position.orders])
+    Map.put(position, :orders, [
+      %{order | contracts: to_string(contracts), premium: to_string(premium)} | position.orders
+    ])
   end
 end
