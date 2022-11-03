@@ -1,5 +1,5 @@
-defmodule Profitry.Portfolio do
-  alias Profitry.{Portfolio, Position, Report, StockOrder, OptionsOrder}
+defmodule Profitry.Domain.Portfolio do
+  alias Profitry.Domain.{Portfolio, Position, Report, StockOrder, OptionsOrder}
 
   @type t :: %__MODULE__{
           id: atom(),

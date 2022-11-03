@@ -1,4 +1,4 @@
-defmodule Profitry.StockOrder do
+defmodule Profitry.Domain.StockOrder do
   @type t :: %__MODULE__{
           type: Profitry.order(),
           quantity: integer(),

@@ -1,7 +1,7 @@
 defmodule ProfitryTest do
   use ExUnit.Case
 
-  alias Profitry.{StockOrder, OptionsOrder, Position, Report}
+  alias Profritry.Domain.{StockOrder, OptionsOrder, Position, Report}
 
   test "creates a new position with stocks" do
     position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})

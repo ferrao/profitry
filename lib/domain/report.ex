@@ -1,5 +1,5 @@
-defmodule Profitry.Report do
-  alias Profitry.{Report, Position}
+defmodule Profitry.Domain.Report do
+  alias Profitry.Domain.{Report, Position}
 
   @type t :: %__MODULE__{
           ticker: String.t(),

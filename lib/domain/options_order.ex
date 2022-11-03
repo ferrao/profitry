@@ -1,4 +1,4 @@
-defmodule Profitry.OptionsOrder do
+defmodule Profitry.Domain.OptionsOrder do
   @type t :: %__MODULE__{
           type: Profitry.order(),
           contracts: integer(),

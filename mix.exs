@@ -13,6 +13,7 @@ defmodule Profitry.MixProject do
 
   def application do
     [
+      mod: {Profitry.Application.App, []},
       extra_applications: [:logger]
     ]
   end

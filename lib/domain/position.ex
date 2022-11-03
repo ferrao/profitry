@@ -1,5 +1,5 @@
-defmodule Profitry.Position do
-  alias Profitry.{Position, StockOrder, OptionsOrder}
+defmodule Profitry.Domain.Position do
+  alias Profitry.Domain.{Position, StockOrder, OptionsOrder}
 
   @type t :: %__MODULE__{
           ticker: atom(),
