@@ -1,7 +1,7 @@
 defmodule ProfitryTest do
   use ExUnit.Case
 
-  alias Profritry.Domain.{StockOrder, OptionsOrder, Position, Report}
+  alias Profitry.Domain.{StockOrder, OptionsOrder, Position, Report, Portfolio}
 
   test "creates a new position with stocks" do
     position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
@@ -98,7 +98,7 @@ defmodule ProfitryTest do
   end
 
   test "creates a new portfolio" do
-    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
 
     assert portfolio.id == :tasty
     assert portfolio.description == "TastyWorks Portfolio"
@@ -106,8 +106,8 @@ defmodule ProfitryTest do
 
   test "creates a new position on an empty portfolio" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
-    portfolio = Profitry.make_order(portfolio, "aapl", order)
+    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.make_order(portfolio, "aapl", order)
     position = portfolio.positions[:AAPL]
 
     assert position.ticker == "aapl"
@@ -119,9 +119,9 @@ defmodule ProfitryTest do
 
   test "creates a new position on an non empty portfolio" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
-    portfolio = Profitry.make_order(portfolio, "aapl", order)
-    portfolio = Profitry.make_order(portfolio, "tsla", order)
+    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.make_order(portfolio, "aapl", order)
+    portfolio = Portfolio.make_order(portfolio, "tsla", order)
 
     position = portfolio.positions[:TSLA]
 
@@ -134,9 +134,9 @@ defmodule ProfitryTest do
 
   test "adds an order to a portfolio position" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
-    portfolio = Profitry.make_order(portfolio, "aapl", order)
-    portfolio = Profitry.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
+    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.make_order(portfolio, "aapl", order)
+    portfolio = Portfolio.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
     position = portfolio.positions[:AAPL]
 
     assert position.ticker == "aapl"
@@ -148,13 +148,13 @@ defmodule ProfitryTest do
 
   test "creates a portfolio report" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Profitry.new_portfolio(:tasty, "TastyWorks Portfolio")
-    portfolio = Profitry.make_order(portfolio, "aapl", order)
-    portfolio = Profitry.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
-    portfolio = Profitry.make_order(portfolio, "tsla", order)
-    portfolio = Profitry.make_order(portfolio, "tsla", %{order | quantity: 2, price: 20})
+    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.make_order(portfolio, "aapl", order)
+    portfolio = Portfolio.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
+    portfolio = Portfolio.make_order(portfolio, "tsla", order)
+    portfolio = Portfolio.make_order(portfolio, "tsla", %{order | quantity: 2, price: 20})
 
-    [apple_report, tesla_report] = Profitry.make_report(portfolio)
+    [apple_report, tesla_report] = Portfolio.make_report(portfolio)
 
     assert apple_report.cost_basis == "91.82"
     assert apple_report.investment == "1010.00"
