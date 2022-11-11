@@ -12,14 +12,22 @@ defmodule Profitry do
   end
 
   @spec list_portfolios(server()) :: list({atom(), String.t()})
-  defdelegate list_portfolios(server), to: Server
+  def list_portfolios(server) do
+    GenServer.call(server, {:list_portfolios})
+  end
 
   @spec new_portfolio(server(), atom(), String.t()) :: atom()
-  defdelegate new_portfolio(server, id, description), to: Server
+  def new_portfolio(server, id, description) do
+    GenServer.call(server, {:new_portfolio, id, description})
+  end
 
   @spec make_order(server(), atom(), String.t(), StockOrder.t() | OptionsOrder.t()) :: atom()
-  defdelegate make_order(server, id, ticker, order), to: Server
+  def make_order(server, id, ticker, order) do
+    GenServer.call(server, {:make_order, id, ticker, order})
+  end
 
   @spec report(server(), atom()) :: list(Report.t())
-  defdelegate report(server, id), to: Server
+  def report(server, id) do
+    GenServer.call(server, {:report, id})
+  end
 end

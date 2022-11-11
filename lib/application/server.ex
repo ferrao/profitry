@@ -1,52 +1,50 @@
 defmodule Profitry.Application.Server do
-  alias Profitry.Domain.{Report, Portfolio, StockOrder, OptionsOrder}
+  alias Profitry.Domain.Portfolio
 
   @type t :: pid
 
-  use Agent
+  use GenServer
 
-  @spec start_link(any()) :: {atom(), pid()}
+  # Client Process
   def start_link(_) do
-    Agent.start_link(fn -> [] end)
+    GenServer.start(__MODULE__, nil)
   end
 
-  @spec list(t()) :: list(Portfolio.t())
-  def list(server) do
-    Agent.get(server, fn state -> state end)
+  # Server Process
+  def init(_) do
+    {:ok, []}
   end
 
-  @spec get(t(), atom()) :: Portfolio.t()
-  def get(server, key) do
-    Agent.get(server, fn state -> state |> Enum.find(fn portfolio -> portfolio.id == key end) end)
+  def handle_call({:list_portfolios}, _from, state) do
+    portfolio_list = state |> Enum.map(fn portfolio -> {portfolio.id, portfolio.description} end)
+    {:reply, portfolio_list, state}
   end
 
-  @spec set(t(), Portfolio.t()) :: atom()
-  def set(server, portfolio) do
-    Agent.update(server, fn state ->
-      [portfolio | state |> Enum.filter(fn e -> e.id != portfolio.id end)]
-    end)
+  def handle_call({:new_portfolio, id, description}, _from, state) do
+    new_portfolio = Portfolio.new_portfolio(id, description)
+    updated_state = set(state, new_portfolio)
+
+    {:reply, :ok, updated_state}
   end
 
-  @spec new_portfolio(t(), atom(), String.t()) :: atom()
-  def new_portfolio(server, id, description) do
-    portfolio = Portfolio.new_portfolio(id, description)
-    set(server, portfolio)
+  def handle_call({:make_order, id, ticker, order}, _from, state) do
+    portfolio = get(state, id) |> Portfolio.make_order(ticker, order)
+    {:reply, :ok, set(state, portfolio)}
   end
 
-  @spec list_portfolios(t()) :: list({atom(), String.t()})
-  def list_portfolios(server) do
-    list(server)
-    |> Enum.map(fn portfolio -> {portfolio.id, portfolio.description} end)
+  def handle_call({:report, id}, _from, state) do
+    report = get(state, id) |> Portfolio.make_report()
+    {:reply, report, state}
   end
 
-  @spec make_order(t(), atom(), String.t(), StockOrder.t() | OptionsOrder.t()) :: atom()
-  def make_order(server, id, ticker, order) do
-    portfolio = get(server, id) |> Portfolio.make_order(ticker, order)
-    set(server, portfolio)
+  # GenServer state helpers 
+  defp get(state, id) do
+    state |> Enum.find(fn portfolio -> portfolio.id == id end)
   end
 
-  @spec report(t(), atom()) :: list(Report.t())
-  def report(server, id) do
-    get(server, id) |> Portfolio.make_report()
+  defp set(state, portfolio) do
+    [
+      portfolio | state |> Enum.filter(fn e -> e.id != portfolio.id end)
+    ]
   end
 end
