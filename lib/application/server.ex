@@ -7,7 +7,7 @@ defmodule Profitry.Application.Server do
 
   # Client Process
   def start_link(_) do
-    GenServer.start(__MODULE__, nil)
+    GenServer.start_link(__MODULE__, nil)
   end
 
   # Server Process
