@@ -3,20 +3,20 @@ defmodule Profitry.Domain.Portfolio do
 
   @type t :: %__MODULE__{
           id: atom(),
-          description: String.t(),
+          name: String.t(),
           positions: %{atom() => Position.t()}
         }
 
   defstruct(
     id: nil,
-    description: nil,
+    name: nil,
     positions: %{}
   )
 
   # Creates a new empty portfolio
   @spec new_portfolio(atom(), String.t()) :: Portfolio.t()
-  def new_portfolio(id, description) do
-    %Portfolio{id: id, description: description}
+  def new_portfolio(id, name) do
+    %Portfolio{id: id, name: name}
   end
 
   # Creates a portfolio report

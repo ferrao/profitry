@@ -1,9 +1,9 @@
 defmodule ProfitryClient do
   alias ProfitryClient.Application.Server
-  alias ProfitryClient.Ui.Home
+  alias ProfitryClient.Ui.Portfolios
 
   def start do
     Server.connect()
-    |> Home.render()
+    |> Portfolios.render()
   end
 end

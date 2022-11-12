@@ -101,7 +101,7 @@ defmodule ProfitryTest do
     portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
 
     assert portfolio.id == :tasty
-    assert portfolio.description == "TastyWorks Portfolio"
+    assert portfolio.name == "TastyWorks Portfolio"
   end
 
   test "creates a new position on an empty portfolio" do
