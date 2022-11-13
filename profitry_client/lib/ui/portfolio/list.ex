@@ -1,5 +1,4 @@
 defmodule ProfitryClient.Ui.Portfolio.List do
-  alias Profitry.Domain.Portfolio
   alias ProfitryClient.Ui.Commons
   alias ProfitryClient.Ui.Portfolio.{Create, Details}
 
@@ -14,7 +13,7 @@ defmodule ProfitryClient.Ui.Portfolio.List do
         | portfolios_options(server)
       ] ++ [%{id: :quit, value: "Quit"}]
 
-    Owl.IO.select(options, render_as: &Commons.render_option/1)
+    Commons.select(options)
     |> render(server)
   end
 
@@ -30,7 +29,9 @@ defmodule ProfitryClient.Ui.Portfolio.List do
   end
 
   def render(option, server) do
-    Details.render(%Portfolio{id: option.id, name: option.value}, server)
+    Profitry.get_portfolio(server, option.id)
+    |> Details.render(server)
+
     render(server)
   end
 

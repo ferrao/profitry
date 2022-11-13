@@ -1,7 +1,5 @@
 defmodule ProfitryClient.Ui.Position.List do
-  alias Profitry.Domain.Portfolio
   alias ProfitryClient.Ui.Commons
-  alias ProfitryClient.Ui.Position
 
   @spec render(Portfolio.t(), Profitry.server()) :: atom()
   def render(portfolio, server) do
@@ -12,10 +10,12 @@ defmodule ProfitryClient.Ui.Position.List do
     |> Commons.green()
     |> IO.puts()
 
-    portfolio.positions
-    |> Enum.map(fn p -> Profitry.report(server, p) end)
-    |> IO.puts()
+    Profitry.report(server, portfolio.id)
+    |> Enum.map(&render_ticker/1)
+    |> Enum.each(&IO.puts/1)
+  end
 
-    Position.Create.render(server)
+  defp render_ticker(report) do
+    "#{report.ticker} #{report.shares} #{report.cost_basis} #{report.investment}"
   end
 end

@@ -20,6 +20,11 @@ defmodule Profitry.Application.Server do
     {:reply, portfolio_list, state}
   end
 
+  def handle_call({:get_portfolio, id}, _from, state) do
+    portfolio = state |> Enum.find(fn p -> p.id == id end)
+    {:reply, portfolio, state}
+  end
+
   def handle_call({:new_portfolio, id, name}, _from, state) do
     new_portfolio = Portfolio.new_portfolio(id, name)
     updated_state = set(state, new_portfolio)
