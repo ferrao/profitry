@@ -1,13 +1,13 @@
 defmodule ProfitryClient.Ui.Position.List do
-  alias ProfitryClient.Ui.Commons
+  alias ProfitryClient.Ui.Commons.Colors
 
-  @spec render(Portfolio.t(), Profitry.server()) :: atom()
+  @spec render(Profitry.portfolio(), Profitry.server()) :: atom()
   def render(portfolio, server) do
     portfolio.id
     |> Atom.to_string()
     |> String.upcase()
     |> Kernel.<>(" #{portfolio.name}\n")
-    |> Commons.green()
+    |> Colors.green()
     |> IO.puts()
 
     Profitry.report(server, portfolio.id)

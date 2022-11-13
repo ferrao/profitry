@@ -1,6 +1,6 @@
 defmodule ProfitryClient.Ui.Order.Create do
   alias Profitry.Domain.{OptionsOrder, StockOrder}
-  alias ProfitryClient.Ui.Commons
+  alias ProfitryClient.Ui.Commons.{Select, Input}
 
   def render() do
     options = [
@@ -10,11 +10,10 @@ defmodule ProfitryClient.Ui.Order.Create do
       %{id: :sell_options, value: "Sell Options Contracts"}
     ]
 
-    transaction = Commons.select(options)
+    transaction = Select.render(options)
 
-    quantity = Owl.IO.input(label: "Quantity?", cast: {:integer, min: 1, max: 1000})
-    # FIXME: support float
-    price = Owl.IO.input(label: "Price?", cast: {:integer, min: 0})
+    quantity = Input.Integer.render("Quantity?", 1, 1000)
+    price = Input.Float.render("Price?", 0, 999_999_999)
 
     order(transaction, quantity, price)
   end

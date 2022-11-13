@@ -1,5 +1,5 @@
 defmodule ProfitryClient.Ui.Position.Create do
-  alias ProfitryClient.Ui.Commons
+  alias ProfitryClient.Ui.Commons.Select
   alias ProfitryClient.Ui.Order
 
   def render(portfolio, server) do
@@ -8,7 +8,7 @@ defmodule ProfitryClient.Ui.Position.Create do
       %{id: :back, value: "Go Back"}
     ]
 
-    Commons.select(options)
+    Select.render(options)
     |> render(portfolio, server)
   end
 

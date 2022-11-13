@@ -1,10 +1,10 @@
 defmodule ProfitryClient.Ui.Portfolio.List do
-  alias ProfitryClient.Ui.Commons
+  alias ProfitryClient.Ui.Commons.{Colors, Select}
   alias ProfitryClient.Ui.Portfolio.{Create, Details}
 
   def render(server) do
     "List of Portfolios: \n"
-    |> Commons.green()
+    |> Colors.green()
     |> IO.puts()
 
     options =
@@ -13,7 +13,7 @@ defmodule ProfitryClient.Ui.Portfolio.List do
         | portfolios_options(server)
       ] ++ [%{id: :quit, value: "Quit"}]
 
-    Commons.select(options)
+    Select.render(options)
     |> render(server)
   end
 
@@ -24,7 +24,7 @@ defmodule ProfitryClient.Ui.Portfolio.List do
 
   def render(%{id: :quit}, _server) do
     "Bye!"
-    |> Commons.green()
+    |> Colors.green()
     |> IO.puts()
   end
 

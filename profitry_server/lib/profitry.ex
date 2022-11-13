@@ -1,8 +1,9 @@
 defmodule Profitry do
   alias Profitry.Application.{Server, App}
-  alias Profitry.Domain.{Report, StockOrder, OptionsOrder}
+  alias Profitry.Domain.{Portfolio, Report, StockOrder, OptionsOrder}
 
   @type order :: :buy | :sell
+  @type portfolio :: Portfolio.t()
   @opaque server :: Server.t()
 
   @spec start_server() :: server
