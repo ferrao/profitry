@@ -1,20 +1,5 @@
-defmodule ProfitryClient.Ui.Portfolios do
+defmodule ProfitryClient.Ui.Portfolio.Create do
   def render(server) do
-    "List of Portfolios: \n"
-    |> green
-    |> IO.puts()
-
-    options =
-      [
-        %{id: :create, value: "Create a new Portfolio"}
-        | portfolios_options(server)
-      ] ++ [%{id: :quit, value: "Quit"}]
-
-    Owl.IO.select(options, render_as: fn option -> option.value end)
-    |> render(server)
-  end
-
-  def render(%{id: :create}, server) do
     id =
       Owl.IO.input(label: "Portfolio ID?", cast: string_validator(1, 4))
       |> String.downcase()
@@ -23,13 +8,6 @@ defmodule ProfitryClient.Ui.Portfolios do
     name = Owl.IO.input(label: "Portfolio Name?", cast: string_validator(2, 80))
 
     Profitry.new_portfolio(server, id, name)
-    render(server)
-  end
-
-  def render(%{id: :quit}, _server) do
-    "Bye!"
-    |> green()
-    |> IO.puts()
   end
 
   def cast_input(%{size: size, min: min}) when size < min do
@@ -53,19 +31,5 @@ defmodule ProfitryClient.Ui.Portfolios do
         max: max
       })
     end
-  end
-
-  defp green(string) do
-    string
-    |> Owl.Data.tag(:green)
-    |> Owl.Data.to_ansidata()
-  end
-
-  defp portfolios_options(server) do
-    portfolios = Profitry.list_portfolios(server)
-
-    portfolios
-    |> Keyword.keys()
-    |> Enum.map(fn k -> %{id: k, value: portfolios[k]} end)
   end
 end

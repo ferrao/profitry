@@ -17,8 +17,8 @@ defmodule Profitry do
   end
 
   @spec new_portfolio(server(), atom(), String.t()) :: atom()
-  def new_portfolio(server, id, description) do
-    GenServer.call(server, {:new_portfolio, id, description})
+  def new_portfolio(server, id, name) do
+    GenServer.call(server, {:new_portfolio, id, name})
   end
 
   @spec make_order(server(), atom(), String.t(), StockOrder.t() | OptionsOrder.t()) :: atom()

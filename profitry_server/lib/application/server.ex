@@ -16,12 +16,12 @@ defmodule Profitry.Application.Server do
   end
 
   def handle_call({:list_portfolios}, _from, state) do
-    portfolio_list = state |> Enum.map(fn portfolio -> {portfolio.id, portfolio.description} end)
+    portfolio_list = state |> Enum.map(fn portfolio -> {portfolio.id, portfolio.name} end)
     {:reply, portfolio_list, state}
   end
 
-  def handle_call({:new_portfolio, id, description}, _from, state) do
-    new_portfolio = Portfolio.new_portfolio(id, description)
+  def handle_call({:new_portfolio, id, name}, _from, state) do
+    new_portfolio = Portfolio.new_portfolio(id, name)
     updated_state = set(state, new_portfolio)
 
     {:reply, :ok, updated_state}
