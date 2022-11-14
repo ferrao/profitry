@@ -1,5 +1,5 @@
 defmodule ProfitryClient.Ui.Portfolio.List do
-  alias ProfitryClient.Ui.Commons.{Colors, Select}
+  alias ProfitryClient.Ui.Commons.{Colors, Select, Input}
   alias ProfitryClient.Ui.Portfolio.{Create, Details}
 
   def render(server) do
@@ -8,13 +8,24 @@ defmodule ProfitryClient.Ui.Portfolio.List do
     |> IO.puts()
 
     options =
-      [
-        %{id: :create, value: "Create a new Portfolio"}
-        | portfolios_options(server)
-      ] ++ [%{id: :quit, value: "Quit"}]
+      [%{id: :create, value: "Create a new Portfolio"} | portfolios_options(server)] ++
+        [
+          %{id: :load, value: "Load a Portfolio"},
+          %{id: :save, value: "Save a Portfolio"},
+          %{id: :quit, value: "Quit"}
+        ]
 
     Select.render(options)
     |> render(server)
+  end
+
+  def render(%{id: :save}, server) do
+    Profitry.list_portfolios(server)
+    |> Enum.map(fn {id, _} -> Profitry.get_portfolio(server, id) end)
+    |> Poison.encode()
+    |> save
+
+    render(server)
   end
 
   def render(%{id: :create}, server) do
@@ -41,5 +52,11 @@ defmodule ProfitryClient.Ui.Portfolio.List do
     portfolios
     |> Keyword.keys()
     |> Enum.map(fn k -> %{id: k, value: portfolios[k]} end)
+  end
+
+  defp save({:ok, json}) do
+    Input.File.render()
+    |> Path.expand()
+    |> File.write(json, [:exclusive])
   end
 end

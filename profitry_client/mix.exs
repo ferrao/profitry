@@ -23,9 +23,11 @@ defmodule ProfitryCli.MixProject do
   defp deps do
     [
       {:profitry_server, path: "../profitry_server"},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:poison, "~> 5.0"},
-      {:owl, "~> 0.4"}
+      {:owl, "~> 0.4"},
+
+      # Dev Deps
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 end
