@@ -32,7 +32,7 @@ defmodule Profitry do
     GenServer.call(server, {:make_order, id, ticker, order})
   end
 
-  @spec report(server(), atom()) :: list(Report.t())
+  @spec report(server(), String.t()) :: list(Report.t())
   def report(server, id) do
     GenServer.call(server, {:report, id})
   end
