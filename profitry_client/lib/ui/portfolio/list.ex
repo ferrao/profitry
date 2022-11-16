@@ -20,10 +20,15 @@ defmodule ProfitryClient.Ui.Portfolio.List do
   end
 
   def render(%{id: :save}, server) do
-    Profitry.list_portfolios(server)
-    |> Enum.map(fn {id, _} -> Profitry.get_portfolio(server, id) end)
-    |> Poison.encode()
-    |> save
+    path = Input.File.render()
+    Profitry.save(server, path)
+
+    render(server)
+  end
+
+  def render(%{id: :load}, server) do
+    path = Input.File.render()
+    Profitry.load(server, path)
 
     render(server)
   end
@@ -47,16 +52,11 @@ defmodule ProfitryClient.Ui.Portfolio.List do
   end
 
   defp portfolios_options(server) do
-    portfolios = Profitry.list_portfolios(server)
+    portfolios =
+      Profitry.list_portfolios(server)
+      |> IO.inspect()
 
     portfolios
-    |> Keyword.keys()
-    |> Enum.map(fn k -> %{id: k, value: portfolios[k]} end)
-  end
-
-  defp save({:ok, json}) do
-    Input.File.render()
-    |> Path.expand()
-    |> File.write(json, [:exclusive])
+    |> Enum.map(fn {id, name} -> %{id: id, value: name} end)
   end
 end

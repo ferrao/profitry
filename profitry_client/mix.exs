@@ -23,7 +23,6 @@ defmodule ProfitryCli.MixProject do
   defp deps do
     [
       {:profitry_server, path: "../profitry_server"},
-      {:poison, "~> 5.0"},
       {:owl, "~> 0.4"},
 
       # Dev Deps

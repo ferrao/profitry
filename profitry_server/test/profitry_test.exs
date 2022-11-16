@@ -98,15 +98,15 @@ defmodule ProfitryTest do
   end
 
   test "creates a new portfolio" do
-    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.new_portfolio("tasty", "TastyWorks Portfolio")
 
-    assert portfolio.id == :tasty
+    assert portfolio.id == "tasty"
     assert portfolio.name == "TastyWorks Portfolio"
   end
 
   test "creates a new position on an empty portfolio" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.new_portfolio("tasty", "TastyWorks Portfolio")
     portfolio = Portfolio.make_order(portfolio, "aapl", order)
     position = portfolio.positions[:AAPL]
 
@@ -119,7 +119,7 @@ defmodule ProfitryTest do
 
   test "creates a new position on an non empty portfolio" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.new_portfolio("tasty", "TastyWorks Portfolio")
     portfolio = Portfolio.make_order(portfolio, "aapl", order)
     portfolio = Portfolio.make_order(portfolio, "tsla", order)
 
@@ -134,7 +134,7 @@ defmodule ProfitryTest do
 
   test "adds an order to a portfolio position" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.new_portfolio("tasty", "TastyWorks Portfolio")
     portfolio = Portfolio.make_order(portfolio, "aapl", order)
     portfolio = Portfolio.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
     position = portfolio.positions[:AAPL]
@@ -148,7 +148,7 @@ defmodule ProfitryTest do
 
   test "creates a portfolio report" do
     order = %StockOrder{type: :buy, quantity: 10, price: 100}
-    portfolio = Portfolio.new_portfolio(:tasty, "TastyWorks Portfolio")
+    portfolio = Portfolio.new_portfolio("tasty", "TastyWorks Portfolio")
     portfolio = Portfolio.make_order(portfolio, "aapl", order)
     portfolio = Portfolio.make_order(portfolio, "aapl", %{order | quantity: 1, price: 10})
     portfolio = Portfolio.make_order(portfolio, "tsla", order)

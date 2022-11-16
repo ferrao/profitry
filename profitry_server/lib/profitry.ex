@@ -36,4 +36,14 @@ defmodule Profitry do
   def report(server, id) do
     GenServer.call(server, {:report, id})
   end
+
+  @spec save(server, String.t()) :: atom()
+  def save(server, path) do
+    GenServer.call(server, {:save, path})
+  end
+
+  @spec load(server, String.t()) :: atom()
+  def load(server, path) do
+    GenServer.call(server, {:load, path})
+  end
 end

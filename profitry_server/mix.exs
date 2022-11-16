@@ -21,6 +21,9 @@ defmodule Profitry.MixProject do
   defp deps do
     [
       {:decimal, "~> 2.0.0"},
+      {:poison, "~> 5.0"},
+
+      # Dev deps
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end

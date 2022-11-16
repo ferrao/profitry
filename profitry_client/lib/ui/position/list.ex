@@ -4,7 +4,6 @@ defmodule ProfitryClient.Ui.Position.List do
   @spec render(Profitry.portfolio(), Profitry.server()) :: atom()
   def render(portfolio, server) do
     portfolio.id
-    |> Atom.to_string()
     |> String.upcase()
     |> Kernel.<>(" #{portfolio.name}\n")
     |> Colors.green()

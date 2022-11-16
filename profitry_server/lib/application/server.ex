@@ -2,6 +2,7 @@ defmodule Profitry.Application.Server do
   alias Profitry.Domain.Portfolio
 
   @type t :: pid
+  @type state_t :: list(Portfolio.t())
 
   use GenServer
 
@@ -17,6 +18,7 @@ defmodule Profitry.Application.Server do
 
   def handle_call({:list_portfolios}, _from, state) do
     portfolio_list = state |> Enum.map(fn portfolio -> {portfolio.id, portfolio.name} end)
+
     {:reply, portfolio_list, state}
   end
 
@@ -27,27 +29,45 @@ defmodule Profitry.Application.Server do
 
   def handle_call({:new_portfolio, id, name}, _from, state) do
     new_portfolio = Portfolio.new_portfolio(id, name)
-    updated_state = set(state, new_portfolio)
+    updated_state = set_portfolio(state, new_portfolio)
 
     {:reply, :ok, updated_state}
   end
 
   def handle_call({:make_order, id, ticker, order}, _from, state) do
-    portfolio = get(state, id) |> Portfolio.make_order(ticker, order)
-    {:reply, :ok, set(state, portfolio)}
+    portfolio = get_portfolio(state, id) |> Portfolio.make_order(ticker, order)
+    {:reply, :ok, set_portfolio(state, portfolio)}
   end
 
   def handle_call({:report, id}, _from, state) do
-    report = get(state, id) |> Portfolio.make_report()
+    report = get_portfolio(state, id) |> Portfolio.make_report()
     {:reply, report, state}
   end
 
+  def handle_call({:save, path}, _from, state) do
+    {:ok, json} =
+      state
+      |> IO.inspect()
+      |> Poison.encode()
+
+    File.write(path, json, [:exclusive])
+
+    {:reply, :ok, state}
+  end
+
+  def handle_call({:load, path}, _from, _state) do
+    {:ok, json} = path |> File.read()
+    {:ok, state} = Poison.decode(json, %{as: [%Portfolio{}]})
+
+    {:reply, :ok, state |> IO.inspect()}
+  end
+
   # GenServer state helpers 
-  defp get(state, id) do
+  defp get_portfolio(state, id) do
     state |> Enum.find(fn portfolio -> portfolio.id == id end)
   end
 
-  defp set(state, portfolio) do
+  defp set_portfolio(state, portfolio) do
     [
       portfolio | state |> Enum.filter(fn e -> e.id != portfolio.id end)
     ]

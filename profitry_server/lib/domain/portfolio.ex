@@ -2,7 +2,7 @@ defmodule Profitry.Domain.Portfolio do
   alias Profitry.Domain.{Portfolio, Position, Report, StockOrder, OptionsOrder}
 
   @type t :: %__MODULE__{
-          id: atom(),
+          id: String.t(),
           name: String.t(),
           positions: %{atom() => Position.t()}
         }
