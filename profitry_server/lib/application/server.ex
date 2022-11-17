@@ -50,9 +50,14 @@ defmodule Profitry.Application.Server do
       |> IO.inspect()
       |> Poison.encode()
 
-    File.write(path, json, [:exclusive])
+    case File.stat(path) do
+      {:error, :enoent} ->
+        File.write(path, json, [:exclusive])
+        {:reply, :ok, state}
 
-    {:reply, :ok, state}
+      _ ->
+        {:reply, :error, state}
+    end
   end
 
   def handle_call({:load, path}, _from, _state) do

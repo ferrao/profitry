@@ -21,7 +21,11 @@ defmodule ProfitryClient.Ui.Portfolio.List do
 
   def render(%{id: :save}, server) do
     path = Input.File.render()
-    Profitry.save(server, path)
+    save_result = Profitry.save(server, path) |> IO.inspect()
+
+    if :error == save_result do
+      Colors.red("Unable to save to #{path} \n\n") |> IO.puts()
+    end
 
     render(server)
   end
