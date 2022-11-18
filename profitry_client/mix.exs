@@ -24,6 +24,7 @@ defmodule ProfitryCli.MixProject do
     [
       {:profitry_server, path: "../profitry_server"},
       {:owl, "~> 0.4"},
+      {:table_rex, "~> 3.1.1"},
 
       # Dev Deps
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}

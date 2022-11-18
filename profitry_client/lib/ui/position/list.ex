@@ -9,16 +9,15 @@ defmodule ProfitryClient.Ui.Position.List do
     |> Colors.green()
     |> IO.puts()
 
-    IO.puts("Ticker Shares CostBasis Investment")
+    table_header = ["Ticker", "Shares", "CostBasis", "Investment"]
 
     Profitry.report(server, portfolio.id)
-    |> Enum.map(&render_ticker/1)
-    |> Enum.each(&IO.puts/1)
-
-    IO.puts("")
+    |> Enum.map(&report_as_list/1)
+    |> TableRex.quick_render!(table_header)
+    |> Colors.blue()
+    |> IO.puts()
   end
 
-  defp render_ticker(report) do
-    "#{report.ticker} #{report.shares} #{report.cost_basis} #{report.investment}"
-  end
+  defp report_as_list(report),
+    do: [report.ticker, report.shares, report.cost_basis, report.investment]
 end

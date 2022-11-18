@@ -15,7 +15,7 @@ defmodule ProfitryClient.Ui.Position.Create do
   def render(%{id: :create}, portfolio, server) do
     ticker =
       Owl.IO.input(label: "Ticker?")
-      |> String.downcase()
+      |> String.upcase()
 
     order = Order.Create.render()
 
