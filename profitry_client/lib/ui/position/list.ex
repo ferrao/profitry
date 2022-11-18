@@ -13,9 +13,16 @@ defmodule ProfitryClient.Ui.Position.List do
 
     Profitry.report(server, portfolio.id)
     |> Enum.map(&report_as_list/1)
-    |> TableRex.quick_render!(table_header)
-    |> Colors.blue()
+    |> render_table(table_header)
     |> IO.puts()
+  end
+
+  defp render_table([], _), do: ""
+
+  defp render_table(rows, header) do
+    rows
+    |> TableRex.quick_render!(header)
+    |> Colors.blue()
   end
 
   defp report_as_list(report),

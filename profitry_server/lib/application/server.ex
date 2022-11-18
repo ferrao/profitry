@@ -57,11 +57,17 @@ defmodule Profitry.Application.Server do
     end
   end
 
-  def handle_call({:load, path}, _from, _state) do
-    {:ok, json} = path |> File.read()
-    {:ok, state} = Poison.decode(json, %{as: [%Portfolio{}], keys: :atoms})
+  def handle_call({:load, path}, _from, state) do
+    case File.stat(path) do
+      {:error, :enoent} ->
+        {:reply, :error, state}
 
-    {:reply, :ok, state}
+      _ ->
+        {:ok, json} = path |> File.read()
+        {:ok, state} = Poison.decode(json, %{as: [%Portfolio{}], keys: :atoms})
+
+        {:reply, :ok, state}
+    end
   end
 
   # GenServer state helpers 

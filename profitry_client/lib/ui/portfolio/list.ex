@@ -32,7 +32,11 @@ defmodule ProfitryClient.Ui.Portfolio.List do
 
   def render(%{id: :load}, server) do
     path = Input.File.render()
-    Profitry.load(server, path)
+    load_result = Profitry.load(server, path)
+
+    if :error == load_result do
+      Colors.red("Unable to load from #{path} \n\n") |> IO.puts()
+    end
 
     render(server)
   end
