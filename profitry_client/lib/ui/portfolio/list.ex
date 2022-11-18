@@ -21,7 +21,7 @@ defmodule ProfitryClient.Ui.Portfolio.List do
 
   def render(%{id: :save}, server) do
     path = Input.File.render()
-    save_result = Profitry.save(server, path) |> IO.inspect()
+    save_result = Profitry.save(server, path)
 
     if :error == save_result do
       Colors.red("Unable to save to #{path} \n\n") |> IO.puts()
@@ -56,11 +56,7 @@ defmodule ProfitryClient.Ui.Portfolio.List do
   end
 
   defp portfolios_options(server) do
-    portfolios =
-      Profitry.list_portfolios(server)
-      |> IO.inspect()
-
-    portfolios
+    Profitry.list_portfolios(server)
     |> Enum.map(fn {id, name} -> %{id: id, value: name} end)
   end
 end

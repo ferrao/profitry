@@ -14,7 +14,7 @@ defmodule Profitry.Domain.Portfolio do
   )
 
   # Creates a new empty portfolio
-  @spec new_portfolio(atom(), String.t()) :: Portfolio.t()
+  @spec new_portfolio(String.t(), String.t()) :: Portfolio.t()
   def new_portfolio(id, name) do
     %Portfolio{id: id, name: name}
   end

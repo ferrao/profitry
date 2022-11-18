@@ -2,7 +2,7 @@ defmodule Profitry.Domain.Position do
   alias Profitry.Domain.{Position, StockOrder, OptionsOrder}
 
   @type t :: %__MODULE__{
-          ticker: atom(),
+          ticker: String.t(),
           orders: list(StockOrder.t() | OptionsOrder.t())
         }
 

@@ -22,7 +22,7 @@ defmodule Profitry do
     GenServer.call(server, {:get_portfolio, id})
   end
 
-  @spec new_portfolio(server(), atom(), String.t()) :: atom()
+  @spec new_portfolio(server(), String.t(), String.t()) :: atom()
   def new_portfolio(server, id, name) do
     GenServer.call(server, {:new_portfolio, id, name})
   end

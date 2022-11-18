@@ -9,9 +9,13 @@ defmodule ProfitryClient.Ui.Position.List do
     |> Colors.green()
     |> IO.puts()
 
+    IO.puts("Ticker Shares CostBasis Investment")
+
     Profitry.report(server, portfolio.id)
     |> Enum.map(&render_ticker/1)
     |> Enum.each(&IO.puts/1)
+
+    IO.puts("")
   end
 
   defp render_ticker(report) do
