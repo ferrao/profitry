@@ -38,6 +38,16 @@ defmodule ProfitryTest do
     assert order.price == "110"
   end
 
+  test "adds a stocks order with partial shares to an existing position" do
+    position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
+    position = Position.make_order(position, %StockOrder{type: :sell, quantity: 5.5, price: 110})
+
+    order = List.first(position.orders)
+    assert order.type == :sell
+    assert order.quantity == "5.5"
+    assert order.price == "110"
+  end
+
   test "adds a stock options order to an existing position" do
     position = Position.new_position("aapl", %StockOrder{type: :buy, quantity: 10, price: 100})
 
@@ -57,7 +67,7 @@ defmodule ProfitryTest do
       Position.make_order(position, %OptionsOrder{type: :sell, contracts: 2, premium: 0.75})
 
     position = Position.make_order(position, %StockOrder{type: :sell, quantity: 5, price: 110})
-    position = Position.make_order(position, %StockOrder{type: :buy, quantity: 2, price: 120})
+    position = Position.make_order(position, %StockOrder{type: :buy, quantity: 2.5, price: 120})
 
     position =
       Position.make_order(position, %OptionsOrder{type: :buy, contracts: 2, premium: 0.25})
@@ -65,9 +75,9 @@ defmodule ProfitryTest do
     report = Report.make_report(position)
 
     assert report.ticker == "aapl"
-    assert report.investment == "590.00"
-    assert report.shares == "7.00"
-    assert report.cost_basis == "84.29"
+    assert report.investment == "650.00"
+    assert report.shares == "7.50"
+    assert report.cost_basis == "86.67"
   end
 
   test "creates a report for a position with stock options only" do

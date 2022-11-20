@@ -12,7 +12,7 @@ defmodule ProfitryClient.Ui.Order.Create do
 
     transaction = Select.render(options)
 
-    quantity = Input.Integer.render("Quantity?", 1, 1000)
+    quantity = Input.Float.render("Quantity?", 0.01, 1000)
     price = Input.Float.render("Price?", 0, 999_999_999)
 
     order(transaction, quantity, price)
