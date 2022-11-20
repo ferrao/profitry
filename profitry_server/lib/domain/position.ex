@@ -11,14 +11,22 @@ defmodule Profitry.Domain.Position do
     orders: []
   )
 
+  @clock Application.compile_env(:profitry_server, :clock)
+
   # Creates a new position on an underlying using stocks
   @spec new_position(String.t(), StockOrder.t()) :: Position.t()
   def new_position(ticker, order = %StockOrder{quantity: quantity, price: price})
-      when quantity > 0 and
-             price >= 0 do
+      when quantity > 0 and price >= 0 do
     %Position{
       ticker: ticker,
-      orders: [%{order | quantity: to_string(order.quantity), price: to_string(order.price)}]
+      orders: [
+        %{
+          order
+          | quantity: to_string(order.quantity),
+            price: to_string(order.price),
+            ts: @clock.now()
+        }
+      ]
     }
   end
 
@@ -28,7 +36,14 @@ defmodule Profitry.Domain.Position do
       when contracts > 0 and premium > 0 do
     %Position{
       ticker: ticker,
-      orders: [%{order | contracts: to_string(contracts), premium: to_string(premium)}]
+      orders: [
+        %{
+          order
+          | contracts: to_string(contracts),
+            premium: to_string(premium),
+            ts: @clock.now()
+        }
+      ]
     }
   end
 
@@ -37,7 +52,8 @@ defmodule Profitry.Domain.Position do
   def make_order(position, order = %StockOrder{quantity: quantity, price: price})
       when quantity > 0 and price >= 0 do
     Map.put(position, :orders, [
-      %{order | quantity: to_string(quantity), price: to_string(price)} | position.orders
+      %{order | quantity: to_string(quantity), price: to_string(price), ts: @clock.now()}
+      | position.orders
     ])
   end
 
@@ -46,7 +62,8 @@ defmodule Profitry.Domain.Position do
   def make_order(position, order = %OptionsOrder{contracts: contracts, premium: premium})
       when premium > 0 do
     Map.put(position, :orders, [
-      %{order | contracts: to_string(contracts), premium: to_string(premium)} | position.orders
+      %{order | contracts: to_string(contracts), premium: to_string(premium), ts: @clock.now()}
+      | position.orders
     ])
   end
 end

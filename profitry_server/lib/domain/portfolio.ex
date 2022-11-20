@@ -48,7 +48,7 @@ defmodule Profitry.Domain.Portfolio do
     %Portfolio{portfolio | positions: Map.put(positions, ticker_key(ticker), position)}
   end
 
-  # Adds an order to am existing portfolio position
+  # Adds an order to an existing portfolio position
   defp make_position_order(
          portfolio = %Portfolio{positions: positions},
          ticker,

@@ -7,7 +7,14 @@ defmodule Profitry.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+
+      # set compile path
+      elixirc_paths:
+        case Mix.env() do
+          :test -> ["lib", "test/lib"]
+          _ -> ["lib"]
+        end
     ]
   end
 
@@ -25,6 +32,8 @@ defmodule Profitry.MixProject do
 
       # Dev deps
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+
+      # Test deps
     ]
   end
 end

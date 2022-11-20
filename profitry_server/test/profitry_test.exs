@@ -1,6 +1,7 @@
 defmodule ProfitryTest do
   use ExUnit.Case
 
+  alias Profitry.Stub.ClockStub
   alias Profitry.Domain.{StockOrder, OptionsOrder, Position, Report, Portfolio}
 
   test "creates a new position with stocks" do
@@ -13,6 +14,7 @@ defmodule ProfitryTest do
     assert order.type == :buy
     assert order.quantity == "10"
     assert order.price == "100"
+    assert order.ts == ClockStub.now()
   end
 
   test "creates a new position with stock options" do
@@ -26,6 +28,7 @@ defmodule ProfitryTest do
     assert order.type == :buy
     assert order.contracts == "3"
     assert order.premium == "2.6"
+    assert order.ts == ClockStub.now()
   end
 
   test "adds a stocks order to an existing position" do
@@ -36,6 +39,7 @@ defmodule ProfitryTest do
     assert order.type == :sell
     assert order.quantity == "5"
     assert order.price == "110"
+    assert order.ts == ClockStub.now()
   end
 
   test "adds a stocks order with partial shares to an existing position" do
@@ -46,6 +50,7 @@ defmodule ProfitryTest do
     assert order.type == :sell
     assert order.quantity == "5.5"
     assert order.price == "110"
+    assert order.ts == ClockStub.now()
   end
 
   test "adds a stock options order to an existing position" do
@@ -58,6 +63,7 @@ defmodule ProfitryTest do
     assert order.type == :sell
     assert order.contracts == "3"
     assert order.premium == "1.5"
+    assert order.ts == ClockStub.now()
   end
 
   test "creates a position report" do
@@ -125,6 +131,7 @@ defmodule ProfitryTest do
     assert hd(position.orders).type == :buy
     assert hd(position.orders).quantity == "10"
     assert hd(position.orders).price == "100"
+    assert hd(position.orders).ts == ClockStub.now()
   end
 
   test "creates a new position on an non empty portfolio" do
@@ -140,6 +147,7 @@ defmodule ProfitryTest do
     assert hd(position.orders).type == :buy
     assert hd(position.orders).quantity == "10"
     assert hd(position.orders).price == "100"
+    assert hd(position.orders).ts == ClockStub.now()
   end
 
   test "adds an order to a portfolio position" do
@@ -154,6 +162,7 @@ defmodule ProfitryTest do
     assert hd(position.orders).type == :buy
     assert hd(position.orders).quantity == "1"
     assert hd(position.orders).price == "10"
+    assert hd(position.orders).ts == ClockStub.now()
   end
 
   test "creates a portfolio report" do
