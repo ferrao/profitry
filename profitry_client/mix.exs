@@ -14,7 +14,7 @@ defmodule ProfitryCli.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      included_applications: [:profitry_core],
+      included_applications: [:profitry_server],
       extra_applications: [:logger]
     ]
   end
