@@ -1,4 +1,4 @@
-defmodule ProfitryClient.Application.Server do
+defmodule ProfitryClient.Runtime.Server do
   @node :profitry@z13
 
   def connect do

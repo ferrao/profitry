@@ -1,5 +1,5 @@
-defmodule Profitry.Application.App do
-  alias Profitry.Application.Server
+defmodule Profitry.Runtime.App do
+  alias Profitry.Runtime.Server
 
   use Application
 

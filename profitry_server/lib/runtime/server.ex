@@ -1,4 +1,4 @@
-defmodule Profitry.Application.Server do
+defmodule Profitry.Runtime.Server do
   alias Profitry.Domain.Portfolio
 
   @type t :: pid

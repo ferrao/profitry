@@ -1,5 +1,5 @@
 defmodule ProfitryClient do
-  alias ProfitryClient.Application.Server
+  alias ProfitryClient.Runtime.Server
   alias ProfitryClient.Ui.Portfolio
 
   @spec start() :: any()

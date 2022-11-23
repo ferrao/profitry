@@ -6,24 +6,22 @@ defmodule Profitry.MixProject do
       app: :profitry_server,
       version: "0.1.0",
       elixir: "~> 1.14",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-
-      # set compile path
-      elixirc_paths:
-        case Mix.env() do
-          :test -> ["lib", "test/lib"]
-          _ -> ["lib"]
-        end
+      deps: deps()
     ]
   end
 
   def application do
     [
-      mod: {Profitry.Application.App, []},
+      mod: {Profitry.Runtime.App, []},
       extra_applications: [:logger]
     ]
   end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/lib"]
+  defp elixirc_paths(_), do: ["lib"]
 
   defp deps do
     [

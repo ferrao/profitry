@@ -1,4 +1,4 @@
-defmodule ProfitryClient.Application.Decoder do
+defmodule ProfitryClient.Runtime.Decoder do
   alias Profitry.Domain.{Portfolio, Position, StockOrder, OptionsOrder}
 
   defimpl Poison.Decoder, for: Portfolio do

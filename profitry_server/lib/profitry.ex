@@ -1,5 +1,5 @@
 defmodule Profitry do
-  alias Profitry.Application.{Server, App}
+  alias Profitry.Runtime.{Server, App}
   alias Profitry.Domain.{Portfolio, Report, StockOrder, OptionsOrder}
 
   @type order :: :buy | :sell

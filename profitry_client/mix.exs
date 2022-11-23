@@ -22,9 +22,11 @@ defmodule ProfitryCli.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:profitry_server, path: "../profitry_server"},
       {:owl, "~> 0.4"},
       {:table_rex, "~> 3.1.1"},
+
+      # Local Deps
+      {:profitry_server, path: "../profitry_server"},
 
       # Dev Deps
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
