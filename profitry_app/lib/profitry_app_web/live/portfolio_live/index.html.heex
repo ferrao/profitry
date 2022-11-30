@@ -1,0 +1,40 @@
+<.header>
+  Listing Portfolios
+  <:actions>
+    <.link patch={~p"/portfolios/new"}>
+      <.button>New Portfolio</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="portfolios" rows={@portfolios} row_click={&JS.navigate(~p"/portfolios/#{&1}")}>
+  <:col :let={portfolio} label="Tikr"><%= portfolio.tikr %></:col>
+  <:col :let={portfolio} label="Name"><%= portfolio.name %></:col>
+  <:action :let={portfolio}>
+    <div class="sr-only">
+      <.link navigate={~p"/portfolios/#{portfolio}"}>Show</.link>
+    </div>
+    <.link patch={~p"/portfolios/#{portfolio}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={portfolio}>
+    <.link phx-click={JS.push("delete", value: %{id: portfolio.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="portfolio-modal"
+  show
+  on_cancel={JS.navigate(~p"/portfolios")}
+>
+  <.live_component
+    module={ProfitryAppWeb.PortfolioLive.FormComponent}
+    id={@portfolio.id || :new}
+    title={@page_title}
+    action={@live_action}
+    portfolio={@portfolio}
+    navigate={~p"/portfolios"}
+  />
+</.modal>

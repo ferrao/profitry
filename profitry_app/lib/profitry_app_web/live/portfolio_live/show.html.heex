@@ -1,0 +1,27 @@
+<.header>
+  Portfolio <%= @portfolio.id %>
+  <:subtitle>This is a portfolio record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/portfolios/#{@portfolio}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit portfolio</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Tikr"><%= @portfolio.tikr %></:item>
+  <:item title="Name"><%= @portfolio.name %></:item>
+</.list>
+
+<.back navigate={~p"/portfolios"}>Back to portfolios</.back>
+
+<.modal :if={@live_action == :edit} id="portfolio-modal" show on_cancel={JS.patch(~p"/portfolios/#{@portfolio}")}>
+  <.live_component
+    module={ProfitryAppWeb.PortfolioLive.FormComponent}
+    id={@portfolio.id}
+    title={@page_title}
+    action={@live_action}
+    portfolio={@portfolio}
+    navigate={~p"/portfolios/#{@portfolio}"}
+  />
+</.modal>
