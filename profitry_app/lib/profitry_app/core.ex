@@ -5,7 +5,6 @@ defmodule ProfitryApp.Core do
 
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
-
   alias ProfitryApp.Core.Portfolio
 
   @doc """
@@ -19,6 +18,13 @@ defmodule ProfitryApp.Core do
   """
   def list_portfolios do
     Repo.all(Portfolio)
+  end
+
+  @doc """
+  Returns the list of portfolios for a user.
+  """
+  def list_portfolios_by_user(user) do
+    Ecto.assoc(user, :portfolios) |> Repo.all()
   end
 
   @doc """

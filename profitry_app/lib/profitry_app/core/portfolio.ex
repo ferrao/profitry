@@ -1,10 +1,13 @@
 defmodule ProfitryApp.Core.Portfolio do
   use Ecto.Schema
+
   import Ecto.Changeset
+  alias ProfitryApp.Accounts.User
 
   schema "portfolios" do
     field :name, :string
     field :tikr, :string
+    belongs_to :user, User
 
     timestamps()
   end

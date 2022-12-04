@@ -5,7 +5,6 @@ defmodule ProfitryApp.Accounts do
 
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
-
   alias ProfitryApp.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters

@@ -6,7 +6,11 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :portfolios, list_portfolios())}
+    portfolios =
+      socket.assigns.current_user
+      |> list_portfolios()
+
+    {:ok, assign(socket, :portfolios, portfolios)}
   end
 
   @impl true
@@ -40,7 +44,6 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
     {:noreply, assign(socket, :portfolios, list_portfolios())}
   end
 
-  defp list_portfolios do
-    Core.list_portfolios()
-  end
+  defp list_portfolios, do: Core.list_portfolios()
+  defp list_portfolios(user), do: Core.list_portfolios_by_user(user)
 end
