@@ -68,7 +68,7 @@ defmodule ProfitryAppWeb.PortfolioLive.FormComponent do
   end
 
   defp save_portfolio(socket, :new, portfolio_params) do
-    case Core.create_portfolio(portfolio_params) do
+    case Core.create_portfolio(socket.assigns.user, portfolio_params) do
       {:ok, _portfolio} ->
         {:noreply,
          socket

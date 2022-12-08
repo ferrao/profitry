@@ -8,42 +8,43 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
   def mount(_params, _session, socket) do
     portfolios =
       socket.assigns.current_user
-      |> list_portfolios()
+      |> Core.list_portfolios()
 
     {:ok, assign(socket, :portfolios, portfolios)}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    user = socket.assigns.current_user
+    action = socket.assigns.live_action
+
+    {:noreply, apply_action(socket, user, action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    user = socket.assigns.current_user
+    portfolio = Core.get_portfolio!(user, id)
+
+    {:ok, _} = Core.delete_portfolio(portfolio)
+    {:noreply, push_navigate(socket, to: ~p"/portfolios")}
+  end
+
+  defp apply_action(socket, user, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Portfolio")
-    |> assign(:portfolio, Core.get_portfolio!(id))
+    |> assign(:portfolio, Core.get_portfolio!(user, id))
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(socket, _user, :new, _params) do
     socket
     |> assign(:page_title, "New Portfolio")
     |> assign(:portfolio, %Portfolio{})
   end
 
-  defp apply_action(socket, :index, _params) do
+  defp apply_action(socket, _user, :index, _params) do
     socket
     |> assign(:page_title, "Listing Portfolios")
     |> assign(:portfolio, nil)
   end
-
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    portfolio = Core.get_portfolio!(id)
-    {:ok, _} = Core.delete_portfolio(portfolio)
-
-    {:noreply, assign(socket, :portfolios, list_portfolios())}
-  end
-
-  defp list_portfolios, do: Core.list_portfolios()
-  defp list_portfolios(user), do: Core.list_portfolios_by_user(user)
 end

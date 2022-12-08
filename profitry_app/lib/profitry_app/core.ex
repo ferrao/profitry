@@ -1,11 +1,12 @@
 defmodule ProfitryApp.Core do
   @moduledoc """
-  The Core context.
+  The Profitry Core context.
   """
 
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
   alias ProfitryApp.Core.Portfolio
+  alias ProfitryApp.Accounts.User
 
   @doc """
   Returns the list of portfolios.
@@ -15,16 +16,18 @@ defmodule ProfitryApp.Core do
       iex> list_portfolios()
       [%Portfolio{}, ...]
 
+
+      iex> list_portfolios(user)
+      [%Portfolio{}, ...]
+
   """
   def list_portfolios do
     Repo.all(Portfolio)
   end
 
-  @doc """
-  Returns the list of portfolios for a user.
-  """
-  def list_portfolios_by_user(user) do
-    Ecto.assoc(user, :portfolios) |> Repo.all()
+  def list_portfolios(%User{} = user) do
+    Ecto.assoc(user, :portfolios)
+    |> Repo.all()
   end
 
   @doc """
@@ -40,24 +43,39 @@ defmodule ProfitryApp.Core do
       iex> get_portfolio!(456)
       ** (Ecto.NoResultsError)
 
+      iex> get_portfolio!(user, 123)
+      %Portfolio{}
+
+      iex> get_portfolio!(user, 456)
+      ** (Ecto.NoResultsError)
+
+
+
   """
   def get_portfolio!(id), do: Repo.get!(Portfolio, id)
+
+  def get_portfolio!(%User{} = user, id) do
+    Ecto.assoc(user, :portfolios)
+    |> where([p], p.id == ^id)
+    |> Repo.one()
+  end
 
   @doc """
   Creates a portfolio.
 
   ## Examples
 
-      iex> create_portfolio(%{field: value})
+      iex> create_portfolio(user, %{field: value})
       {:ok, %Portfolio{}}
 
-      iex> create_portfolio(%{field: bad_value})
+      iex> create_portfolio(user, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_portfolio(attrs \\ %{}) do
+  def create_portfolio(%User{} = user, attrs \\ %{}) do
     %Portfolio{}
     |> Portfolio.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
