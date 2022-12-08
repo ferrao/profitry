@@ -17,19 +17,22 @@
         <li>
           <%= @current_user.email %>
         </li>
-        <li>
-          <.link href={~p"/users/settings"}>Settings</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_out"} method="delete">Log out</.link>
-        </li>
+        <.link patch={~p"/users/settings"}>
+          <.button>Settings</.button>
+        </.link>
+        <.link patch={~p"/users/log_out"} method="delete">
+          <.button>Logout</.button>
+        </.link>
+        <.link patch={~p"/portfolios"}>
+          <.button>List Portfolios</.button>
+        </.link>
       <% else %>
-        <li>
-          <.link href={~p"/users/register"}>Register</.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_in"}>Log in</.link>
-        </li>
+        <.link patch={~p"/users/register"}>
+          <.button>Register</.button>
+        </.link>
+        <.link patch={~p"/users/log_in"}>
+          <.button>Log in</.button>
+        </.link>
       <% end %>
     </ul>
     <%= @inner_content %>
