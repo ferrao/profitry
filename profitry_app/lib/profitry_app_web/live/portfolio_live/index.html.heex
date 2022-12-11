@@ -11,9 +11,6 @@
   <:col :let={portfolio} label="Tikr"><%= portfolio.tikr %></:col>
   <:col :let={portfolio} label="Name"><%= portfolio.name %></:col>
   <:action :let={portfolio}>
-    <div class="sr-only">
-      <.link navigate={~p"/portfolios/#{portfolio}"}>Show</.link>
-    </div>
     <.link patch={~p"/portfolios/#{portfolio}/edit"}>Edit</.link>
   </:action>
   <:action :let={portfolio}>

@@ -6,7 +6,7 @@ defmodule ProfitryApp.Core.Position do
 
   schema "positions" do
     field :ticker, :string
-    has_many :order, Order
+    has_many :orders, Order
 
     belongs_to :portfolio, Portfolio
   end

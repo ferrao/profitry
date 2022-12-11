@@ -5,8 +5,8 @@ defmodule ProfitryApp.Core do
 
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
-  alias ProfitryApp.Core.Portfolio
   alias ProfitryApp.Accounts.User
+  alias ProfitryApp.Core.{Portfolio, Report}
 
   @doc """
   Returns the list of portfolios.
@@ -31,6 +31,32 @@ defmodule ProfitryApp.Core do
   end
 
   @doc """
+  Lists reports for a portfolio  
+
+  Raises `Ecto.NoResultsError` if the Portfolio does not exist.
+
+  ## Examples
+    iex> list_reports!(123)
+    %Report{}
+
+    iex> list_reports!(666)
+    %Report{}
+    ** (Ecto.NoResultsError)
+
+  """
+  def list_reports!(id) do
+    portfolio =
+      get_portfolio!(id)
+      |> Repo.preload(:positions)
+
+    for position <- portfolio.positions do
+      position
+      |> Repo.preload(:orders)
+      |> Report.make_report()
+    end
+  end
+
+  @doc """
   Gets a single portfolio.
 
   Raises `Ecto.NoResultsError` if the Portfolio does not exist.
@@ -48,8 +74,6 @@ defmodule ProfitryApp.Core do
 
       iex> get_portfolio!(user, 456)
       ** (Ecto.NoResultsError)
-
-
 
   """
   def get_portfolio!(id), do: Repo.get!(Portfolio, id)
