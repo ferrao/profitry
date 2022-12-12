@@ -6,7 +6,7 @@ defmodule ProfitryApp.Core do
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
   alias ProfitryApp.Accounts.User
-  alias ProfitryApp.Core.{Portfolio, Report}
+  alias ProfitryApp.Core.{Portfolio, Position, Report}
 
   @doc """
   Returns the list of portfolios.
@@ -148,5 +148,37 @@ defmodule ProfitryApp.Core do
   """
   def change_portfolio(%Portfolio{} = portfolio, attrs \\ %{}) do
     Portfolio.changeset(portfolio, attrs)
+  end
+
+  @doc """
+  Creates a position.
+
+  ## Examples
+
+      iex> create_position(user, %{field: value})
+      {:ok, %Position{}}
+
+      iex> create_position(user, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_position(%Portfolio{} = portfolio, attrs \\ %{}) do
+    %Position{}
+    |> Position.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:portfolio, portfolio)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking position changes.
+
+  ## Examples
+
+      iex> change_position(position)
+      %Ecto.Changeset{data: %Position{}}
+
+  """
+  def change_position(%Position{} = position, attrs \\ %{}) do
+    Position.changeset(position, attrs)
   end
 end

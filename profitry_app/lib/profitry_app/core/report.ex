@@ -27,7 +27,6 @@ defmodule ProfitryApp.Core.Report do
     |> calculate_cost_basis(has_shares)
     |> stringify_decimals
     |> Map.put(:ticker, ticker)
-    |> IO.inspect()
   end
 
   # calculates impact of buying shares on an existing position

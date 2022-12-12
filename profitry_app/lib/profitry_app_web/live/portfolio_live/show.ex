@@ -2,6 +2,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
   use ProfitryAppWeb, :live_view
 
   alias ProfitryApp.Core
+  alias ProfitryApp.Core.Position
 
   @impl true
   def mount(_params, _session, socket) do
@@ -12,17 +13,25 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
   def handle_params(params, _url, socket) do
     user = socket.assigns.current_user
     action = socket.assigns.live_action
+    id = Map.get(params, "id")
 
-    {:noreply, apply_action(socket, user, action, params)}
+    socket =
+      socket
+      |> assign(:portfolio, Core.get_portfolio!(user, id))
+      |> assign(:reports, Core.list_reports!(id))
+
+    {:noreply, apply_action(socket, action)}
   end
 
-  defp apply_action(socket, user, :show, %{"id" => id}) do
+  defp apply_action(socket, :show) do
     socket
-    |> assign(:page_title, page_title(socket.assigns.live_action))
-    |> assign(:portfolio, Core.get_portfolio!(user, id))
-    |> assign(:reports, Core.list_reports!(id))
+    |> assign(:page_title, "Show Portfolio")
+    |> assign(:position, nil)
   end
 
-  defp page_title(:show), do: "Show Portfolio"
-  defp page_title(:new), do: "New Position"
+  defp apply_action(socket, :new) do
+    socket
+    |> assign(:page_title, "New Position")
+    |> assign(:position, %Position{})
+  end
 end

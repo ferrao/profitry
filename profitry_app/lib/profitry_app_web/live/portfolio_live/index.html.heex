@@ -27,7 +27,7 @@
   on_cancel={JS.navigate(~p"/portfolios")}
 >
   <.live_component
-    module={ProfitryAppWeb.PortfolioLive.FormComponent}
+    module={ProfitryAppWeb.PortfolioLive.PortfolioFormComponent}
     id={@portfolio.id || :new}
     title={@page_title}
     action={@live_action}

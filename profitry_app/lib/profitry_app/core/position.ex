@@ -15,5 +15,6 @@ defmodule ProfitryApp.Core.Position do
     position
     |> cast(attrs, [:ticker])
     |> validate_required([:ticker])
+    |> unique_constraint(:ticker)
   end
 end
