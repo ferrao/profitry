@@ -1,7 +1,7 @@
 defmodule ProfitryAppWeb.PortfolioLive.PositionFormComponent do
   use ProfitryAppWeb, :live_component
 
-  alias ProfitryApp.Core
+  alias ProfitryApp.Investment
 
   @impl true
   def render(assigns) do
@@ -31,7 +31,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PositionFormComponent do
 
   @impl true
   def update(%{position: position} = assigns, socket) do
-    changeset = Core.change_position(position)
+    changeset = Investment.change_position(position)
 
     {:ok,
      socket
@@ -43,7 +43,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PositionFormComponent do
   def handle_event("validate", %{"position" => position_params}, socket) do
     changeset =
       socket.assigns.position
-      |> Core.change_position(position_params)
+      |> Investment.change_position(position_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -54,7 +54,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PositionFormComponent do
   end
 
   defp save_position(socket, :new, position_params) do
-    case Core.create_position(socket.assigns.portfolio, position_params) do
+    case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, _position} ->
         {:noreply,
          socket
@@ -62,7 +62,6 @@ defmodule ProfitryAppWeb.PortfolioLive.PositionFormComponent do
          |> push_navigate(to: socket.assigns.navigate)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.puts("XXXXXXXXXXXXXXXXXXXX GOT HERE!!!!!!!")
         {:noreply, assign(socket, changeset: changeset)}
     end
   end

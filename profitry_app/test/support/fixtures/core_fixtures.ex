@@ -1,7 +1,7 @@
-defmodule ProfitryApp.CoreFixtures do
+defmodule ProfitryApp.InvestmentFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `ProfitryApp.Core` context.
+  entities via the `ProfitryApp.Investment` context.
   """
 
   @doc """
@@ -14,7 +14,7 @@ defmodule ProfitryApp.CoreFixtures do
         name: "some name",
         tikr: "some tikr"
       })
-      |> ProfitryApp.Core.create_portfolio()
+      |> ProfitryApp.Investment.create_portfolio()
 
     portfolio
   end

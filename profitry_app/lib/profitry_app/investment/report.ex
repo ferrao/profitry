@@ -1,7 +1,7 @@
-defmodule ProfitryApp.Core.Report do
+defmodule ProfitryApp.Investment.Report do
   use Ecto.Schema
 
-  alias ProfitryApp.Core.{Position, Order, Report}
+  alias ProfitryApp.Investment.{Position, Order, Report}
 
   schema "reports" do
     field :ticker, :string

@@ -1,14 +1,14 @@
 defmodule ProfitryAppWeb.PortfolioLive.Index do
   use ProfitryAppWeb, :live_view
 
-  alias ProfitryApp.Core
-  alias ProfitryApp.Core.Portfolio
+  alias ProfitryApp.Investment
+  alias ProfitryApp.Investment.Portfolio
 
   @impl true
   def mount(_params, _session, socket) do
     portfolios =
       socket.assigns.current_user
-      |> Core.list_portfolios()
+      |> Investment.list_portfolios()
 
     {:ok, assign(socket, :portfolios, portfolios)}
   end
@@ -24,16 +24,16 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     user = socket.assigns.current_user
-    portfolio = Core.get_portfolio!(user, id)
+    portfolio = Investment.get_portfolio!(user, id)
 
-    {:ok, _} = Core.delete_portfolio(portfolio)
+    {:ok, _} = Investment.delete_portfolio(portfolio)
     {:noreply, push_navigate(socket, to: ~p"/portfolios")}
   end
 
   defp apply_action(socket, user, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Portfolio")
-    |> assign(:portfolio, Core.get_portfolio!(user, id))
+    |> assign(:portfolio, Investment.get_portfolio!(user, id))
   end
 
   defp apply_action(socket, _user, :new, _params) do

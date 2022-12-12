@@ -1,7 +1,7 @@
 defmodule ProfitryApp.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
-  alias ProfitryApp.Core.Portfolio
+  alias ProfitryApp.Investment.Portfolio
 
   schema "users" do
     field :email, :string

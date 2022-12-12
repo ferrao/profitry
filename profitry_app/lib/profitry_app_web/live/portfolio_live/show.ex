@@ -1,8 +1,8 @@
 defmodule ProfitryAppWeb.PortfolioLive.Show do
   use ProfitryAppWeb, :live_view
 
-  alias ProfitryApp.Core
-  alias ProfitryApp.Core.Position
+  alias ProfitryApp.Investment
+  alias ProfitryApp.Investment.Position
 
   @impl true
   def mount(_params, _session, socket) do
@@ -17,8 +17,8 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
 
     socket =
       socket
-      |> assign(:portfolio, Core.get_portfolio!(user, id))
-      |> assign(:reports, Core.list_reports!(id))
+      |> assign(:portfolio, Investment.get_portfolio!(user, id))
+      |> assign(:reports, Investment.list_reports!(id))
 
     {:noreply, apply_action(socket, action)}
   end

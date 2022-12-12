@@ -1,8 +1,8 @@
-defmodule ProfitryApp.Core.Position do
+defmodule ProfitryApp.Investment.Position do
   use Ecto.Schema
 
   import Ecto.Changeset
-  alias ProfitryApp.Core.{Order, Portfolio}
+  alias ProfitryApp.Investment.{Order, Portfolio}
 
   schema "positions" do
     field :ticker, :string

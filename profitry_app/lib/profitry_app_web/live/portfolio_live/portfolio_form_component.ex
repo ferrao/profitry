@@ -1,7 +1,7 @@
 defmodule ProfitryAppWeb.PortfolioLive.PortfolioFormComponent do
   use ProfitryAppWeb, :live_component
 
-  alias ProfitryApp.Core
+  alias ProfitryApp.Investment
 
   @impl true
   def render(assigns) do
@@ -32,7 +32,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PortfolioFormComponent do
 
   @impl true
   def update(%{portfolio: portfolio} = assigns, socket) do
-    changeset = Core.change_portfolio(portfolio)
+    changeset = Investment.change_portfolio(portfolio)
 
     {:ok,
      socket
@@ -44,7 +44,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PortfolioFormComponent do
   def handle_event("validate", %{"portfolio" => portfolio_params}, socket) do
     changeset =
       socket.assigns.portfolio
-      |> Core.change_portfolio(portfolio_params)
+      |> Investment.change_portfolio(portfolio_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -55,7 +55,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PortfolioFormComponent do
   end
 
   defp save_portfolio(socket, :edit, portfolio_params) do
-    case Core.update_portfolio(socket.assigns.portfolio, portfolio_params) do
+    case Investment.update_portfolio(socket.assigns.portfolio, portfolio_params) do
       {:ok, _portfolio} ->
         {:noreply,
          socket
@@ -68,7 +68,7 @@ defmodule ProfitryAppWeb.PortfolioLive.PortfolioFormComponent do
   end
 
   defp save_portfolio(socket, :new, portfolio_params) do
-    case Core.create_portfolio(socket.assigns.user, portfolio_params) do
+    case Investment.create_portfolio(socket.assigns.user, portfolio_params) do
       {:ok, _portfolio} ->
         {:noreply,
          socket

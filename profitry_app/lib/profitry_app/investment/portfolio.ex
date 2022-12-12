@@ -1,9 +1,9 @@
-defmodule ProfitryApp.Core.Portfolio do
+defmodule ProfitryApp.Investment.Portfolio do
   use Ecto.Schema
 
   import Ecto.Changeset
   alias ProfitryApp.Accounts.User
-  alias ProfitryApp.Core.Position
+  alias ProfitryApp.Investment.Position
 
   schema "portfolios" do
     field :name, :string

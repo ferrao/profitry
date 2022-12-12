@@ -1,12 +1,12 @@
-defmodule ProfitryApp.Core do
+defmodule ProfitryApp.Investment do
   @moduledoc """
-  The Profitry Core context.
+  The Profitry Investment context.
   """
 
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
   alias ProfitryApp.Accounts.User
-  alias ProfitryApp.Core.{Portfolio, Position, Report}
+  alias ProfitryApp.Investment.{Portfolio, Position, Report}
 
   @doc """
   Returns the list of portfolios.

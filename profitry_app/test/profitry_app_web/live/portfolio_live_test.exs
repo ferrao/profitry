@@ -2,7 +2,7 @@ defmodule ProfitryAppWeb.PortfolioLiveTest do
   use ProfitryAppWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import ProfitryApp.CoreFixtures
+  import ProfitryApp.InvestmentFixtures
 
   @create_attrs %{name: "some name", tikr: "some tikr"}
   @update_attrs %{name: "some updated name", tikr: "some updated tikr"}
