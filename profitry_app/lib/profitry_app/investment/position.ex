@@ -16,5 +16,6 @@ defmodule ProfitryApp.Investment.Position do
     |> cast(attrs, [:ticker])
     |> validate_required([:ticker])
     |> unique_constraint(:ticker)
+    |> no_assoc_constraint(:orders, message: "Position contains orders")
   end
 end

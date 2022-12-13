@@ -1,6 +1,6 @@
 <.header>
   <%= @portfolio.name %> (<%= @portfolio.tikr %>)
-  <:subtitle>This is a portfolio record from your database.</:subtitle>
+  <:subtitle>This is a list of tracked positions from your portfolio.</:subtitle>
   <:actions>
     <.link patch={~p"/portfolios/#{@portfolio}/positions/new"} phx-click={JS.push_focus()}>
       <.button>New Position</.button>
@@ -14,11 +14,17 @@
   <:col :let={report} label="Shares"><%= report.shares %></:col>
   <:col :let={report} label="CostBasis"><%= report.cost_basis %></:col>
   <:col :let={report} label="Investment"><%= report.investment %></:col>
-  <:action :let={portfolio}>
-    <div class="sr-only">
-      <%!-- <.link navigate={~p"/portfolios/#{portfolio}/orders/new"}>Add Order</.link> --%>
-      <.link navigate={~p"/portfolios/#{portfolio}"}>Add Order</.link>
-    </div>
+  <:action :let={_report}>
+    <%!-- <.link navigate={~p"/portfolios/#{portfolio}/orders/new"}>Add Order</.link> --%>
+    <.link navigate={~p"/portfolios/#{@portfolio}"}>Add Order</.link>
+  </:action>
+  <:action :let={report}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: @portfolio.id, ticker: report.ticker})}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
   </:action>
 </.table>
 

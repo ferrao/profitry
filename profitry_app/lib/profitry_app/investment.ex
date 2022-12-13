@@ -170,6 +170,43 @@ defmodule ProfitryApp.Investment do
   end
 
   @doc """
+  Gets a portfolio position.
+
+  ## Examples
+
+      iex> find_position(123)
+      %Position{}
+
+      iex> find_position(999)
+      nil
+
+  """
+  # def get_portfolio!(id), do: Repo.get!(Portfolio, id)
+  def find_position(%Portfolio{positions: positions}, ticker) do
+    positions
+    |> Enum.find(&(&1.ticker == ticker))
+  end
+
+  @doc """
+  Deletes a position.
+
+  ## Examples
+
+      iex> delete_position(%Position{})
+      {:ok, %Portfolio{}}
+
+      iex> delete_position(%Ecto.Changeset{})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_position(%Portfolio{} = portfolio, ticker) do
+    portfolio.positions
+    |> Enum.find(&(&1.ticker == ticker))
+    |> change_position()
+    |> Repo.delete()
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking position changes.
 
   ## Examples
