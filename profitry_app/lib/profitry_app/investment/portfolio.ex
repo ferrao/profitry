@@ -19,5 +19,6 @@ defmodule ProfitryApp.Investment.Portfolio do
     portfolio
     |> cast(attrs, [:tikr, :name])
     |> validate_required([:tikr, :name])
+    |> no_assoc_constraint(:positions, message: "Portfolio contains positions")
   end
 end

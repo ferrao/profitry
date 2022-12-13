@@ -134,7 +134,9 @@ defmodule ProfitryApp.Investment do
 
   """
   def delete_portfolio(%Portfolio{} = portfolio) do
-    Repo.delete(portfolio)
+    portfolio
+    |> change_portfolio()
+    |> Repo.delete()
   end
 
   @doc """
