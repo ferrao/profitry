@@ -50,10 +50,6 @@ defmodule ProfitryAppWeb.PortfolioLive.PositionFormComponent do
   end
 
   def handle_event("save", %{"position" => position_params}, socket) do
-    save_position(socket, socket.assigns.action, position_params)
-  end
-
-  defp save_position(socket, :new, position_params) do
     case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, _position} ->
         {:noreply,

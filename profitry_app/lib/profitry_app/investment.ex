@@ -6,7 +6,7 @@ defmodule ProfitryApp.Investment do
   import Ecto.Query, warn: false
   alias ProfitryApp.Repo
   alias ProfitryApp.Accounts.User
-  alias ProfitryApp.Investment.{Portfolio, Position, Report}
+  alias ProfitryApp.Investment.{Portfolio, Position, Report, Order}
 
   @doc """
   Returns the list of portfolios.
@@ -157,10 +157,10 @@ defmodule ProfitryApp.Investment do
 
   ## Examples
 
-      iex> create_position(user, %{field: value})
+      iex> create_position(portfolio, %{field: value})
       {:ok, %Position{}}
 
-      iex> create_position(user, %{field: bad_value})
+      iex> create_position(portfolio, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -184,8 +184,10 @@ defmodule ProfitryApp.Investment do
 
   """
   # def get_portfolio!(id), do: Repo.get!(Portfolio, id)
-  def find_position(%Portfolio{positions: positions}, ticker) do
-    positions
+  def find_position(%Portfolio{} = portfolio, ticker) do
+    portfolio = portfolio |> Repo.preload(:positions)
+
+    portfolio.positions
     |> Enum.find(&(&1.ticker == ticker))
   end
 
@@ -219,5 +221,37 @@ defmodule ProfitryApp.Investment do
   """
   def change_position(%Position{} = position, attrs \\ %{}) do
     Position.changeset(position, attrs)
+  end
+
+  @doc """
+  Creates an order.
+
+  ## Examples
+
+      iex> create_order(position, %{field: value})
+      {:ok, %Order{}}
+
+      iex> create_order(position, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_order(%Position{} = position, attrs \\ %{}) do
+    %Order{}
+    |> Order.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:position, position)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking order changes.
+
+  ## Examples
+
+      iex> change_order(order)
+      %Ecto.Changeset{data: %Order{}}
+
+  """
+  def change_order(%Order{} = order, attrs \\ %{}) do
+    Order.changeset(order, attrs)
   end
 end

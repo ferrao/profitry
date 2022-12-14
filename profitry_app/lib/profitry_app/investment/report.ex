@@ -3,16 +3,18 @@ defmodule ProfitryApp.Investment.Report do
 
   alias ProfitryApp.Investment.{Position, Order, Report}
 
+  @derive {Phoenix.Param, key: :position_id}
   schema "reports" do
     field :ticker, :string
     field :investment, :decimal
     field :shares, :decimal
     field :cost_basis, :decimal
+    field :position_id, :integer
   end
 
   def make_report(%Position{id: id, ticker: ticker, orders: orders}) do
     report = %Report{
-      id: id,
+      position_id: id,
       ticker: ticker,
       investment: 0,
       shares: 0,

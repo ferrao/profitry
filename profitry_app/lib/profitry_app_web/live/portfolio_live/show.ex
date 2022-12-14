@@ -4,7 +4,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
   alias ProfitryApp.Repo
   alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment
-  alias ProfitryApp.Investment.Position
+  alias ProfitryApp.Investment.{Position, Order}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -22,7 +22,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
       |> assign(:portfolio, Investment.get_portfolio!(user, id))
       |> assign(:reports, Investment.list_reports!(id))
 
-    {:noreply, apply_action(socket, action)}
+    {:noreply, apply_action(socket, action, params)}
   end
 
   @impl true
@@ -47,21 +47,36 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
     end
   end
 
-  defp apply_action(socket, :show) do
+  defp apply_action(socket, :show, _params) do
     socket
     |> assign(:page_title, "Show Portfolio")
     |> assign(:position, nil)
+    |> assign(:order, nil)
   end
 
-  defp apply_action(socket, :new) do
+  defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Position")
     |> assign(:position, %Position{})
+    |> assign(:order, nil)
   end
 
-  defp apply_action(socket, :delete) do
+  defp apply_action(socket, :delete, _params) do
     socket
     |> assign(:page_title, "Delete Position")
     |> assign(:position, nil)
+    |> assign(:order, nil)
+  end
+
+  defp apply_action(socket, :new_order, params) do
+    ticker = Map.get(params, "ticker")
+    portfolio = socket.assigns.portfolio
+    position = Investment.find_position(portfolio, ticker)
+
+    socket
+    |> assign(:page_title, "Add Order")
+    |> assign(:position, position)
+    |> assign(:ticker, ticker)
+    |> assign(:order, %Order{})
   end
 end

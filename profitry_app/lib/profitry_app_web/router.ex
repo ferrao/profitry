@@ -75,6 +75,7 @@ defmodule ProfitryAppWeb.Router do
       live("/portfolios/:id", PortfolioLive.Show, :show)
       live("/portfolios/:id/positions/new", PortfolioLive.Show, :new)
       live("/portfolios/:id/positions/delete", PortfolioLive.Show, :delete)
+      live("/portfolios/:id/positions/:ticker/orders/new", PortfolioLive.Show, :new_order)
     end
   end
 
