@@ -69,13 +69,13 @@ defmodule ProfitryAppWeb.Router do
       live("/users/settings", UserSettingsLive, :edit)
       live("/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email)
 
-      live("/portfolios", PortfolioLive.Index, :index)
+      live("/portfolios", PortfolioLive.Index, :list)
       live("/portfolios/new", PortfolioLive.Index, :new)
       live("/portfolios/:id/edit", PortfolioLive.Index, :edit)
-      live("/portfolios/:id", PortfolioLive.Show, :show)
-      live("/portfolios/:id/positions/new", PortfolioLive.Show, :new)
-      live("/portfolios/:id/positions/delete", PortfolioLive.Show, :delete)
-      live("/portfolios/:id/positions/:ticker/orders/new", PortfolioLive.Show, :new_order)
+      live("/portfolios/:id", PositionLive.Index, :list)
+      live("/portfolios/:id/positions/new", PositionLive.Index, :new)
+      live("/portfolios/:id/positions/delete", PositionLive.Index, :delete)
+      live("/portfolios/:id/positions/:ticker/orders/new", PositionLive.Index, :new_order)
     end
   end
 

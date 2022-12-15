@@ -38,7 +38,7 @@
   on_cancel={JS.patch(~p"/portfolios/#{@portfolio}")}
 >
   <.live_component
-    module={ProfitryAppWeb.PortfolioLive.PositionFormComponent}
+    module={ProfitryAppWeb.PositionLive.FormComponent}
     id={:new}
     title={@page_title}
     action={@live_action}
@@ -55,7 +55,7 @@
   on_cancel={JS.patch(~p"/portfolios/#{@portfolio}")}
 >
   <.live_component
-    module={ProfitryAppWeb.PortfolioLive.OrderFormComponent}
+    module={ProfitryAppWeb.OrderLive.FormComponent}
     id={:new_order}
     title={@page_title}
     action={@live_action}

@@ -53,7 +53,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
     |> assign(:portfolio, %Portfolio{})
   end
 
-  defp apply_action(socket, _user, :index, _params) do
+  defp apply_action(socket, _user, :list, _params) do
     socket
     |> assign(:page_title, "Listing Portfolios")
     |> assign(:portfolio, nil)

@@ -1,4 +1,4 @@
-defmodule ProfitryAppWeb.PortfolioLive.Show do
+defmodule ProfitryAppWeb.PositionLive.Index do
   use ProfitryAppWeb, :live_view
 
   alias ProfitryApp.Repo
@@ -47,7 +47,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Show do
     end
   end
 
-  defp apply_action(socket, :show, _params) do
+  defp apply_action(socket, :list, _params) do
     socket
     |> assign(:page_title, "Show Portfolio")
     |> assign(:position, nil)
