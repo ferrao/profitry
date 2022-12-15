@@ -29,6 +29,7 @@ defmodule ProfitryAppWeb.PortfolioLive.OrderFormComponent do
         />
         <.input field={{f, :quantity}} type="number" step={0.01} label="Quantity" />
         <.input field={{f, :price}} type="number" step={0.01} label="Price (USD)" />
+        <.input field={{f, :inserted_at}} type="datetime-local" label="Order Date" />
         <:actions>
           <.button phx-disable-with="Saving...">Add Order</.button>
         </:actions>

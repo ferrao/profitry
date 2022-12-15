@@ -16,7 +16,7 @@ defmodule ProfitryApp.Investment.Order do
 
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:type, :instrument, :quantity, :price])
+    |> cast(attrs, [:type, :instrument, :quantity, :price, :inserted_at])
     |> validate_required([:type, :instrument, :quantity, :price])
   end
 end
