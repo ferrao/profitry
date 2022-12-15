@@ -76,6 +76,7 @@ defmodule ProfitryAppWeb.Router do
       live("/portfolios/:id/positions/new", PositionLive.Index, :new)
       live("/portfolios/:id/positions/delete", PositionLive.Index, :delete)
       live("/portfolios/:id/positions/:ticker/orders/new", PositionLive.Index, :new_order)
+      live("/portfolios/:id/positions/:ticker/orders", OrderLive.Index, :list)
     end
   end
 

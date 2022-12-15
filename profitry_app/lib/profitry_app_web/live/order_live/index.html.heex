@@ -1,0 +1,14 @@
+<.header>
+  <%= @position.ticker %> (<%= @portfolio.tikr %>)
+  <:subtitle>This is a list of orders submitted for this position.</:subtitle>
+  <:actions>
+    <.link
+      patch={~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders/new"}
+      phx-click={JS.push_focus()}
+    >
+      <.button>New Order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.back navigate={~p"/portfolios/#{@portfolio}"}>Back to portfolios</.back>

@@ -8,8 +8,11 @@
   </:actions>
 </.header>
 
-<%!-- <.table id="reports" rows={@reports} row_click={&JS.navigate(~p"/portfolios/#{@portfolio}/position/#{&1}")}> --%>
-<.table id="reports" rows={@reports}>
+<.table
+  id="reports"
+  rows={@reports}
+  row_click={&JS.navigate(~p"/portfolios/#{@portfolio}/positions/#{&1.ticker}/orders")}
+>
   <:col :let={report} label="Ticker"><%= report.ticker %></:col>
   <:col :let={report} label="Shares"><%= report.shares %></:col>
   <:col :let={report} label="CostBasis"><%= report.cost_basis %></:col>
