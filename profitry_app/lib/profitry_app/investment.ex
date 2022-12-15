@@ -31,32 +31,6 @@ defmodule ProfitryApp.Investment do
   end
 
   @doc """
-  Lists reports for a portfolio  
-
-  Raises `Ecto.NoResultsError` if the Portfolio does not exist.
-
-  ## Examples
-    iex> list_reports!(123)
-    %Report{}
-
-    iex> list_reports!(666)
-    %Report{}
-    ** (Ecto.NoResultsError)
-
-  """
-  def list_reports!(id) do
-    portfolio =
-      get_portfolio!(id)
-      |> Repo.preload(:positions)
-
-    for position <- portfolio.positions do
-      position
-      |> Repo.preload(:orders)
-      |> Report.make_report()
-    end
-  end
-
-  @doc """
   Gets a single portfolio.
 
   Raises `Ecto.NoResultsError` if the Portfolio does not exist.
@@ -153,6 +127,49 @@ defmodule ProfitryApp.Investment do
   end
 
   @doc """
+  Lists reports for a portfolio  
+
+  Raises `Ecto.NoResultsError` if the Portfolio does not exist.
+
+  ## Examples
+    iex> list_reports!(123)
+    %Report{}
+
+    iex> list_reports!(666)
+    %Report{}
+    ** (Ecto.NoResultsError)
+
+  """
+  def list_reports!(id) do
+    portfolio =
+      get_portfolio!(id)
+      |> Repo.preload(:positions)
+
+    for position <- portfolio.positions do
+      position
+      |> Repo.preload(:orders)
+      |> Report.make_report()
+    end
+  end
+
+  @doc """
+  Gets a single postion report
+
+  Raises `Ecto.NoResultsError` if the Report does not exist.
+
+  ## Examples
+
+      iex> get_report!(position)
+      %Report{}
+
+  """
+  def get_report(position) do
+    position
+    |> Repo.preload(:orders)
+    |> Report.make_report()
+  end
+
+  @doc """
   Creates a position.
 
   ## Examples
@@ -221,6 +238,21 @@ defmodule ProfitryApp.Investment do
   """
   def change_position(%Position{} = position, attrs \\ %{}) do
     Position.changeset(position, attrs)
+  end
+
+  @doc """
+  Returns the list of positions.
+
+  ## Examples
+
+      iex> list_orders(position)
+      [%Order{}, ...]
+
+
+  """
+  def list_orders(%Position{} = position) do
+    Ecto.assoc(position, :orders)
+    |> Repo.all()
   end
 
   @doc """

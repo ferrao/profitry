@@ -16,11 +16,15 @@ defmodule ProfitryAppWeb.OrderLive.Index do
 
     portfolio = Investment.get_portfolio!(user, id)
     position = Investment.find_position(portfolio, ticker)
+    orders = Investment.list_orders(position)
+    report = Investment.get_report(position)
 
     socket =
       socket
       |> assign(:portfolio, portfolio)
       |> assign(:position, position)
+      |> assign(:orders, orders)
+      |> assign(:report, report)
 
     {:noreply, socket}
   end
