@@ -31,7 +31,7 @@ defmodule ProfitryAppWeb.OrderLive.FormComponent do
         <.input field={{f, :price}} type="number" step={0.01} label="Price (USD)" />
         <.input field={{f, :inserted_at}} type="datetime-local" label="Order Date" />
         <:actions>
-          <.button phx-disable-with="Saving...">Add Order</.button>
+          <.button phx-disable-with="Saving...">Save Order</.button>
         </:actions>
       </.simple_form>
     </div>
@@ -59,6 +59,23 @@ defmodule ProfitryAppWeb.OrderLive.FormComponent do
   end
 
   def handle_event("save", %{"order" => order_params}, socket) do
+    save_order(socket, socket.assigns.action, order_params)
+  end
+
+  defp save_order(socket, :edit, order_params) do
+    case Investment.update_order(socket.assigns.order, order_params) do
+      {:ok, _order} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Order updated successfully")
+         |> push_navigate(to: socket.assigns.navigate)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :changeset, changeset)}
+    end
+  end
+
+  defp save_order(socket, :new, order_params) do
     case Investment.create_order(socket.assigns.position, order_params) do
       {:ok, _order} ->
         {:noreply,

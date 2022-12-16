@@ -28,8 +28,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    user = socket.assigns.current_user
-    portfolio = Investment.get_portfolio!(user, id)
+    portfolio = Investment.get_portfolio!(id)
 
     case Investment.delete_portfolio(portfolio) do
       {:ok, _portfolio} ->

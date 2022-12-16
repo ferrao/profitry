@@ -159,7 +159,7 @@ defmodule ProfitryApp.Investment do
 
   ## Examples
 
-      iex> get_report!(position)
+      iex> get_report(position)
       %Report{}
 
   """
@@ -256,6 +256,22 @@ defmodule ProfitryApp.Investment do
   end
 
   @doc """
+  Gets a single order.
+
+  Raises `Ecto.NoResultsError` if the Order does not exist.
+
+  ## Examples
+
+      iex> get_order!(123)
+      %Order{}
+
+      iex> get_order!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_order!(id), do: Repo.get!(Order, id)
+
+  @doc """
   Creates an order.
 
   ## Examples
@@ -272,6 +288,42 @@ defmodule ProfitryApp.Investment do
     |> Order.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:position, position)
     |> Repo.insert()
+  end
+
+  @doc """
+  Updates an order.
+
+  ## Examples
+
+      iex> update_order(order, %{field: new_value})
+      {:ok, %Order{}}
+
+      iex> update_order(order, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_order(%Order{} = order, attrs) do
+    order
+    |> Portfolio.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes an order.
+
+  ## Examples
+
+      iex> delete_order(order)
+      {:ok, %Order{}}
+
+      iex> delete_order(order)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_order(%Order{} = order) do
+    order
+    |> change_order()
+    |> Repo.delete()
   end
 
   @doc """

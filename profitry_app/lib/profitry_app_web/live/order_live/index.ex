@@ -1,6 +1,7 @@
 defmodule ProfitryAppWeb.OrderLive.Index do
   use ProfitryAppWeb, :live_view
 
+  alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment
   alias ProfitryApp.Investment.Order
 
@@ -12,23 +13,42 @@ defmodule ProfitryAppWeb.OrderLive.Index do
   @impl true
   def handle_params(params, _url, socket) do
     user = socket.assigns.current_user
-    id = Map.get(params, "id")
+    portfolio_id = Map.get(params, "portfolio_id")
     ticker = Map.get(params, "ticker")
     action = socket.assigns.live_action
 
-    portfolio = Investment.get_portfolio!(user, id)
+    portfolio = Investment.get_portfolio!(user, portfolio_id)
     position = Investment.find_position(portfolio, ticker)
     report = Investment.get_report(position)
     orders = Investment.list_orders(position)
 
     socket =
-      assign(socket, :navigate, ~p"/portfolios/#{id}/positions/#{ticker}/orders")
-      |> assign(:report, report)
-      |> assign(:orders, orders)
+      assign(socket, :navigate, ~p"/portfolios/#{portfolio}/positions/#{ticker}/orders")
       |> assign(:portfolio, portfolio)
       |> assign(:position, position)
+      |> assign(:report, report)
+      |> assign(:ticker, ticker)
+      |> assign(:orders, orders)
 
     {:noreply, apply_action(socket, action, params)}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    order = Investment.get_order!(id)
+
+    case Investment.delete_order(order) do
+      {:ok, _order} ->
+        {:noreply, push_navigate(socket, to: socket.assigns.navigate)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply,
+         socket
+         |> put_flash(
+           :error,
+           List.first(Errors.get_message(changeset, :orders))
+         )}
+    end
   end
 
   defp apply_action(socket, :list, _params) do
@@ -44,5 +64,14 @@ defmodule ProfitryAppWeb.OrderLive.Index do
     |> assign(:page_title, "Add Order")
     |> assign(:ticker, ticker)
     |> assign(:order, %Order{})
+  end
+
+  defp apply_action(socket, :edit, params) do
+    socket
+    |> assign(:page_title, "Edit Order")
+    |> assign(
+      :order,
+      Enum.find(socket.assigns.orders, &(to_string(&1.id) == Map.get(params, "id")))
+    )
   end
 end

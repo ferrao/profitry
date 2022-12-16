@@ -22,15 +22,26 @@
   <:col :let={order} label="Type"><%= order.type %></:col>
   <:col :let={order} label="Quantity"><%= order.quantity %></:col>
   <:col :let={order} label="Price"><%= order.price %></:col>
-  <:col :let={order} label="Opened"><%= order.updated_at %></:col>
+  <:col :let={order} label="Opened"><%= order.inserted_at %></:col>
+
+  <:action :let={order}>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@ticker}/orders/#{order}/edit"}>
+      Edit
+    </.link>
+  </:action>
+  <:action :let={order}>
+    <.link phx-click={JS.push("delete", value: %{id: order.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
 </.table>
 
 <.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>
 
-<.modal :if={@live_action == :new} id="order-modal" show on_cancel={JS.patch(@navigate)}>
+<.modal :if={@live_action in [:new, :edit]} id="order-modal" show on_cancel={JS.patch(@navigate)}>
   <.live_component
     module={ProfitryAppWeb.OrderLive.FormComponent}
-    id={:new_order}
+    id={@order.id || :new}
     title={@page_title}
     action={@live_action}
     order={@order}
