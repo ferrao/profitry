@@ -72,10 +72,12 @@ defmodule ProfitryAppWeb.Router do
       live("/portfolios", PortfolioLive.Index, :list)
       live("/portfolios/new", PortfolioLive.Index, :new)
       live("/portfolios/:id/edit", PortfolioLive.Index, :edit)
+
       live("/portfolios/:id", PositionLive.Index, :list)
       live("/portfolios/:id/positions/new", PositionLive.Index, :new)
       live("/portfolios/:id/positions/delete", PositionLive.Index, :delete)
-      live("/portfolios/:id/positions/:ticker/orders/new", PositionLive.Index, :new_order)
+
+      live("/portfolios/:id/positions/:ticker/orders/new", OrderLive.Index, :new)
       live("/portfolios/:id/positions/:ticker/orders", OrderLive.Index, :list)
     end
   end

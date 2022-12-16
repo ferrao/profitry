@@ -4,7 +4,7 @@ defmodule ProfitryAppWeb.PositionLive.Index do
   alias ProfitryApp.Repo
   alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment
-  alias ProfitryApp.Investment.{Position, Order}
+  alias ProfitryApp.Investment.Position
 
   @impl true
   def mount(_params, _session, socket) do
@@ -18,7 +18,7 @@ defmodule ProfitryAppWeb.PositionLive.Index do
     id = Map.get(params, "id")
 
     socket =
-      socket
+      assign(socket, :navigate, ~p"/portfolios/#{id}")
       |> assign(:portfolio, Investment.get_portfolio!(user, id))
       |> assign(:reports, Investment.list_reports!(id))
 
@@ -35,7 +35,7 @@ defmodule ProfitryAppWeb.PositionLive.Index do
 
     case Investment.delete_position(portfolio, ticker) do
       {:ok, _position} ->
-        {:noreply, push_navigate(socket, to: ~p"/portfolios/#{id}")}
+        {:noreply, push_navigate(socket, to: socket.assigns.navigate)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply,
@@ -66,17 +66,5 @@ defmodule ProfitryAppWeb.PositionLive.Index do
     |> assign(:page_title, "Delete Position")
     |> assign(:position, nil)
     |> assign(:order, nil)
-  end
-
-  defp apply_action(socket, :new_order, params) do
-    ticker = Map.get(params, "ticker")
-    portfolio = socket.assigns.portfolio
-    position = Investment.find_position(portfolio, ticker)
-
-    socket
-    |> assign(:page_title, "Add Order")
-    |> assign(:position, position)
-    |> assign(:ticker, ticker)
-    |> assign(:order, %Order{})
   end
 end

@@ -18,7 +18,7 @@
   <:col :let={report} label="CostBasis"><%= report.cost_basis %></:col>
   <:col :let={report} label="Investment"><%= report.investment %></:col>
   <:action :let={report}>
-    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders/new"}>
+    <.link href={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders/new"}>
       Add Order
     </.link>
   </:action>
@@ -47,24 +47,6 @@
     action={@live_action}
     position={@position}
     portfolio={@portfolio}
-    navigate={~p"/portfolios/#{@portfolio}"}
-  />
-</.modal>
-
-<.modal
-  :if={@live_action == :new_order}
-  id="order-modal"
-  show
-  on_cancel={JS.patch(~p"/portfolios/#{@portfolio}")}
->
-  <.live_component
-    module={ProfitryAppWeb.OrderLive.FormComponent}
-    id={:new_order}
-    title={@page_title}
-    action={@live_action}
-    order={@order}
-    position={@position}
-    ticker={@ticker}
-    navigate={~p"/portfolios/#{@portfolio}"}
+    navigate={@navigate}
   />
 </.modal>

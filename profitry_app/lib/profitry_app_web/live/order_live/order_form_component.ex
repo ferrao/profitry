@@ -40,7 +40,6 @@ defmodule ProfitryAppWeb.OrderLive.FormComponent do
 
   @impl true
   def update(%{order: order} = assigns, socket) do
-    IO.inspect(order)
     changeset = Investment.change_order(order)
 
     {:ok,

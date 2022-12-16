@@ -11,7 +11,11 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
       socket.assigns.current_user
       |> Investment.list_portfolios()
 
-    {:ok, assign(socket, :portfolios, portfolios)}
+    socket =
+      assign(socket, :navigate, ~p"/portfolios")
+      |> assign(:portfolios, portfolios)
+
+    {:ok, socket}
   end
 
   @impl true
@@ -29,7 +33,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
 
     case Investment.delete_portfolio(portfolio) do
       {:ok, _portfolio} ->
-        {:noreply, push_navigate(socket, to: ~p"/portfolios")}
+        {:noreply, push_navigate(socket, to: socket.assigns.navigate)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply,

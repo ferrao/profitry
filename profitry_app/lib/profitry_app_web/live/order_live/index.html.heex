@@ -25,4 +25,17 @@
   <:col :let={order} label="Opened"><%= order.updated_at %></:col>
 </.table>
 
-<.back navigate={~p"/portfolios/#{@portfolio}"}>Back to portfolios</.back>
+<.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>
+
+<.modal :if={@live_action == :new} id="order-modal" show on_cancel={JS.patch(@navigate)}>
+  <.live_component
+    module={ProfitryAppWeb.OrderLive.FormComponent}
+    id={:new_order}
+    title={@page_title}
+    action={@live_action}
+    order={@order}
+    position={@position}
+    ticker={@ticker}
+    navigate={@navigate}
+  />
+</.modal>
