@@ -12,29 +12,6 @@
     </script>
   </head>
   <body class="bg-white antialiased">
-    <ul>
-      <%= if @current_user do %>
-        <li>
-          <%= @current_user.email %>
-        </li>
-        <.link patch={~p"/users/settings"}>
-          <.button>Settings</.button>
-        </.link>
-        <.link href={~p"/users/log_out"} method="delete">
-          <.button>Logout</.button>
-        </.link>
-        <.link patch={~p"/portfolios"}>
-          <.button>List Portfolios</.button>
-        </.link>
-      <% else %>
-        <.link patch={~p"/users/register"}>
-          <.button>Register</.button>
-        </.link>
-        <.link patch={~p"/users/log_in"}>
-          <.button>Log in</.button>
-        </.link>
-      <% end %>
-    </ul>
     <%= @inner_content %>
   </body>
 </html>
