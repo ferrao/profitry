@@ -2,6 +2,8 @@ defmodule ProfitryApp.Investment.Portfolio do
   use Ecto.Schema
 
   import Ecto.Changeset
+  import ProfitryApp.Utils.Ecto
+
   alias ProfitryApp.Accounts.User
   alias ProfitryApp.Investment.Position
 
@@ -19,6 +21,7 @@ defmodule ProfitryApp.Investment.Portfolio do
     portfolio
     |> cast(attrs, [:tikr, :name])
     |> validate_required([:tikr, :name])
+    |> capitalize(:tikr)
     |> no_assoc_constraint(:positions, message: "Portfolio contains positions")
   end
 end
