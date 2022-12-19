@@ -12,7 +12,7 @@ import Config
 # If you use `mix release`, you need to explicitly enable the server
 # by passing the PHX_SERVER=true when you start it:
 #
-#     PHX_SERVER=true bin/profitry_app start
+# PHX_SERVER=true bin/profitry_app start
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
@@ -48,7 +48,8 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  # host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("APP_NAME") <> ".gigalixirapp.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :profitry_app, ProfitryAppWeb.Endpoint,
