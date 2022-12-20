@@ -55,10 +55,7 @@ defmodule ProfitryApp.MixProject do
       {:sobelow, "~> 0.8", only: :dev},
 
       # Test Deps
-      {:floki, ">= 0.30.0", only: :test},
-
-      # Local Deps
-      {:profitry_server, path: "../profitry_server"}
+      {:floki, ">= 0.30.0", only: :test}
     ]
   end
 
