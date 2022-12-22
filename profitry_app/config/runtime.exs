@@ -49,7 +49,7 @@ if config_env() == :prod do
       """
 
   # host = System.get_env("PHX_HOST") || "example.com"
-  host = System.get_env("APP_NAME") <> ".gigalixirapp.com"
+  host = System.get_env("HOST")
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :profitry_app, ProfitryAppWeb.Endpoint,
