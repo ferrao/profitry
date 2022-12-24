@@ -25,6 +25,8 @@ profitry_app-*.tar
 # Ignore assets that are produced by build tools.
 /priv
 
+# Envinroment variable assignments for development
+.envrc
 
 # Temporary files
 /tmp
