@@ -1,46 +1,32 @@
 defmodule ProfitryApp.Exchanges.Finnhub do
-  use GenServer
+  use HTTPoison.Base
 
-  alias ProfitryApp.Exchanges
-
-  # Finnhub Mock quote 
-  @quote %{
-    c: 124.2579,
-    d: -1.0921,
-    dp: -0.8712,
-    h: 128.6173,
-    l: 121.02,
-    o: 126.37,
-    pc: 125.35,
-    t: 1_671_825_922
-  }
+  # @expected_fields ~w(c d dp h l o p t)
 
   @impl true
-  def init(_init_arg) do
-    {:ok, %{tickers: [], index: 0}, {:continue, :load}}
+  def process_request_headers(_headers) do
+    [{"X-Finnhub-Token", Application.fetch_env!(:profitry_app, __MODULE__)[:api_key]}]
   end
 
   @impl true
-  def handle_continue(:load, state) do
-    {:noreply, %{state | tickers: Exchanges.list_tickers()}, {:continue, :start}}
-  end
-
-  def handle_continue(:start, state) do
-    send(self(), :tick)
-
-    {:noreply, state}
+  def process_request_url(url) do
+    endpoint() <> url
   end
 
   @impl true
-  def handle_info(:tick, %{tickers: tickers, index: index} = state) do
-    fetch_quote(Enum.at(tickers, index))
-    # We should publish the quote to pubsub
-    |> IO.inspect()
-
-    Process.send_after(self(), :tick, 1000)
-
-    {:noreply, %{state | index: index + 1}}
+  def process_response_body(body) do
+    body
+    # DANGER: validate @expected_fields with ecto changeset
+    # to avoid creating atoms from outside world inputs
+    |> Jason.decode!(keys: :atoms)
   end
 
-  defp fetch_quote(_ticker), do: @quote
+  def quote(symbol) do
+    get!("/quote?symbol=#{symbol}").body
+  end
+
+  defp endpoint do
+    config = Application.fetch_env!(:profitry_app, __MODULE__)
+    "#{config[:url]}/v#{config[:version]}"
+  end
 end
