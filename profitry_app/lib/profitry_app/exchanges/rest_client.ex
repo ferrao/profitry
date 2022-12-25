@@ -22,15 +22,28 @@ defmodule ProfitryApp.Exchanges.RestClient do
   end
 
   @impl true
+  def handle_info(:tick, %{tickers: []} = state) do
+    Process.send_after(self(), :tick, @interval)
+    {:noreply, state}
+  end
+
+  @impl true
   def handle_info(:tick, %{tickers: tickers, index: index} = state) do
     fetch_quote(Enum.at(tickers, index))
-    # We should publish the quote to pubsub
-    |> IO.inspect()
+    |> handle_quote
 
     Process.send_after(self(), :tick, @interval)
-
     {:noreply, %{state | index: rem(index + 1, length(tickers))}}
   end
+
+  defp handle_quote({:ok, quote}) do
+    # We should publish the quote to pubsub
+    quote
+    |> IO.inspect()
+  end
+
+  # TODO: What's the logging story on Phoenix?
+  defp handle_quote({:error, reason}), do: IO.puts("Unable to fetch quote: #{reason}")
 
   defp fetch_quote(ticker), do: Exchanges.Finnhub.quote(ticker)
 end

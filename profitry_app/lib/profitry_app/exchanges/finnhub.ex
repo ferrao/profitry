@@ -15,14 +15,28 @@ defmodule ProfitryApp.Exchanges.Finnhub do
 
   @impl true
   def process_response_body(body) do
-    body
-    # DANGER: validate @expected_fields with ecto changeset
+    # TODO: validate @expected_fields with ecto changeset
     # to avoid creating atoms from outside world inputs
-    |> Jason.decode!(keys: :atoms)
+    case Jason.decode(body, keys: :atoms) do
+      {:ok, body} -> body
+      _ -> %{}
+    end
   end
 
   def quote(symbol) do
-    get!("/quote?symbol=#{symbol}").body
+    case get("/quote?symbol=#{symbol}") do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, body}
+
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
+        {:error, "Not found"}
+
+      {:ok, %HTTPoison.Response{status_code: status_code}} ->
+        {:error, "#{status_code}"}
+
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, reason}
+    end
   end
 
   defp endpoint do
