@@ -45,5 +45,5 @@ defmodule ProfitryApp.Exchanges.RestClient do
   # TODO: What's the logging story on Phoenix?
   defp handle_quote({:error, reason}), do: IO.puts("Unable to fetch quote: #{reason}")
 
-  defp fetch_quote(ticker), do: Exchanges.Finnhub.quote(ticker)
+  defp fetch_quote(ticker), do: Exchanges.Finnhub.Client.quote(ticker)
 end
