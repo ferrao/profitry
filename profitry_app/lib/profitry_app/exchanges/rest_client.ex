@@ -1,6 +1,8 @@
 defmodule ProfitryApp.Exchanges.RestClient do
   use GenServer
 
+  require Logger
+
   alias Phoenix.PubSub
   alias ProfitryApp.Exchanges
 
@@ -41,8 +43,7 @@ defmodule ProfitryApp.Exchanges.RestClient do
     PubSub.broadcast(ProfitryApp.PubSub, "quotes", quote)
   end
 
-  # TODO: What's the logging story on Phoenix?
-  defp handle_quote({:error, reason}), do: IO.puts("Unable to fetch quote: #{reason}")
+  defp handle_quote({:error, reason}), do: Logger.warn("Unable to fetch quote: #{reason}")
 
   defp fetch_quote(ticker), do: Exchanges.Finnhub.Client.quote(ticker)
 end
