@@ -1,6 +1,7 @@
 defmodule ProfitryApp.Exchanges.RestClient do
   use GenServer
 
+  alias Phoenix.PubSub
   alias ProfitryApp.Exchanges
 
   @interval 5000
@@ -37,9 +38,7 @@ defmodule ProfitryApp.Exchanges.RestClient do
   end
 
   defp handle_quote({:ok, quote}) do
-    # We should publish the quote to pubsub
-    quote
-    |> IO.inspect()
+    PubSub.broadcast(ProfitryApp.PubSub, "quotes", quote)
   end
 
   # TODO: What's the logging story on Phoenix?
