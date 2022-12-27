@@ -34,7 +34,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Quote do
     %Quote{
       ticker: ticker,
       price: data.c,
-      ts: data.t
+      timestamp: data.t
     }
   end
 
