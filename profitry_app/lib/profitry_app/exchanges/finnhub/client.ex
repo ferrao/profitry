@@ -1,7 +1,11 @@
 defmodule ProfitryApp.Exchanges.Finnhub.Client do
   use HTTPoison.Base
+  @behaviour ProfitryApp.Exchanges.RestClient
 
   alias ProfitryApp.Exchanges.Finnhub.Quote
+
+  @impl true
+  def interval(), do: 5000
 
   @impl true
   def process_request_headers(_headers) do
@@ -21,6 +25,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Client do
     end
   end
 
+  @impl true
   def quote(symbol) do
     case get("/quote?symbol=#{symbol}") do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
