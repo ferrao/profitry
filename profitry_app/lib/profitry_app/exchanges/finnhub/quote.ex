@@ -4,7 +4,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Quote do
   import Ecto.Changeset
 
   alias ProfitryApp.Exchanges.Quote
-  alias ProfitryApp.Utils.UnixTime
+  alias ProfitryApp.Utils.{UnixTime, Errors}
 
   @primary_key false
   embedded_schema do
@@ -19,7 +19,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Quote do
   end
 
   def new(ticker, data) do
-    convert(ticker, changeset(data))
+    quote_from_data(ticker, changeset(data))
   end
 
   def changeset(data \\ %{}) do
@@ -28,7 +28,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Quote do
     |> validate_required([:c, :t])
   end
 
-  defp convert(ticker, %Ecto.Changeset{valid?: true} = changeset) do
+  defp quote_from_data(ticker, %Ecto.Changeset{valid?: true} = changeset) do
     data = Ecto.Changeset.apply_changes(changeset)
 
     %Quote{
@@ -38,5 +38,5 @@ defmodule ProfitryApp.Exchanges.Finnhub.Quote do
     }
   end
 
-  defp convert(_ticker, changeset), do: {:error, changeset}
+  defp quote_from_data(_ticker, changeset), do: {:error, Enum.at(Errors.get_errors(changeset), 0)}
 end

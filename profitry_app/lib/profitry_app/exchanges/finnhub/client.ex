@@ -24,7 +24,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Client do
   def quote(symbol) do
     case get("/quote?symbol=#{symbol}") do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        convert(symbol, body)
+        body_to_quote(symbol, body)
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, "Not found"}
@@ -37,7 +37,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Client do
     end
   end
 
-  defp convert(symbol, body) do
+  defp body_to_quote(symbol, body) do
     case quote = Quote.new(symbol, body) do
       %ProfitryApp.Exchanges.Quote{} -> {:ok, quote}
       {:error, _} -> {:error, "Invalid data"}
