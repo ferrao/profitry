@@ -3,7 +3,6 @@ defmodule ProfitryApp.Exchanges.RestClient do
 
   require Logger
 
-  alias Phoenix.PubSub
   alias ProfitryApp.Exchanges
   alias ProfitryApp.Exchanges.Quote
 
@@ -59,7 +58,7 @@ defmodule ProfitryApp.Exchanges.RestClient do
   end
 
   defp handle_quote({:ok, quote}) do
-    PubSub.broadcast(ProfitryApp.PubSub, "quotes", quote)
+    Exchanges.broadcast(quote)
   end
 
   defp handle_quote({:error, reason}), do: Logger.warn("Unable to fetch quote: #{reason}")

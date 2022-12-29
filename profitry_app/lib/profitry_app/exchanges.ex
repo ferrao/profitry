@@ -5,6 +5,7 @@ defmodule ProfitryApp.Exchanges do
 
   import Ecto.Query, warn: false
 
+  alias Phoenix.PubSub
   alias ProfitryApp.Repo
   alias ProfitryApp.Investment.Position
 
@@ -23,5 +24,13 @@ defmodule ProfitryApp.Exchanges do
     |> distinct(true)
     |> order_by([p], p.ticker)
     |> Repo.all()
+  end
+
+  def broadcast(quote) do
+    PubSub.broadcast(ProfitryApp.PubSub, "quotes", quote)
+  end
+
+  def subscribe() do
+    PubSub.subscribe(ProfitryApp.PubSub, "quotes")
   end
 end
