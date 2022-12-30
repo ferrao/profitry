@@ -16,8 +16,15 @@ defmodule ProfitryApp.Exchanges.RestClient do
   @callback interval() :: Integer.t()
   @callback quote(String.t()) :: {:ok, Quote.t()} | {:error, any()}
 
-  def start_link(module, options \\ []) when is_list(options) do
-    GenServer.start_link(__MODULE__, module, options)
+  def start_link(module) do
+    GenServer.start_link(__MODULE__, module, name: module)
+  end
+
+  def child_spec(client) do
+    %{
+      id: client,
+      start: {__MODULE__, :start_link, [client]}
+    }
   end
 
   @impl true

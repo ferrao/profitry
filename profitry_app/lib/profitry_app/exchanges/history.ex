@@ -13,8 +13,8 @@ defmodule ProfitryApp.Exchanges.History do
     GenServer.call(pid, {:get_quote, ticker})
   end
 
-  def start_link(opts \\ nil) do
-    GenServer.start_link(__MODULE__, opts)
+  def start_link(opts \\ []) when is_list(opts) do
+    GenServer.start_link(__MODULE__, nil, opts)
   end
 
   def init(_init_args) do
@@ -27,8 +27,6 @@ defmodule ProfitryApp.Exchanges.History do
   end
 
   def handle_info(quote, history) do
-    IO.inspect(quote)
-
     new_history = Map.put(history, quote.ticker, quote)
     {:noreply, new_history}
   end
