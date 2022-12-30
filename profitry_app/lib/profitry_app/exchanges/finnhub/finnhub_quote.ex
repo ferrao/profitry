@@ -1,4 +1,4 @@
-defmodule ProfitryApp.Exchanges.Finnhub.Quote do
+defmodule ProfitryApp.Exchanges.Finnhub.FinnhubQuote do
   use Ecto.Schema
 
   import Ecto.Changeset

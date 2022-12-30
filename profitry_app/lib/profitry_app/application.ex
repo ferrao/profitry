@@ -14,6 +14,9 @@ defmodule ProfitryApp.Application do
       ProfitryApp.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: ProfitryApp.PubSub},
+      ProfitryApp.Exchanges.History,
+      ProfitryApp.Exchanges.Supervisor,
+
       # Start Finch
       {Finch, name: ProfitryApp.Finch},
       # Start the Endpoint (http/https)

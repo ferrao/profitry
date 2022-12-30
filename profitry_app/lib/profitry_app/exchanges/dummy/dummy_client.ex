@@ -1,4 +1,4 @@
-defmodule ProfitryApp.Exchanges.Dummy.Client do
+defmodule ProfitryApp.Exchanges.Dummy.DummyClient do
   @behaviour ProfitryApp.Exchanges.RestClient
 
   alias ProfitryApp.Exchanges.Quote

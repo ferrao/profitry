@@ -1,8 +1,8 @@
-defmodule ProfitryApp.Exchanges.Finnhub.Client do
+defmodule ProfitryApp.Exchanges.Finnhub.FinnhubClient do
   use HTTPoison.Base
   @behaviour ProfitryApp.Exchanges.RestClient
 
-  alias ProfitryApp.Exchanges.Finnhub.Quote
+  alias ProfitryApp.Exchanges.Finnhub.FinnhubQuote
 
   @impl true
   def interval(), do: 5000
@@ -43,7 +43,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.Client do
   end
 
   defp body_to_quote(symbol, body) do
-    case quote = Quote.new(symbol, body) do
+    case quote = FinnhubQuote.new(symbol, body) do
       %ProfitryApp.Exchanges.Quote{} -> {:ok, quote}
       {:error, _} -> {:error, "Invalid data"}
     end

@@ -33,4 +33,8 @@ defmodule ProfitryApp.Exchanges do
   def subscribe() do
     PubSub.subscribe(ProfitryApp.PubSub, "quotes")
   end
+
+  def unsubscribe() do
+    PubSub.unsubscribe(ProfitryApp.PubSub, "quotes")
+  end
 end
