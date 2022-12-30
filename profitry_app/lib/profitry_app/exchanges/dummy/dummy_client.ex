@@ -10,10 +10,10 @@ defmodule ProfitryApp.Exchanges.Dummy.DummyClient do
   def quote("TEST_BAD"), do: {:error, "Timeout"}
 
   @impl true
-  def quote(_ticker) do
+  def quote(ticker) do
     {:ok,
      %Quote{
-       ticker: "TEST",
+       ticker: ticker,
        price: 300 * :rand.uniform(),
        timestamp: DateTime.utc_now()
      }}
