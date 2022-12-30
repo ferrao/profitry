@@ -9,16 +9,20 @@ defmodule ProfitryApp.Investment.Report do
     field :investment, :decimal
     field :shares, :decimal
     field :cost_basis, :decimal
+    field :price, :decimal
+    field :profit, :decimal
     field :position_id, :integer
   end
 
-  def make_report(%Position{id: id, ticker: ticker, orders: orders}) do
+  def make_report(%Position{id: id, ticker: ticker, orders: orders}, quote \\ nil) do
     report = %Report{
       position_id: id,
       ticker: ticker,
       investment: 0,
       shares: 0,
-      cost_basis: 0
+      cost_basis: 0,
+      price: 0,
+      profit: 0
     }
 
     report = Enum.reduce(orders, report, fn order, report -> calculate_order(report, order) end)
@@ -27,6 +31,7 @@ defmodule ProfitryApp.Investment.Report do
 
     report
     |> calculate_cost_basis(has_shares)
+    |> calculate_profit(quote)
     |> stringify_decimals
     |> Map.put(:ticker, ticker)
   end
@@ -107,12 +112,25 @@ defmodule ProfitryApp.Investment.Report do
     Map.put(report, :cost_basis, Decimal.div(report.investment, report.shares))
   end
 
+  defp calculate_profit(report, nil) do
+    Map.put(report, :profit, 0)
+  end
+
+  defp calculate_profit(report, quote) do
+    Map.put(report, :price, quote.price)
+    |> Map.put(
+      :profit,
+      Decimal.mult(report.shares, quote.price) |> Decimal.sub(report.investment)
+    )
+  end
+
   defp stringify_decimals(report) do
     %Report{
       report
       | investment: decimal_to_string(report.investment),
         shares: decimal_to_string(report.shares),
-        cost_basis: decimal_to_string(report.cost_basis)
+        cost_basis: decimal_to_string(report.cost_basis),
+        profit: decimal_to_string(report.profit)
     }
   end
 

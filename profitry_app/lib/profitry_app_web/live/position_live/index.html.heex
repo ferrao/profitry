@@ -17,6 +17,8 @@
   <:col :let={report} label="Shares"><%= report.shares %></:col>
   <:col :let={report} label="CostBasis"><%= report.cost_basis %></:col>
   <:col :let={report} label="Investment"><%= report.investment %></:col>
+  <:col :let={report} label="Price"><%= report.price %></:col>
+  <:col :let={report} label="P/L"><%= report.profit %></:col>
   <:action :let={report}>
     <.link href={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders/new"}>
       Add Order

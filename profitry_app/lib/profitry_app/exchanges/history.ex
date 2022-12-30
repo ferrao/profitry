@@ -1,6 +1,8 @@
 defmodule ProfitryApp.Exchanges.History do
   use GenServer
 
+  require Logger
+
   alias ProfitryApp.Exchanges
   alias Profitry.Exchanges.Quote
 
@@ -27,6 +29,8 @@ defmodule ProfitryApp.Exchanges.History do
   end
 
   def handle_info(quote, history) do
+    Logger.debug(quote)
+
     new_history = Map.put(history, quote.ticker, quote)
     {:noreply, new_history}
   end

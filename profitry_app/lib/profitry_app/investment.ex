@@ -146,9 +146,11 @@ defmodule ProfitryApp.Investment do
       |> Repo.preload(:positions)
 
     for position <- portfolio.positions do
+      quote = ProfitryApp.get_quote(position.ticker)
+
       position
       |> Repo.preload(:orders)
-      |> Report.make_report()
+      |> Report.make_report(quote)
     end
   end
 
@@ -164,9 +166,11 @@ defmodule ProfitryApp.Investment do
 
   """
   def get_report(position) do
+    quote = ProfitryApp.get_quote(position.ticker)
+
     position
     |> Repo.preload(:orders)
-    |> Report.make_report()
+    |> Report.make_report(quote)
   end
 
   @doc """
