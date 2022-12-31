@@ -26,6 +26,7 @@ defmodule ProfitryApp.Exchanges.Finnhub.FinnhubQuote do
     %__MODULE__{}
     |> cast(data, [:c, :d, :dp, :h, :l, :o, :pc, :t])
     |> validate_required([:c, :t])
+    |> validate_number(:c, greater_than: 0)
   end
 
   defp quote_from_data(ticker, %Ecto.Changeset{valid?: true} = changeset) do
