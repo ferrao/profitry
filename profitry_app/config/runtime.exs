@@ -8,7 +8,8 @@ import Config
 # The block below contains prod specific runtime configuration.
 
 # ## API keys & secrets 
-Code.require_file("runtime.secrets.exs", "config")
+config :profitry_app, ProfitryApp.Exchanges.Finnhub.FinnhubClient,
+  api_key: System.get_env("FINNHUB_API_KEY")
 
 # ## Using releases
 #
