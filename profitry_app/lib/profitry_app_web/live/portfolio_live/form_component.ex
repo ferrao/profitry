@@ -9,7 +9,7 @@ defmodule ProfitryAppWeb.PortfolioLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage portfolio records in your database.</:subtitle>
+        <:subtitle>Use this form to manage portfolios.</:subtitle>
       </.header>
 
       <.simple_form

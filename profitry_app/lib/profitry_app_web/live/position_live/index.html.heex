@@ -25,6 +25,11 @@
     </.link>
   </:action>
   <:action :let={report}>
+    <.link href={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/edit"}>
+      Edit
+    </.link>
+  </:action>
+  <:action :let={report}>
     <.link
       phx-click={JS.push("delete", value: %{id: @portfolio.id, ticker: report.ticker})}
       data-confirm="Are you sure?"
@@ -37,14 +42,14 @@
 <.back navigate={~p"/portfolios"}>Back to portfolios</.back>
 
 <.modal
-  :if={@live_action == :new}
+  :if={@live_action in [:new, :edit]}
   id="position-modal"
   show
   on_cancel={JS.patch(~p"/portfolios/#{@portfolio}")}
 >
   <.live_component
     module={ProfitryAppWeb.PositionLive.FormComponent}
-    id={:new}
+    id={@position.id || :new}
     title={@page_title}
     action={@live_action}
     position={@position}

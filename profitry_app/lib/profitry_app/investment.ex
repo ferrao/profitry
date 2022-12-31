@@ -193,18 +193,35 @@ defmodule ProfitryApp.Investment do
   end
 
   @doc """
-  Gets a portfolio position.
+  Updates a position.
 
   ## Examples
 
-      iex> find_position(123)
+      iex> update_position(position, %{field: new_value})
+      {:ok, %Position{}}
+
+      iex> update_position(position, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_position(%Position{} = position, attrs) do
+    position
+    |> change_position(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Finds a portfolio position.
+
+  ## Examples
+
+      iex> find_position(portfolio, "tsla")
       %Position{}
 
-      iex> find_position(999)
+      iex> find_position(portfolio, "xpto")
       nil
 
   """
-  # def get_portfolio!(id), do: Repo.get!(Portfolio, id)
   def find_position(%Portfolio{} = portfolio, ticker) do
     portfolio = portfolio |> Repo.preload(:positions)
 

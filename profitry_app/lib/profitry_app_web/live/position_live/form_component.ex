@@ -9,7 +9,7 @@ defmodule ProfitryAppWeb.PositionLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Add a new position to your portfolio.</:subtitle>
+        <:subtitle>Use this form to manage positions in your portfolio.</:subtitle>
       </.header>
 
       <.simple_form
@@ -50,6 +50,23 @@ defmodule ProfitryAppWeb.PositionLive.FormComponent do
   end
 
   def handle_event("save", %{"position" => position_params}, socket) do
+    save_position(socket, socket.assigns.action, position_params)
+  end
+
+  defp save_position(socket, :edit, position_params) do
+    case Investment.update_position(socket.assigns.position, position_params) do
+      {:ok, _position} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Position updated successfully")
+         |> push_navigate(to: socket.assigns.navigate)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, :changeset, changeset)}
+    end
+  end
+
+  defp save_position(socket, :save, position_params) do
     case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, _position} ->
         {:noreply,

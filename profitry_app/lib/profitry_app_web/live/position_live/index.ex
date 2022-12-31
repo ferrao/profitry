@@ -54,6 +54,13 @@ defmodule ProfitryAppWeb.PositionLive.Index do
     |> assign(:order, nil)
   end
 
+  defp apply_action(socket, :edit, %{"ticker" => ticker}) do
+    socket
+    |> assign(:page_title, "Edit Position")
+    |> assign(:position, Investment.find_position(socket.assigns.portfolio, ticker))
+    |> assign(:order, nil)
+  end
+
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Position")
