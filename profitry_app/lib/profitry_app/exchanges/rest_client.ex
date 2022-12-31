@@ -44,6 +44,7 @@ defmodule ProfitryApp.Exchanges.RestClient do
   end
 
   def handle_continue(:start, state) do
+    Exchanges.subscribe_reset()
     send(self(), :tick)
 
     {:noreply, state}
@@ -64,8 +65,15 @@ defmodule ProfitryApp.Exchanges.RestClient do
     {:noreply, %{state | index: rem(index + 1, length(tickers))}}
   end
 
+  @impl true
+  def handle_info(:reset, state) do
+    Logger.info("Fetching new ticker list")
+
+    {:noreply, %{state | tickers: Exchanges.list_tickers(), index: 0}}
+  end
+
   defp handle_quote({:ok, quote}) do
-    Exchanges.broadcast(quote)
+    Exchanges.broadcast_quote(quote)
   end
 
   defp handle_quote({:error, reason}), do: Logger.warn("Unable to fetch quote: #{reason}")

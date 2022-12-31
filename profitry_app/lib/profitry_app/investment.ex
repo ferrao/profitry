@@ -227,6 +227,7 @@ defmodule ProfitryApp.Investment do
 
     portfolio.positions
     |> Enum.find(&(&1.ticker == ticker))
+    |> IO.inspect()
   end
 
   @doc """

@@ -24,7 +24,7 @@ defmodule ProfitryApp.Exchanges.History do
   end
 
   def handle_continue(:subscribe, history) do
-    Exchanges.subscribe()
+    Exchanges.subscribe_quotes()
     {:noreply, history}
   end
 

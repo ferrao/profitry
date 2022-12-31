@@ -6,7 +6,7 @@ defmodule ProfitryApp do
   Contexts are also responsible for managing your data, regardless
   if it comes from the database, an external API or others.
   """
-  defdelegate subscribe(), to: ProfitryApp.Exchanges
+  defdelegate subscribe_quotes(), to: ProfitryApp.Exchanges
   defdelegate unsubscribe(), to: ProfitryApp.Exchanges
   defdelegate get_quote(ticker), to: ProfitryApp.Exchanges.History
 end

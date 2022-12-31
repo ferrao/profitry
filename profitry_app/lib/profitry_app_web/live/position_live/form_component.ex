@@ -56,6 +56,8 @@ defmodule ProfitryAppWeb.PositionLive.FormComponent do
   defp save_position(socket, :edit, position_params) do
     case Investment.update_position(socket.assigns.position, position_params) do
       {:ok, _position} ->
+        ProfitryApp.Exchanges.broadcast_reset()
+
         {:noreply,
          socket
          |> put_flash(:info, "Position updated successfully")
@@ -69,6 +71,8 @@ defmodule ProfitryAppWeb.PositionLive.FormComponent do
   defp save_position(socket, :save, position_params) do
     case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, _position} ->
+        ProfitryApp.Exchanges.broadcast_reset()
+
         {:noreply,
          socket
          |> put_flash(:info, "Position created successfully")

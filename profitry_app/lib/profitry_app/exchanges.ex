@@ -26,12 +26,20 @@ defmodule ProfitryApp.Exchanges do
     |> Repo.all()
   end
 
-  def broadcast(quote) do
+  def broadcast_quote(quote) do
     PubSub.broadcast(ProfitryApp.PubSub, "quotes", quote)
   end
 
-  def subscribe() do
+  def subscribe_quotes() do
     PubSub.subscribe(ProfitryApp.PubSub, "quotes")
+  end
+
+  def broadcast_reset() do
+    PubSub.broadcast(ProfitryApp.PubSub, "reset", :reset)
+  end
+
+  def subscribe_reset() do
+    PubSub.subscribe(ProfitryApp.PubSub, "reset")
   end
 
   def unsubscribe() do
