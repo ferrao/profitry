@@ -227,7 +227,6 @@ defmodule ProfitryApp.Investment do
 
     portfolio.positions
     |> Enum.find(&(&1.ticker == ticker))
-    |> IO.inspect()
   end
 
   @doc """
@@ -327,7 +326,7 @@ defmodule ProfitryApp.Investment do
   """
   def update_order(%Order{} = order, attrs) do
     order
-    |> Portfolio.changeset(attrs)
+    |> Order.changeset(attrs)
     |> Repo.update()
   end
 
