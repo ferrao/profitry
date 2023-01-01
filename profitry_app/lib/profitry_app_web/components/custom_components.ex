@@ -13,8 +13,8 @@ defmodule ProfitryAppWeb.CustomComponents do
 
       <.email user={@current_user} />
 
-  attr :user, :map, doc: "the currently logged in user"
   """
+  attr :user, :map, doc: "the currently logged in user"
 
   def email(assigns) do
     ~H"""
@@ -35,21 +35,25 @@ defmodule ProfitryAppWeb.CustomComponents do
 
       <.profit value={"-123.45"} />
 
-  attr :value, :string, doc: "the profit or loss value"
   """
+  attr :value, :string, doc: "the profit or loss value"
+
   def profit(assigns) do
     {value, _} = Float.parse(assigns.value)
     assigns = assign(assigns, :value, value)
 
     ~H"""
-    <%= if @value > 0 do %>
-      <span class="font-semibold text-green-700">
-        <%= number_to_currency(@value) %>
-      </span>
-    <% else %>
-      <span class="font-semibold text-red-700">
-        <%= number_to_currency(@value) %>
-      </span>
+    <%= case @value do %>
+      <% value when value > 0 -> %>
+        <span class="font-semibold text-green-700">
+          <%= number_to_currency(@value) %>
+        </span>
+      <% value when value < 0 -> %>
+        <span class="font-semibold text-red-700">
+          <%= number_to_currency(@value) %>
+        </span>
+      <% value when value == 0 -> %>
+        <span class="font-semibold">--</span>
     <% end %>
     """
   end

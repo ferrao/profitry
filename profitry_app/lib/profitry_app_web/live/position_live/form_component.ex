@@ -68,7 +68,7 @@ defmodule ProfitryAppWeb.PositionLive.FormComponent do
     end
   end
 
-  defp save_position(socket, :save, position_params) do
+  defp save_position(socket, :new, position_params) do
     case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, _position} ->
         ProfitryApp.Exchanges.broadcast_reset()
