@@ -274,6 +274,7 @@ defmodule ProfitryApp.Investment do
   """
   def list_orders(%Position{} = position) do
     Ecto.assoc(position, :orders)
+    |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
 

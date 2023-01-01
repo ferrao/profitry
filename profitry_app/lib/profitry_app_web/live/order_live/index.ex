@@ -1,6 +1,8 @@
 defmodule ProfitryAppWeb.OrderLive.Index do
   use ProfitryAppWeb, :live_view
 
+  import ProfitryAppWeb.CustomComponents
+
   alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment
   alias ProfitryApp.Investment.Order

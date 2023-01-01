@@ -1,6 +1,8 @@
 defmodule ProfitryAppWeb.PositionLive.Index do
   use ProfitryAppWeb, :live_view
 
+  import ProfitryAppWeb.CustomComponents
+
   alias ProfitryApp.Repo
   alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment

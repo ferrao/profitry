@@ -12,19 +12,19 @@
 </.header>
 
 <.table id="report" rows={[@report]}>
-  <:col :let={report} label="Investment"><%= report.investment %></:col>
+  <:col :let={report} label="Investment"><%= currency(report.investment) %></:col>
   <:col :let={report} label="Shares"><%= report.shares %></:col>
-  <:col :let={report} label="Cost Basis"><%= report.cost_basis %></:col>
-  <:col :let={report} label="Price"><%= report.price %></:col>
-  <:col :let={report} label="P/L"><%= report.profit %></:col>
+  <:col :let={report} label="Cost Basis"><%= currency(report.cost_basis) %></:col>
+  <:col :let={report} label="Price"><%= currency(report.price) %></:col>
+  <:col :let={report} label="P/L"><.profit value={report.profit} /></:col>
 </.table>
 
 <.table id="orders" rows={@orders}>
   <:col :let={order} label="Instrument"><%= order.instrument %></:col>
   <:col :let={order} label="Type"><%= order.type %></:col>
   <:col :let={order} label="Quantity"><%= order.quantity %></:col>
-  <:col :let={order} label="Price"><%= order.price %></:col>
-  <:col :let={order} label="Opened"><%= order.inserted_at %></:col>
+  <:col :let={order} label="Price"><%= currency(order.price) %></:col>
+  <:col :let={order} label="Opened"><%= date(order.inserted_at) %></:col>
 
   <:action :let={order}>
     <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@ticker}/orders/#{order}/edit"}>

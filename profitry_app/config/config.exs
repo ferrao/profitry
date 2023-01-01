@@ -59,6 +59,18 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :number,
+  currency: [
+    unit: "$",
+    precision: 2,
+    delimiter: ",",
+    separator: ".",
+    # "$30.00"
+    format: "%u%n",
+    # "($30.00)"
+    negative_format: "(%u%n)"
+  ]
+
 # Exchanges related configuration
 import_config "exchanges.exs"
 
