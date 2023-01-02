@@ -8,6 +8,11 @@
   </:actions>
 </.header>
 
+<.table id="totals" rows={[@totals]}>
+  <:col :let={totals} label="Value"><%= currency(totals.value) %></:col>
+  <:col :let={totals} label="P/L"><.profit value={totals.profit} /></:col>
+</.table>
+
 <.table
   id="reports"
   rows={@reports}
