@@ -27,8 +27,8 @@ defmodule ProfitryAppWeb.OrderLive.FormComponent do
           options={["stock", "option"]}
           label="Instrument"
         />
-        <.input field={{f, :quantity}} type="number" step={0.01} label="Quantity" />
-        <.input field={{f, :price}} type="number" step={0.01} label="Price (USD)" />
+        <.input field={{f, :quantity}} type="number" step="any" label="Quantity" />
+        <.input field={{f, :price}} type="number" step="any" label="Price (USD)" />
         <.input field={{f, :inserted_at}} type="datetime-local" label="Order Date" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Order</.button>
