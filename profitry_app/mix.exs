@@ -49,6 +49,7 @@ defmodule ProfitryApp.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:httpoison, "~> 1.8"},
       {:number, "~> 1.0"},
+      {:decimal, "~> 2.0"},
 
       # Dev Deps
       {:phoenix_live_reload, "~> 1.2", only: :dev},
