@@ -1,7 +1,9 @@
 defmodule ProfitryApp.Investment.Report do
   use Ecto.Schema
 
-  alias ProfitryApp.Investment.{Position, Order, Report}
+  import ProfitryApp.Utils.Ecto, only: [decimal_to_string: 1]
+
+  alias ProfitryApp.Investment.{Position, Order}
 
   @derive {Phoenix.Param, key: :position_id}
   schema "reports" do
@@ -10,12 +12,13 @@ defmodule ProfitryApp.Investment.Report do
     field :shares, :decimal
     field :cost_basis, :decimal
     field :price, :decimal
+    field :value, :decimal
     field :profit, :decimal
     field :position_id, :integer
   end
 
   def make_report(%Position{id: id, ticker: ticker, orders: orders}, quote \\ nil) do
-    report = %Report{
+    report = %__MODULE__{
       position_id: id,
       ticker: ticker,
       investment: 0,
@@ -32,6 +35,7 @@ defmodule ProfitryApp.Investment.Report do
     report
     |> calculate_cost_basis(has_shares)
     |> calculate_profit(quote)
+    |> calculate_value(quote)
     |> stringify_decimals
     |> Map.put(:ticker, ticker)
   end
@@ -43,7 +47,7 @@ defmodule ProfitryApp.Investment.Report do
          quantity: quantity,
          price: price
        }) do
-    %Report{
+    %__MODULE__{
       report
       | investment: Decimal.add(report.investment, Decimal.mult(quantity, price)),
         shares: Decimal.add(report.shares, quantity)
@@ -57,7 +61,7 @@ defmodule ProfitryApp.Investment.Report do
          quantity: quantity,
          price: price
        }) do
-    %Report{
+    %__MODULE__{
       report
       | investment: Decimal.sub(report.investment, Decimal.mult(quantity, price)),
         shares: Decimal.sub(report.shares, quantity)
@@ -71,7 +75,7 @@ defmodule ProfitryApp.Investment.Report do
          quantity: quantity,
          price: price
        }) do
-    %Report{
+    %__MODULE__{
       report
       | investment:
           Decimal.add(
@@ -90,7 +94,7 @@ defmodule ProfitryApp.Investment.Report do
          quantity: quantity,
          price: price
        }) do
-    %Report{
+    %__MODULE__{
       report
       | investment:
           Decimal.sub(
@@ -124,19 +128,21 @@ defmodule ProfitryApp.Investment.Report do
     )
   end
 
+  defp calculate_value(report, nil) do
+    Map.put(report, :value, 0)
+  end
+
+  defp calculate_value(report, quote) do
+    Map.put(report, :value, Decimal.mult(report.shares, quote.price))
+  end
+
   defp stringify_decimals(report) do
-    %Report{
+    %__MODULE__{
       report
       | investment: decimal_to_string(report.investment),
         shares: decimal_to_string(report.shares),
         cost_basis: decimal_to_string(report.cost_basis),
         profit: decimal_to_string(report.profit)
     }
-  end
-
-  defp decimal_to_string(decimal) do
-    decimal
-    |> Decimal.round(2)
-    |> Decimal.to_string()
   end
 end

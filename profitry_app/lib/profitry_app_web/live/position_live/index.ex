@@ -6,7 +6,7 @@ defmodule ProfitryAppWeb.PositionLive.Index do
   alias ProfitryApp.Repo
   alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment
-  alias ProfitryApp.Investment.Position
+  alias ProfitryApp.Investment.{Position, Totals}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -18,11 +18,14 @@ defmodule ProfitryAppWeb.PositionLive.Index do
     user = socket.assigns.current_user
     action = socket.assigns.live_action
     id = Map.get(params, "id")
+    reports = Investment.list_reports!(id)
+    totals = Totals.make_totals(reports)
 
     socket =
       assign(socket, :navigate, ~p"/portfolios/#{id}")
       |> assign(:portfolio, Investment.get_portfolio!(user, id))
-      |> assign(:reports, Investment.list_reports!(id))
+      |> assign(:reports, reports)
+      |> assign(:totals, totals)
 
     {:noreply, apply_action(socket, action, params)}
   end

@@ -8,6 +8,11 @@
   </:actions>
 </.header>
 
+<.table id="totals" rows={[@totals]}>
+  <:col :let={totals} label="Value"><%= currency(totals.value) %></:col>
+  <:col :let={totals} label="P/L"><.profit value={totals.profit} /></:col>
+</.table>
+
 <.table
   id="reports"
   rows={@reports}
@@ -15,8 +20,9 @@
 >
   <:col :let={report} label="Ticker"><%= report.ticker %></:col>
   <:col :let={report} label="Shares"><%= report.shares %></:col>
-  <:col :let={report} label="CostBasis"><%= currency(report.cost_basis) %></:col>
   <:col :let={report} label="Price"><%= currency(report.price) %></:col>
+  <:col :let={report} label="CostBasis"><%= currency(report.cost_basis) %></:col>
+  <:col :let={report} label="Value"><%= currency(report.value) %></:col>
   <:col :let={report} label="Investment"><%= currency(report.investment) %></:col>
   <:col :let={report} label="P/L"><.profit value={report.profit} /></:col>
   <:action :let={report}>
