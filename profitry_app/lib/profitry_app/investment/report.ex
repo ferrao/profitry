@@ -10,6 +10,7 @@ defmodule ProfitryApp.Investment.Report do
     field :shares, :decimal
     field :cost_basis, :decimal
     field :price, :decimal
+    field :value, :decimal
     field :profit, :decimal
     field :position_id, :integer
   end
@@ -32,6 +33,7 @@ defmodule ProfitryApp.Investment.Report do
     report
     |> calculate_cost_basis(has_shares)
     |> calculate_profit(quote)
+    |> calculate_value(quote)
     |> stringify_decimals
     |> Map.put(:ticker, ticker)
   end
@@ -122,6 +124,14 @@ defmodule ProfitryApp.Investment.Report do
       :profit,
       Decimal.mult(report.shares, quote.price) |> Decimal.sub(report.investment)
     )
+  end
+
+  defp calculate_value(report, nil) do
+    Map.put(report, :value, 0)
+  end
+
+  defp calculate_value(report, quote) do
+    Map.put(report, :value, Decimal.mult(report.shares, quote.price))
   end
 
   defp stringify_decimals(report) do
