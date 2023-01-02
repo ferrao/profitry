@@ -152,6 +152,7 @@ defmodule ProfitryApp.Investment do
       |> Repo.preload(:orders)
       |> Report.make_report(quote)
     end
+    |> Enum.sort(&(&1.profit > &2.profit))
   end
 
   @doc """
