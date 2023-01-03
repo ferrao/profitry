@@ -34,15 +34,19 @@ defmodule ProfitryApp.Exchanges do
     PubSub.subscribe(ProfitryApp.PubSub, "quotes")
   end
 
-  def broadcast_reset() do
-    PubSub.broadcast(ProfitryApp.PubSub, "reset", :reset)
-  end
-
-  def subscribe_reset() do
-    PubSub.subscribe(ProfitryApp.PubSub, "reset")
-  end
-
-  def unsubscribe() do
+  def unsubscribe_quotes() do
     PubSub.unsubscribe(ProfitryApp.PubSub, "quotes")
+  end
+
+  def broadcast_update(ticker) do
+    PubSub.broadcast(ProfitryApp.PubSub, "updates", ticker)
+  end
+
+  def subscribe_updates() do
+    PubSub.subscribe(ProfitryApp.PubSub, "updates")
+  end
+
+  def unsubscribe_updates() do
+    PubSub.unsubscribe(ProfitryApp.PubSub, "updates")
   end
 end

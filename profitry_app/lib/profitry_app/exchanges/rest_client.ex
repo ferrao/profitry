@@ -44,7 +44,7 @@ defmodule ProfitryApp.Exchanges.RestClient do
   end
 
   def handle_continue(:start, state) do
-    Exchanges.subscribe_reset()
+    ProfitryApp.subscribe_updates()
     send(self(), :tick)
 
     {:noreply, state}
@@ -72,8 +72,15 @@ defmodule ProfitryApp.Exchanges.RestClient do
     {:noreply, %{state | tickers: Exchanges.list_tickers(), index: 0}}
   end
 
+  @impl true
+  def handle_info(ticker, state) when is_binary(ticker) do
+    Logger.info("Adding #{ticker} to ticker list")
+
+    {:noreply, %{state | tickers: [ticker | state.tickers]}}
+  end
+
   defp handle_quote({:ok, quote}) do
-    Exchanges.broadcast_quote(quote)
+    ProfitryApp.broadcast_quote(quote)
   end
 
   defp handle_quote({:error, reason}), do: Logger.warn("Unable to fetch quote: #{reason}")

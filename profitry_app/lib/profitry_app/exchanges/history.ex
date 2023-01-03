@@ -4,7 +4,7 @@ defmodule ProfitryApp.Exchanges.History do
   require Logger
 
   alias ProfitryApp.Exchanges
-  alias Profitry.Exchanges.Quote
+  alias ProfitryApp.Exchanges.Quote
 
   @type t() :: %__MODULE__{
           quotes: %{String.t() => Quote.t()}
