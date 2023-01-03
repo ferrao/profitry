@@ -7,14 +7,14 @@ defmodule ProfitryApp.Exchanges.Dummy.DummyClient do
   def interval(), do: 1000
 
   @impl true
-  def quote("TEST_BAD"), do: {:error, "Timeout"}
+  def quote("TIMEOUT"), do: {:error, "Timeout"}
 
   @impl true
   def quote(ticker) do
     {:ok,
      %Quote{
        ticker: ticker,
-       price: 300 * :rand.uniform(),
+       price: Decimal.from_float(300 * :rand.uniform()),
        timestamp: DateTime.utc_now()
      }}
   end
