@@ -9,11 +9,17 @@ defmodule ProfitryApp.Investment.Totals do
   end
 
   def make_totals(reports) do
-    Enum.reduce(reports, fn r, acc ->
+    initial_total = %__MODULE__{
+      value: 0,
+      profit: 0,
+      id: 0
+    }
+
+    Enum.reduce(reports, initial_total, fn r, acc ->
       %__MODULE__{
         value: Decimal.add(r.value, acc.value),
         profit: Decimal.add(r.profit, acc.profit),
-        id: 0
+        id: acc.id
       }
     end)
     |> stringify_decimals
