@@ -5,7 +5,7 @@ defmodule ProfitryAppWeb.OrderLive.Index do
 
   alias ProfitryApp.Utils.Errors
   alias ProfitryApp.Investment
-  alias ProfitryApp.Investment.Order
+  alias ProfitryApp.Investment.{Order, Totals}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -24,11 +24,17 @@ defmodule ProfitryAppWeb.OrderLive.Index do
     report = Investment.get_report(position)
     orders = Investment.list_orders(position)
 
+    totals =
+      portfolio_id
+      |> Investment.list_reports!()
+      |> Totals.make_totals()
+
     socket =
       assign(socket, :navigate, ~p"/portfolios/#{portfolio}/positions/#{ticker}/orders")
       |> assign(:portfolio, portfolio)
       |> assign(:position, position)
       |> assign(:report, report)
+      |> assign(:totals, totals)
       |> assign(:ticker, ticker)
       |> assign(:orders, orders)
 
