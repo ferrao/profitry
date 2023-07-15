@@ -36,11 +36,12 @@ defmodule ProfitryApp.MixProject do
       {:phoenix, "~> 1.7.1", override: true},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
+      {:ecto_psql_extras, "~> 0.7.12"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 3.0"},
-      {:phoenix_live_view, "~> 0.18.17"},
+      {:phoenix_live_view, "~> 0.19.4"},
       {:heroicons, "~> 0.5"},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_dashboard, "~> 0.8.0"},
       {:swoosh, "~> 1.3"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 0.6"},
@@ -54,7 +55,7 @@ defmodule ProfitryApp.MixProject do
       # Dev Deps
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:esbuild, "~> 0.5", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.1.8", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2.1", runtime: Mix.env() == :dev},
       {:sobelow, "~> 0.8", only: :dev},
 
       # Test Deps
