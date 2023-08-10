@@ -1,4 +1,4 @@
-defmodule ProfitryApp.InvestmentTest do
+defmodule ProfitryApp.Investment.PortfolioTest do
   use ProfitryApp.DataCase
 
   alias ProfitryApp.Investment

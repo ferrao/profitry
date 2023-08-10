@@ -133,10 +133,10 @@ defmodule ProfitryApp.Investment do
 
   ## Examples
     iex> list_reports!(123)
-    %Report{}
+    %PositionReport{}
 
     iex> list_reports!(666)
-    %Report{}
+    %PositionReport{}
     ** (Ecto.NoResultsError)
 
   """

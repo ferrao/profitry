@@ -83,7 +83,7 @@ defmodule ProfitryApp.Exchanges.RestClient do
     ProfitryApp.broadcast_quote(quote)
   end
 
-  defp handle_quote({:error, reason}), do: Logger.warn("Unable to fetch quote: #{reason}")
+  defp handle_quote({:error, reason}), do: Logger.warning("Unable to fetch quote: #{reason}")
 
   defp fetch_quote(client, ticker), do: client.quote(ticker)
 
