@@ -1,4 +1,9 @@
 defmodule ProfitryApp.Investment.Option do
+  @moduledoc """
+
+  Schema representing the details of an options contract for an order to buy/sell premium
+
+  """
   use Ecto.Schema
 
   import Ecto.Changeset

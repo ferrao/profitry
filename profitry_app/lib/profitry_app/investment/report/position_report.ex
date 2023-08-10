@@ -1,7 +1,7 @@
 defmodule ProfitryApp.Investment.Report.PositionReport do
   @moduledoc """
 
-  Schema and functions to hold and generate a report on a portfolio position
+  Generate a report on a portfolio position
 
   """
   import ProfitryApp.Utils.Ecto, only: [decimal_to_string: 1]
@@ -33,7 +33,12 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
     |> Map.put(:ticker, ticker)
   end
 
-  # calculates impact of buying shares on an existing position
+  @doc """
+
+    Calculates impact of an order on an existing position
+
+  """
+  # buying shares
   def calculate_order(report, %Order{
         type: :buy,
         instrument: :stock,
@@ -47,7 +52,7 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
     }
   end
 
-  # calculates impact of selling shares on an existing position
+  # selling shares
   def calculate_order(report, %Order{
         type: :sell,
         instrument: :stock,
@@ -61,7 +66,7 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
     }
   end
 
-  # calculates impact of buying premium on an existing position
+  # buying premium
   def calculate_order(report, %Order{
         type: :buy,
         instrument: :option,
@@ -91,7 +96,7 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
     }
   end
 
-  # calculates impact of selling premium on an existing position
+  # selling premium
   def calculate_order(report, %Order{
         type: :sell,
         instrument: :option,
@@ -102,8 +107,6 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
           expiration: expiration
         }
       }) do
-    # check options list for same strike/expiration
-    # subtrack 1 to quantity
     %Report{
       report
       | investment:
@@ -123,22 +126,32 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
     }
   end
 
-  # calculates the cost basis for a position report with no shares
+  @doc """
+
+  Calculates the cost basis for a position report
+
+  """
+  # with no shares
   def calculate_cost_basis(report, _has_shares = false) do
     Map.put(report, :cost_basis, "0.00")
   end
 
-  # calculates the cost basis for a position report with shares
+  # with shares
   def calculate_cost_basis(report, _has_shares) do
     Map.put(report, :cost_basis, Decimal.div(report.investment, report.shares))
   end
 
-  # calculates the cost basis for a position report with no quote
+  @doc """
+
+  Calculates the profit on a position report
+
+  """
+  # with no quote
   def calculate_profit(report, nil) do
     Map.put(report, :profit, 0)
   end
 
-  # calculates the cost basis for a position report with a quote
+  # with a quote
   def calculate_profit(report, quote = %Quote{}) do
     Map.put(report, :price, quote.price)
     |> Map.put(
@@ -147,13 +160,20 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
     )
   end
 
-  defp calculate_value(report, nil) do
+  @doc """
+
+  Calculates the value of a position report
+
+  # TODO: calculate_value needs to include OptionsReport.calculate_value call
+  # which implies we need quotes for option contracts as well 
+  """
+  # with no quote
+  def calculate_value(report, nil) do
     Map.put(report, :value, 0)
   end
 
-  # TODO: calculate_value needs to include OptionsReport.calculate_value call
-  # which implies we need quotes for the options as well 
-  defp calculate_value(report, quote = %Quote{}) do
+  # with quote
+  def calculate_value(report, quote = %Quote{}) do
     Map.put(report, :value, Decimal.mult(report.shares, quote.price))
   end
 

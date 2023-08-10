@@ -1,4 +1,9 @@
 defmodule ProfitryApp.Investment.Position do
+  @moduledoc """
+
+  Schema representing a portfolio position
+
+  """
   use Ecto.Schema
 
   import Ecto.Changeset

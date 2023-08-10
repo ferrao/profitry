@@ -1,4 +1,9 @@
 defmodule ProfitryApp.Investment.Portfolio do
+  @moduledoc """
+
+  Schema representing a portfolio of positions 
+
+  """
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -16,7 +21,6 @@ defmodule ProfitryApp.Investment.Portfolio do
     timestamps()
   end
 
-  @doc false
   def changeset(portfolio, attrs) do
     portfolio
     |> cast(attrs, [:tikr, :name])

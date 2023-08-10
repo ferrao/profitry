@@ -1,4 +1,10 @@
 defmodule ProfitryApp.Investment.Totals do
+  @moduledoc """
+
+  Schema representing the total value and profit of a portfolio 
+
+  """
+  alias ProfitryApp.Investment.Report
   use Ecto.Schema
 
   import ProfitryApp.Utils.Ecto, only: [decimal_to_string: 1]
@@ -8,7 +14,12 @@ defmodule ProfitryApp.Investment.Totals do
     field :profit, :decimal
   end
 
-  def make_totals(reports) do
+  @doc """
+
+  Aggregates the reports of a list of position reports
+
+  """
+  def make_totals([%Report{}] = reports) do
     initial_total = %__MODULE__{
       value: 0,
       profit: 0,

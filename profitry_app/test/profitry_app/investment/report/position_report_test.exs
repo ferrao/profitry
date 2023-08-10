@@ -202,46 +202,46 @@ defmodule ProfitryApp.Investment.Report.PositionReportTest do
       report =
         PositionReport.calculate_cost_basis(@report, false)
 
-      assert Decimal.compare(report.cost_basis, Decimal.new("0"))
+      assert Decimal.compare(report.cost_basis, Decimal.new("0")) == :eq
     end
 
     test "position report with shares" do
       report =
         PositionReport.calculate_cost_basis(@report, true)
 
-      assert Decimal.compare(report.cost_basis, Decimal.new("234"))
+      assert Decimal.compare(report.cost_basis, Decimal.new("234")) == :eq
     end
   end
 
   describe "calculates the position profit" do
     test "no quote available" do
       report =
-        PositionReport.calculate_cost_basis(@report, nil)
+        PositionReport.calculate_profit(@report, nil)
 
-      assert Decimal.compare(report.profit, Decimal.new("0"))
+      assert Decimal.compare(report.profit, Decimal.new("0")) == :eq
     end
 
     test "quote available" do
       report =
-        PositionReport.calculate_cost_basis(@report, @quote)
+        PositionReport.calculate_profit(@report, @quote)
 
-      assert Decimal.compare(report.profit, Decimal.new("-250"))
+      assert Decimal.compare(report.profit, Decimal.new("-250")) == :eq
     end
   end
 
   describe "calculates the position value" do
     test "no quote available" do
       report =
-        PositionReport.calculate_cost_basis(@report, nil)
+        PositionReport.calculate_value(@report, nil)
 
-      assert Decimal.compare(report.value, Decimal.new("0"))
+      assert Decimal.compare(report.value, Decimal.new("0")) == :eq
     end
 
     test "quote available" do
       report =
-        PositionReport.calculate_cost_basis(@report, @quote)
+        PositionReport.calculate_value(@report, @quote)
 
-      assert Decimal.compare(report.value, Decimal.new("231500"))
+      assert Decimal.compare(report.value, Decimal.new("23150")) == :eq
     end
   end
 end

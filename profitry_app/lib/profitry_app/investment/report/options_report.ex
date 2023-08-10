@@ -1,11 +1,9 @@
 defmodule ProfitryApp.Investment.Report.OptionsReport do
   @moduledoc """
 
-  Schema to hold and generate a report on a set of options contracts for a position,
-  to be embedded in the `ProfitryApp.Investment.Report.PositionReport` position report 
+  Struct representing a report on a set of options contracts for a position report
 
   """
-
   alias ProfitryApp.Exchanges.Quote
 
   @type t :: %__MODULE__{

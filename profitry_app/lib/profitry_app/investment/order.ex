@@ -1,4 +1,9 @@
 defmodule ProfitryApp.Investment.Order do
+  @moduledoc """
+
+  Schema representing a buy or sell order on stocks or premium
+
+  """
   use Ecto.Schema
 
   import Ecto.Changeset
