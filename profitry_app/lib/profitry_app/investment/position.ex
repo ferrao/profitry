@@ -11,6 +11,11 @@ defmodule ProfitryApp.Investment.Position do
 
   alias ProfitryApp.Investment.{Order, Portfolio}
 
+  @type t :: %__MODULE__{
+          ticker: String.t(),
+          orders: list(Order.t())
+        }
+
   schema "positions" do
     field :ticker, :string
     has_many :orders, Order

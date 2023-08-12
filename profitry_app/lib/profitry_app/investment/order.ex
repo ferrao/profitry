@@ -9,6 +9,15 @@ defmodule ProfitryApp.Investment.Order do
   import Ecto.Changeset
   alias ProfitryApp.Investment.{Position, Option}
 
+  @type order :: :buy | :sell
+  @type instrument :: :stock | :option
+  @type t :: %__MODULE__{
+          type: order,
+          instrument: instrument,
+          quantity: Decimal.t(),
+          price: Decimal.t()
+        }
+
   schema "orders" do
     field(:type, Ecto.Enum, values: [:buy, :sell])
     field(:instrument, Ecto.Enum, values: [:stock, :option])

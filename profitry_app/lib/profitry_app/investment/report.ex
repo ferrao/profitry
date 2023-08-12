@@ -9,12 +9,12 @@ defmodule ProfitryApp.Investment.Report do
 
   @type t :: %__MODULE__{
           ticker: String.t(),
-          investment: Decimal.t(),
-          shares: Decimal.t(),
-          cost_basis: Decimal.t(),
-          price: Decimal.t(),
-          value: Decimal.t(),
-          profit: Decimal.t(),
+          investment: String.t(),
+          shares: String.t(),
+          cost_basis: String.t(),
+          price: String.t(),
+          value: String.t(),
+          profit: String.t(),
           position_id: Integer.t(),
           long_options: list(OptionsReport.t()),
           short_options: list(OptionsReport.t())

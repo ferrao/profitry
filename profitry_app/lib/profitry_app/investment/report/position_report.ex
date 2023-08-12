@@ -15,6 +15,7 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
   Creates a report on a portfolio position
 
   """
+  @spec make_report(Position.t(), Quote.t() | nil) :: Report.t()
   def make_report(%Position{id: id, ticker: ticker, orders: orders}, quote \\ nil) do
     report = %Report{position_id: id, ticker: ticker}
 
@@ -183,7 +184,8 @@ defmodule ProfitryApp.Investment.Report.PositionReport do
       | investment: decimal_to_string(report.investment),
         shares: decimal_to_string(report.shares),
         cost_basis: decimal_to_string(report.cost_basis),
-        profit: decimal_to_string(report.profit)
+        profit: decimal_to_string(report.profit),
+        value: decimal_to_string(report.value)
     }
   end
 end

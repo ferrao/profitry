@@ -9,6 +9,11 @@ defmodule ProfitryApp.Investment.Option do
   import Ecto.Changeset
   alias ProfitryApp.Investment.Order
 
+  @type t :: %__MODULE__{
+          strike: Integer.t(),
+          expiration: Date.t()
+        }
+
   schema "options" do
     field :strike, :integer
     field :expiration, :date

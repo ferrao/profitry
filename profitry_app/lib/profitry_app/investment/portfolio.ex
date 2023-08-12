@@ -12,6 +12,12 @@ defmodule ProfitryApp.Investment.Portfolio do
   alias ProfitryApp.Accounts.User
   alias ProfitryApp.Investment.Position
 
+  @type t :: %__MODULE__{
+          name: String.t(),
+          tikr: String.t(),
+          positions: list(Position.t())
+        }
+
   schema "portfolios" do
     field :name, :string
     field :tikr, :string
