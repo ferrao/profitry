@@ -7,14 +7,16 @@ defmodule ProfitryApp.InvestmentFixtures do
   @doc """
   Generate a portfolio.
   """
-  def portfolio_fixture(attrs \\ %{}) do
-    {:ok, portfolio} =
+  def portfolio_fixture(user, attrs \\ %{}) do
+    attrs =
       attrs
       |> Enum.into(%{
-        name: "some name",
-        tikr: "some tikr"
+        name: "Interactive Brokers",
+        ticker: "IBKR"
       })
-      |> ProfitryApp.Investment.create_portfolio()
+
+    {:ok, portfolio} =
+      ProfitryApp.Investment.create_portfolio(user, attrs)
 
     portfolio
   end
