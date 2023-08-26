@@ -3,12 +3,14 @@ defmodule ProfitryApp.Repo.Migrations.CreateOrdersPositions do
 
   def change do
     alter table(:portfolios) do
-      modify :tikr, :citext, null: false
+      modify :ticker, :citext, null: false
     end
 
     create table(:positions) do
       add :ticker, :citext, null: false
       add :portfolio_id, references(:portfolios, on_delete: :nothing)
+
+      timestamps()
     end
 
     create index(:positions, [:portfolio_id])

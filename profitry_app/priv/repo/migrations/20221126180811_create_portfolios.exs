@@ -3,7 +3,7 @@ defmodule ProfitryApp.Repo.Migrations.CreatePortfolios do
 
   def change do
     create table(:portfolios) do
-      add :tikr, :string
+      add :ticker, :string
       add :name, :string
 
       timestamps()

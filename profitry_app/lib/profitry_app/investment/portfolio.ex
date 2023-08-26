@@ -14,13 +14,15 @@ defmodule ProfitryApp.Investment.Portfolio do
 
   @type t :: %__MODULE__{
           name: String.t(),
-          tikr: String.t(),
-          positions: list(Position.t())
+          ticker: String.t(),
+          positions: list(Position.t()),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "portfolios" do
     field :name, :string
-    field :tikr, :string
+    field :ticker, :string
     has_many :positions, Position
     belongs_to :user, User
 
@@ -29,9 +31,9 @@ defmodule ProfitryApp.Investment.Portfolio do
 
   def changeset(portfolio, attrs) do
     portfolio
-    |> cast(attrs, [:tikr, :name])
-    |> validate_required([:tikr, :name])
-    |> capitalize(:tikr)
+    |> cast(attrs, [:ticker, :name])
+    |> validate_required([:ticker, :name])
+    |> capitalize(:ticker)
     |> no_assoc_constraint(:positions, message: "Portfolio contains positions")
   end
 end

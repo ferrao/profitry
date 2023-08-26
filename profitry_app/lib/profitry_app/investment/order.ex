@@ -15,7 +15,9 @@ defmodule ProfitryApp.Investment.Order do
           type: order,
           instrument: instrument,
           quantity: Decimal.t(),
-          price: Decimal.t()
+          price: Decimal.t(),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "orders" do

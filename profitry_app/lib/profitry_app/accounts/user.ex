@@ -3,6 +3,15 @@ defmodule ProfitryApp.Accounts.User do
   import Ecto.Changeset
   alias ProfitryApp.Investment.Portfolio
 
+  @type t :: %__MODULE__{
+          email: String.t(),
+          password: String.t(),
+          hashed_password: String.t(),
+          confirmed_at: DateTime.t(),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
+        }
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true

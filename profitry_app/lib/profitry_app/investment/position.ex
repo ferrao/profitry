@@ -13,7 +13,9 @@ defmodule ProfitryApp.Investment.Position do
 
   @type t :: %__MODULE__{
           ticker: String.t(),
-          orders: list(Order.t())
+          orders: list(Order.t()),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "positions" do
@@ -21,6 +23,8 @@ defmodule ProfitryApp.Investment.Position do
     has_many :orders, Order
 
     belongs_to :portfolio, Portfolio
+
+    timestamps()
   end
 
   def changeset(position, attrs) do

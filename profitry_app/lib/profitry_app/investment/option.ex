@@ -11,7 +11,9 @@ defmodule ProfitryApp.Investment.Option do
 
   @type t :: %__MODULE__{
           strike: Integer.t(),
-          expiration: Date.t()
+          expiration: Date.t(),
+          inserted_at: DateTime.t(),
+          updated_at: DateTime.t()
         }
 
   schema "options" do

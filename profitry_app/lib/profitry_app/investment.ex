@@ -21,10 +21,12 @@ defmodule ProfitryApp.Investment do
       [%Portfolio{}, ...]
 
   """
+  @spec list_portfolios() :: list(Portfolio.t())
   def list_portfolios do
     Repo.all(Portfolio)
   end
 
+  @spec list_portfolios(User.t()) :: list(Portfolio.t())
   def list_portfolios(%User{} = user) do
     Ecto.assoc(user, :portfolios)
     |> Repo.all()
