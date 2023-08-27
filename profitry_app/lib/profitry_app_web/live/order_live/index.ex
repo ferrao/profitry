@@ -19,7 +19,7 @@ defmodule ProfitryAppWeb.OrderLive.Index do
     ticker = Map.get(params, "ticker")
     action = socket.assigns.live_action
 
-    portfolio = Investment.get_portfolio!(user, portfolio_id)
+    portfolio = Investment.get_portfolio(user, portfolio_id)
     position = Investment.find_position(portfolio, ticker)
     report = Investment.get_report(position)
     orders = Investment.list_orders(position)

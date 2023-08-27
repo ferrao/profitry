@@ -45,16 +45,25 @@ defmodule ProfitryApp.Investment do
       iex> get_portfolio!(456)
       ** (Ecto.NoResultsError)
 
+  """
+  @spec get_portfolio!(Integer.t()) :: Portfolio.t()
+  def get_portfolio!(id), do: Repo.get!(Portfolio, id)
+
+  @doc """
+  Gets a single portfolio for a user.
+  Returns nil if the Portfolio does not exist.
+
+  ## Examples
+
       iex> get_portfolio!(user, 123)
       %Portfolio{}
 
       iex> get_portfolio!(user, 456)
-      ** (Ecto.NoResultsError)
+      nil
 
   """
-  def get_portfolio!(id), do: Repo.get!(Portfolio, id)
-
-  def get_portfolio!(%User{} = user, id) do
+  @spec get_portfolio(User.t(), Integer.t()) :: Portfolio.t()
+  def get_portfolio(%User{} = user, id) do
     Ecto.assoc(user, :portfolios)
     |> where([p], p.id == ^id)
     |> Repo.one()
@@ -72,6 +81,7 @@ defmodule ProfitryApp.Investment do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec create_portfolio(User.t(), Map.t()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
   def create_portfolio(%User{} = user, attrs \\ %{}) do
     %Portfolio{}
     |> Portfolio.changeset(attrs)
@@ -91,6 +101,8 @@ defmodule ProfitryApp.Investment do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec update_portfolio(Portfolio.t(), Map.t()) ::
+          {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
   def update_portfolio(%Portfolio{} = portfolio, attrs) do
     portfolio
     |> Portfolio.changeset(attrs)
@@ -109,6 +121,7 @@ defmodule ProfitryApp.Investment do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec delete_portfolio(Portfolio.t()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
   def delete_portfolio(%Portfolio{} = portfolio) do
     portfolio
     |> change_portfolio()
@@ -124,6 +137,7 @@ defmodule ProfitryApp.Investment do
       %Ecto.Changeset{data: %Portfolio{}}
 
   """
+  @spec change_portfolio(Portfolio.t(), Map.t()) :: Ecto.Changeset.t()
   def change_portfolio(%Portfolio{} = portfolio, attrs \\ %{}) do
     Portfolio.changeset(portfolio, attrs)
   end

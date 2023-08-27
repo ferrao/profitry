@@ -23,7 +23,7 @@ defmodule ProfitryAppWeb.PositionLive.Index do
 
     socket =
       assign(socket, :navigate, ~p"/portfolios/#{id}")
-      |> assign(:portfolio, Investment.get_portfolio!(user, id))
+      |> assign(:portfolio, Investment.get_portfolio(user, id))
       |> assign(:reports, reports)
       |> assign(:totals, totals)
 
@@ -35,7 +35,7 @@ defmodule ProfitryAppWeb.PositionLive.Index do
     user = socket.assigns.current_user
 
     portfolio =
-      Investment.get_portfolio!(user, id)
+      Investment.get_portfolio(user, id)
       |> Repo.preload(:positions)
 
     case Investment.delete_position(portfolio, ticker) do

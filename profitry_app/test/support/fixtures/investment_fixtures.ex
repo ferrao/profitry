@@ -5,7 +5,7 @@ defmodule ProfitryApp.InvestmentFixtures do
   """
 
   @doc """
-  Generate a portfolio.
+  Generate a portfolio for a user
   """
   def portfolio_fixture(user, attrs \\ %{}) do
     attrs =

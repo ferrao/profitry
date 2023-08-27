@@ -9,8 +9,8 @@ defmodule ProfitryApp.Exchanges.Supervisor do
 
   def init(:ok) do
     children = [
-      {RestClient, ProfitryApp.Exchanges.Finnhub.FinnhubClient}
-      # {RestClient, ProfitryApp.Exchanges.Dummy.DummyClient}
+      # {RestClient, ProfitryApp.Exchanges.Finnhub.FinnhubClient}
+      {RestClient, ProfitryApp.Exchanges.Dummy.DummyClient}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

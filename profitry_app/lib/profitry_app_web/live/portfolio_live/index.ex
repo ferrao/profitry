@@ -47,7 +47,7 @@ defmodule ProfitryAppWeb.PortfolioLive.Index do
   defp apply_action(socket, user, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Portfolio")
-    |> assign(:portfolio, Investment.get_portfolio!(user, id))
+    |> assign(:portfolio, Investment.get_portfolio(user, id))
   end
 
   defp apply_action(socket, _user, :new, _params) do
