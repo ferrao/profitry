@@ -1,5 +1,5 @@
 defmodule ProfitryApp.Investment.InvestmentTest do
-  alias ProfitryApp.Investment.Portfolio
+  alias ProfitryApp.Investment.{Portfolio, Position}
   use ProfitryApp.DataCase, async: true
 
   import ProfitryApp.{InvestmentFixtures, AccountsFixtures}
@@ -107,6 +107,30 @@ defmodule ProfitryApp.Investment.InvestmentTest do
       portfolio = portfolio_fixture(user)
 
       assert %Ecto.Changeset{} = Investment.change_portfolio(portfolio)
+    end
+
+    test "create_position/2 with valid data creates a new position" do
+      user = user_fixture()
+      portfolio = portfolio_fixture(user)
+      valid_attrs = %{ticker: "TSLA"}
+
+      assert {:ok, %Position{} = position} = Investment.create_position(portfolio, valid_attrs)
+
+      assert position.portfolio_id == portfolio.id
+      assert position.portfolio == portfolio
+      assert position.ticker == valid_attrs.ticker
+    end
+
+    test "create_position/2 with invalid data creates an error changeset" do
+      user = user_fixture()
+      portfolio = portfolio_fixture(user)
+
+      assert {:error, %Ecto.Changeset{}} = Investment.create_position(portfolio, %{})
+    end
+
+    test "update_position/2 with valid data updates the position" do
+      user = user_fixture()
+      portfolio = portfolio_fixture(user)
     end
   end
 end

@@ -20,4 +20,7 @@ defmodule ProfitryApp.InvestmentFixtures do
 
     portfolio
   end
+
+  def position_fixture(portfolio, attrs \\ %{}) do
+  end
 end
