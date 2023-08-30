@@ -93,7 +93,12 @@ defmodule ProfitryApp.Investment.InvestmentTest do
       assert_raise Ecto.NoResultsError, fn -> Investment.get_portfolio!(portfolio.id) end
     end
 
-    # TODO: fails to delete portfolio with positions
+    test "delete_portfolio/1 creates an error changeset for a portfolio with positions" do
+      {_user, portfolio, _position} = position_fixture()
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Investment.delete_portfolio(portfolio)
+      assert ["Portfolio contains positions"] = errors_on(changeset).positions
+    end
 
     test "change_portfolio/1 returns a portfolio changeset" do
       {_user, portfolio} = portfolio_fixture()
@@ -120,6 +125,32 @@ defmodule ProfitryApp.Investment.InvestmentTest do
 
     test "update_position/2 with valid data updates the position" do
       {_user, portfolio, position} = position_fixture()
+      valid_attrs = %{ticker: "AAPL"}
+
+      assert {:ok, %Position{} = position} = Investment.update_position(position, valid_attrs)
+      assert position.portfolio_id == portfolio.id
+      assert position.ticker == valid_attrs.ticker
     end
+
+    test "update_position/2 with invalid data creates an error changeset" do
+      {_user, _portfolio, position} = position_fixture()
+
+      assert {:error, %Ecto.Changeset{}} = Investment.update_position(position, %{ticker: nil})
+      assert position.ticker == "TSLA"
+    end
+
+    test "delete_position/1 deletes a position from a portfolio" do
+      {_user, portfolio, _position} = position_fixture()
+      portfolio = portfolio |> Repo.preload(:positions)
+
+      assert {:ok, %Position{}} = Investment.delete_position(portfolio, "TSLA")
+
+      assert length(
+               (Investment.get_portfolio!(portfolio.id)
+                |> Repo.preload(:positions)).positions
+             ) == 0
+    end
+
+    # TODO fails to delete position with orders
   end
 end
