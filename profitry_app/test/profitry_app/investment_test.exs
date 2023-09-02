@@ -139,16 +139,35 @@ defmodule ProfitryApp.Investment.InvestmentTest do
       assert position.ticker == "TSLA"
     end
 
-    test "delete_position/1 deletes a position from a portfolio" do
+    test "find_position/2 finds position by ticker" do
+      {_user, portfolio, position} = position_fixture()
+
+      assert %Position{ticker: ticker} = Investment.find_position(portfolio, position.ticker)
+      assert ticker == position.ticker
+    end
+
+    test "find_position/2 returns nil for invalid non existing position" do
       {_user, portfolio, _position} = position_fixture()
+
+      assert nil == Investment.find_position(portfolio, "XPTO")
+    end
+
+    test "delete_position/1 deletes a position from a portfolio" do
+      {_user, portfolio, position} = position_fixture()
       portfolio = portfolio |> Repo.preload(:positions)
 
-      assert {:ok, %Position{}} = Investment.delete_position(portfolio, "TSLA")
+      assert {:ok, %Position{}} = Investment.delete_position(portfolio, position.ticker)
 
-      assert length(
-               (Investment.get_portfolio!(portfolio.id)
-                |> Repo.preload(:positions)).positions
-             ) == 0
+      assert nil ==
+               Investment.get_portfolio!(portfolio.id)
+               |> Investment.find_position(position.ticker)
+    end
+
+    test "delete_position/1 creates an error changeset for a position with orders" do
+      {_user, portfolio, _position} = position_fixture()
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Investment.delete_portfolio(portfolio)
+      assert ["Portfolio contains positions"] = errors_on(changeset).positions
     end
 
     # TODO fails to delete position with orders

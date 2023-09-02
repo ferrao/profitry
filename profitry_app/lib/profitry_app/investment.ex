@@ -243,6 +243,7 @@ defmodule ProfitryApp.Investment do
       nil
 
   """
+  @spec find_position(Portfolio.t(), String.t()) :: Position.t() | nil
   def find_position(%Portfolio{} = portfolio, ticker) do
     portfolio = portfolio |> Repo.preload(:positions)
 
@@ -262,6 +263,8 @@ defmodule ProfitryApp.Investment do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec delete_position(Portfolio.t(), String.t()) ::
+          {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
   def delete_position(%Portfolio{} = portfolio, ticker) do
     portfolio.positions
     |> Enum.find(&(&1.ticker == ticker))
