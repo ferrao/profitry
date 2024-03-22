@@ -7,14 +7,12 @@ defmodule Profitry.InvestmentFixtures do
   @doc """
   Generate a order.
   """
-  def order_fixture(attrs \\ %{}) do
-    {:ok, order} =
-      attrs
-      |> Enum.into(%{
+  # def order_fixture(attrs \\ %{}) do
+  #   {:ok, order} =
+  #     attrs
+  #     |> Enum.into(%{})
+  #     |> Profitry.Investment.create_order()
 
-      })
-      |> Profitry.Investment.create_order()
-
-    order
-  end
+  #   order
+  # end
 end

@@ -32,7 +32,7 @@ defmodule Profitry.Investment.Position do
     |> cast(attrs, [:ticker])
     |> validate_required([:ticker])
     |> capitalize([:ticker])
-    |> unique_constraint([:ticker])
+    |> unique_constraint([:ticker, :portfolio])
     |> no_assoc_constraint(:orders, message: "Position contains orders")
   end
 end
