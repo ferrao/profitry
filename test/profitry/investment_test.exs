@@ -5,11 +5,11 @@ defmodule Profitry.InvestmentTest do
   alias Profitry.Investment.Portfolio
 
   describe "investment" do
-    test "create_portfolio/1 with valid data creates portfol" do
+    test "create_portfolio/1 with valid data creates portfolio" do
       attrs = %{broker: "eToro", description: "Lame portfolio"}
 
       assert {:ok, %Portfolio{} = portfolio} = Investment.create_portfolio(attrs)
-      assert portfolio.broker == attrs.broker
+      assert portfolio.broker == String.upcase(attrs.broker)
       assert portfolio.description == attrs.description
     end
 
