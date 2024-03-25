@@ -5,14 +5,16 @@ defmodule Profitry.InvestmentFixtures do
   """
 
   @doc """
-  Generate a order.
+  Generate a portfolio for a user
   """
-  # def order_fixture(attrs \\ %{}) do
-  #   {:ok, order} =
-  #     attrs
-  #     |> Enum.into(%{})
-  #     |> Profitry.Investment.create_order()
+  def portfolio_fixture(attrs \\ %{}) do
+    attrs =
+      attrs
+      |> Enum.into(%{broker: "IBKR", description: "Investment Portfolio"})
 
-  #   order
-  # end
+    {:ok, portfolio} =
+      Profitry.Investment.create_portfolio(attrs)
+
+    portfolio
+  end
 end

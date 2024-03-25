@@ -26,4 +26,22 @@ defmodule Profitry.Investment do
     |> Portfolio.changeset(attrs)
     |> Repo.insert()
   end
+
+  @doc """
+  Returns the list of portfolios.
+
+  ## Examples
+
+      iex> list_portfolios()
+      [%Portfolio{}, ...]
+
+
+      iex> list_portfolios(user)
+      [%Portfolio{}, ...]
+
+  """
+  @spec list_portfolios() :: list(Portfolio.t())
+  def list_portfolios() do
+    Repo.all(Portfolio)
+  end
 end

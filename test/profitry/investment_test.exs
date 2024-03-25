@@ -1,6 +1,8 @@
 defmodule Profitry.InvestmentTest do
   use Profitry.DataCase, async: true
 
+  import Profitry.InvestmentFixtures
+
   alias Profitry.Investment
   alias Profitry.Investment.Portfolio
 
@@ -17,6 +19,12 @@ defmodule Profitry.InvestmentTest do
       assert {:error, %Ecto.Changeset{}} = Investment.create_portfolio(%{})
       assert {:error, %Ecto.Changeset{}} = Investment.create_portfolio(%{broker: "eToro"})
       assert {:error, %Ecto.Changeset{}} = Investment.create_portfolio(%{description: "You wish"})
+    end
+
+    test "list_porfolios/0 returns existing portfolios" do
+      portfolio = portfolio_fixture()
+
+      assert Investment.list_portfolios() == [portfolio]
     end
   end
 end
