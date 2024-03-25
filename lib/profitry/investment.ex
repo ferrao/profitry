@@ -44,4 +44,23 @@ defmodule Profitry.Investment do
   def list_portfolios() do
     Repo.all(Portfolio)
   end
+
+  @doc """
+  Gets a single portfolio.
+
+  Returns `nil` if the Portfolio does not exist.
+
+  ## Examples
+
+      iex> get_portfolio(123)
+      %Portfolio{}
+
+      iex> get_portfolio(456)
+      nil
+
+  """
+  @spec get_portfolios(integer()) :: Portfolio.t()
+  def get_portfolios(id) do
+    Repo.get(Portfolio, id)
+  end
 end

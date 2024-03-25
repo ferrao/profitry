@@ -26,5 +26,15 @@ defmodule Profitry.InvestmentTest do
 
       assert Investment.list_portfolios() == [portfolio]
     end
+
+    test "get_portfolios/1 returns existing portfolio" do
+      portfolio = portfolio_fixture()
+
+      assert Investment.get_portfolios(portfolio.id) == portfolio
+    end
+
+    test "get_portfolios/1 returns nil for invalid portfolio id" do
+      assert Investment.get_portfolios(9999) == nil
+    end
   end
 end
