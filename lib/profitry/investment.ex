@@ -63,4 +63,24 @@ defmodule Profitry.Investment do
   def get_portfolio(id) do
     Repo.get(Portfolio, id)
   end
+
+  @doc """
+  Updates a portfolio.
+
+  ## Examples
+
+      iex> update_portfolio(portfolio, %{field: new_value})
+      {:ok, %Portfolio{}}
+
+      iex> update_portfolio(portfolio, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_portfolio(Portfolio.t(), Map.t()) ::
+          {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
+  def update_portfolio(portfolio, attrs) do
+    portfolio
+    |> Portfolio.changeset(attrs)
+    |> Repo.update()
+  end
 end
