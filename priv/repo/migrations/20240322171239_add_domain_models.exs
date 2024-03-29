@@ -25,8 +25,8 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
     create table(:orders) do
       add :type, :citext, null: false
       add :instrument, :citext, null: false
-      add :quantity, :decimal
-      add :price, :decimal
+      add :quantity, :decimal, null: false
+      add :price, :decimal, null: false
       add :position_id, references(:positions, on_delete: :nothing)
 
       timestamps()
@@ -35,7 +35,8 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
     create index(:orders, [:position_id])
 
     create table(:options) do
-      add :strike, :integer
+      add :strike, :integer, null: false
+      add :expiration, :date, null: false
       add :order_id, references(:orders, on_delete: :nothing)
 
       timestamps()
