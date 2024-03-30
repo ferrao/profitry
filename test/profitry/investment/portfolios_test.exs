@@ -1,4 +1,4 @@
-defmodule Profitry.InvestmentTest do
+defmodule Profitry.Investment.PortfoliosTest do
   use Profitry.DataCase, async: true
 
   import Profitry.InvestmentFixtures
