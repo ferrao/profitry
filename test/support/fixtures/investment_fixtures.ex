@@ -3,18 +3,13 @@ defmodule Profitry.InvestmentFixtures do
   This module defines test helpers for creating
   entities via the `Profitry.Investment` context.
   """
+  alias Profitry.Investment.Schema.Portfolio
 
   @doc """
   Generate a portfolio for a user
   """
   def portfolio_fixture(attrs \\ %{}) do
-    attrs =
-      attrs
-      |> Enum.into(%{broker: "IBKR", description: "Investment Portfolio"})
-
-    {:ok, portfolio} =
-      Profitry.Investment.create_portfolio(attrs)
-
-    portfolio
+    portfolio = %Portfolio{broker: "IBKR", description: "Investment Portfolio"}
+    Profitry.Repo.insert!(struct(portfolio, attrs))
   end
 end
