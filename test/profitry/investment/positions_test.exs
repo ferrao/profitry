@@ -4,6 +4,7 @@ defmodule Profitry.Investment.PositionsTest do
   import Profitry.InvestmentFixtures
 
   alias Profitry.Investment
+  alias Profitry.Investment.Positions
   alias Profitry.Investment.Schema.Position
 
   describe "position" do
@@ -37,6 +38,27 @@ defmodule Profitry.Investment.PositionsTest do
       attrs = %{ticker: nil}
 
       assert {:error, %Ecto.Changeset{}} = Investment.update_position(position, attrs)
+    end
+
+    test "change_positions/1 returns a position changeset" do
+      {_portfolio, position} = position_fixture()
+
+      assert %Ecto.Changeset{} = Positions.change_position(position)
+    end
+
+    test "delete_position/1 deletes position" do
+      {_portfolio, position} = position_fixture()
+
+      assert {:ok, %Position{}} = Investment.delete_position(position)
+      assert_raise Ecto.NoResultsError, fn -> Repo.get!(Position, position.id) end
+    end
+
+    test "delete_position/1 creates an error changeset for a position with orders" do
+      {_portfolio, position, _order} = order_fixture()
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Investment.delete_position(position)
+      assert ["Position contains orders"] = errors_on(changeset).orders
+      assert position == Repo.get!(Position, position.id) |> Repo.preload(:portfolio)
     end
   end
 end

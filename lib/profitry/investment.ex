@@ -15,4 +15,5 @@ defmodule Profitry.Investment do
 
   defdelegate create_position(portfolio, attrs), to: Positions
   defdelegate update_position(position, attrs), to: Positions
+  defdelegate delete_position(position), to: Positions
 end

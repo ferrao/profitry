@@ -3,6 +3,7 @@ defmodule Profitry.Investment.Portfolios do
   alias Profitry.Investment.Schema.Portfolio
 
   @doc """
+
   Creates a portfolio.
 
   ## Examples
@@ -22,6 +23,7 @@ defmodule Profitry.Investment.Portfolios do
   end
 
   @doc """
+
   Returns the list of portfolios.
 
   ## Examples
@@ -40,6 +42,7 @@ defmodule Profitry.Investment.Portfolios do
   end
 
   @doc """
+
   Gets a single portfolio.
 
   Returns `nil` if the Portfolio does not exist.
@@ -59,6 +62,7 @@ defmodule Profitry.Investment.Portfolios do
   end
 
   @doc """
+
   Updates a portfolio.
 
   ## Examples
@@ -79,6 +83,7 @@ defmodule Profitry.Investment.Portfolios do
   end
 
   @doc """
+
   Deletes a portfolio
 
   ## Examples
@@ -98,6 +103,7 @@ defmodule Profitry.Investment.Portfolios do
   end
 
   @doc """
+
   Returns an `%Ecto.Changeset{}` for tracking portfolio changes.
 
   ## Examples

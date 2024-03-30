@@ -3,6 +3,7 @@ defmodule Profitry.Investment.Positions do
   alias Profitry.Investment.Schema.{Portfolio, Position}
 
   @doc """
+
   Creates a position on a portfolio
 
   ## Examples
@@ -24,6 +25,7 @@ defmodule Profitry.Investment.Positions do
   end
 
   @doc """
+
   Updates a position.
 
   ## Examples
@@ -41,5 +43,40 @@ defmodule Profitry.Investment.Positions do
     position
     |> Position.changeset(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+
+  Deletes a position.
+
+  ## Examples
+
+      iex> delete_position(position)
+      {:ok, %Position{}}
+
+      iex> delete_position(position)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_position(Position.t()) :: {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
+  def delete_position(%Position{} = position) do
+    position
+    |> change_position()
+    |> Repo.delete()
+  end
+
+  @doc """
+
+  Returns an `%Ecto.Changeset{}` for tracking position changes.
+
+  ## Examples
+
+      iex> change_position(position)
+      %Ecto.Changeset{data: %Position{}}
+
+  """
+  @spec change_position(Position.t(), Map.t()) :: Ecto.Changeset.t()
+  def change_position(%Position{} = position, attrs \\ %{}) do
+    Position.changeset(position, attrs)
   end
 end
