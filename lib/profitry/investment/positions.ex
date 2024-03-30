@@ -22,4 +22,24 @@ defmodule Profitry.Investment.Positions do
     |> Ecto.Changeset.put_assoc(:portfolio, portfolio)
     |> Repo.insert()
   end
+
+  @doc """
+  Updates a position.
+
+  ## Examples
+
+      iex> update_position(position, %{field: new_value})
+      {:ok, %Position{}}
+
+      iex> update_position(position, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_position(Position.t(), Map.t()) ::
+          {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
+  def update_position(%Position{} = position, attrs) do
+    position
+    |> Position.changeset(attrs)
+    |> Repo.update()
+  end
 end
