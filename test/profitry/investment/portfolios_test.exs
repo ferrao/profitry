@@ -4,6 +4,7 @@ defmodule Profitry.Investment.PortfoliosTest do
   import Profitry.InvestmentFixtures
 
   alias Profitry.Investment
+  alias Profitry.Investment.Portfolios
   alias Profitry.Investment.Schema.Portfolio
 
   describe "investment" do
@@ -57,6 +58,12 @@ defmodule Profitry.Investment.PortfoliosTest do
                Investment.update_portfolio(portfolio, %{description: nil})
 
       assert portfolio == Repo.get!(Portfolio, portfolio.id)
+    end
+
+    test "change_portfolio/1 returns a portfolio changeset" do
+      portfolio = portfolio_fixture()
+
+      assert %Ecto.Changeset{} = Portfolios.change_portfolio(portfolio)
     end
 
     test "delete_portfolio/1 deletes portfolio" do
