@@ -1,7 +1,7 @@
-defmodule Profitry.Investment.PortfolioTest do
+defmodule Profitry.Investment.Schema.PortfolioTest do
   use Profitry.DataCase, async: true
 
-  alias Profitry.Investment.Portfolio
+  alias Profitry.Investment.Schema.Portfolio
 
   describe "portfolio" do
     test "broker is required" do

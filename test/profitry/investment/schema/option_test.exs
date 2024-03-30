@@ -1,7 +1,7 @@
-defmodule Profitry.Investment.OptionTest do
+defmodule Profitry.Investment.Schema.OptionTest do
   use Profitry.DataCase, async: true
 
-  alias Profitry.Investment.Option
+  alias Profitry.Investment.Schema.Option
 
   describe "option" do
     test "strike is required" do

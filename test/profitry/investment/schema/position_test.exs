@@ -1,7 +1,7 @@
-defmodule Profitry.Investment.PositionTest do
+defmodule Profitry.Investment.Schema.PositionTest do
   use Profitry.DataCase, async: true
 
-  alias Profitry.Investment.Position
+  alias Profitry.Investment.Schema.Position
 
   describe "position" do
     test "ticker is required" do

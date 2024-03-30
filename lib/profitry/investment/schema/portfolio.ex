@@ -1,4 +1,4 @@
-defmodule Profitry.Investment.Portfolio do
+defmodule Profitry.Investment.Schema.Portfolio do
   @moduledoc """
 
   Schema representing a portfolio of positions  
@@ -10,7 +10,7 @@ defmodule Profitry.Investment.Portfolio do
   import Ecto.Changeset
   import Profitry.Utils.Ecto
 
-  alias Profitry.Investment.Position
+  alias Profitry.Investment.Schema.Position
 
   @type t :: %__MODULE__{
           broker: String.t(),

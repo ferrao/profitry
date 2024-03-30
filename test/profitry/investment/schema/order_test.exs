@@ -1,7 +1,7 @@
-defmodule Profitry.Investment.OrderTest do
+defmodule Profitry.Investment.Schema.OrderTest do
   use Profitry.DataCase, async: true
 
-  alias Profitry.Investment.Order
+  alias Profitry.Investment.Schema.Order
 
   describe "order" do
     test "type is required" do

@@ -1,4 +1,4 @@
-defmodule Profitry.Investment.Option do
+defmodule Profitry.Investment.Schema.Option do
   @moduledoc """
 
   Schema representing the details of an options contract for an order to buy/sell premium
@@ -7,7 +7,7 @@ defmodule Profitry.Investment.Option do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias Profitry.Investment.Order
+  alias Profitry.Investment.Schema.Order
 
   @type t :: %__MODULE__{
           strike: Integer.t(),

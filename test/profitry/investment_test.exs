@@ -4,7 +4,7 @@ defmodule Profitry.InvestmentTest do
   import Profitry.InvestmentFixtures
 
   alias Profitry.Investment
-  alias Profitry.Investment.Portfolio
+  alias Profitry.Investment.Schema.Portfolio
 
   describe "investment" do
     test "create_portfolio/1 with valid data creates portfolio" do

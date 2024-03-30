@@ -1,4 +1,4 @@
-defmodule Profitry.Investment.Order do
+defmodule Profitry.Investment.Schema.Order do
   @moduledoc """
 
   Schema representing a buy or a sell order on stocks or premium
@@ -8,7 +8,7 @@ defmodule Profitry.Investment.Order do
   use Ecto.Schema
 
   import Ecto.Changeset
-  alias Profitry.Investment.{Option, Position}
+  alias Profitry.Investment.Schema.{Option, Position}
 
   @type order :: :buy | :sell
   @type instrument :: :stock | :option
