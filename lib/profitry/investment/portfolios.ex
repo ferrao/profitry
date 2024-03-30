@@ -1,5 +1,4 @@
 defmodule Profitry.Investment.Portfolios do
-  # import Ecto.Query
   alias Profitry.Repo
   alias Profitry.Investment.Schema.Portfolio
 
@@ -77,5 +76,38 @@ defmodule Profitry.Investment.Portfolios do
     portfolio
     |> Portfolio.changeset(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+  Deletes a portfolio
+
+  ## Examples
+
+      iex> delete_portfolio(portfolio)
+      {:ok, %Portfolio{}}
+
+      iex> delete_portfolio(portfolio)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_portfolio(Portfolio.t()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
+  def delete_portfolio(portfolio) do
+    portfolio
+    |> change_portfolio()
+    |> Repo.delete()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking portfolio changes.
+
+  ## Examples
+
+      iex> change_portfolio(portfolio)
+      %Ecto.Changeset{data: %Portfolio{}}
+
+  """
+  @spec change_portfolio(Portfolio.t(), Map.t()) :: Ecto.Changeset.t()
+  def change_portfolio(%Portfolio{} = portfolio, attrs \\ %{}) do
+    Portfolio.changeset(portfolio, attrs)
   end
 end

@@ -13,6 +13,7 @@ defmodule Profitry.InvestmentTest do
       assert {:ok, %Portfolio{} = portfolio} = Investment.create_portfolio(attrs)
       assert portfolio.broker == String.upcase(attrs.broker)
       assert portfolio.description == attrs.description
+      assert portfolio == Repo.get!(Portfolio, portfolio.id)
     end
 
     test "create_portfolio/1 with invalid data creates an error changeset" do
@@ -44,6 +45,7 @@ defmodule Profitry.InvestmentTest do
       assert {:ok, %Portfolio{} = portfolio} = Investment.update_portfolio(portfolio, attrs)
       assert portfolio.broker == String.upcase(attrs.broker)
       assert portfolio.description == attrs.description
+      assert portfolio == Repo.get!(Portfolio, portfolio.id)
     end
 
     test "update_portfolio/2 with invalid data creates an error changeset" do
@@ -54,6 +56,21 @@ defmodule Profitry.InvestmentTest do
       assert {:error, %Ecto.Changeset{}} =
                Investment.update_portfolio(portfolio, %{description: nil})
 
+      assert portfolio == Repo.get!(Portfolio, portfolio.id)
+    end
+
+    test "delete_portfolio/1 deletes portfolio" do
+      portfolio = portfolio_fixture()
+
+      assert {:ok, %Portfolio{}} = Investment.delete_portfolio(portfolio)
+      assert_raise Ecto.NoResultsError, fn -> Repo.get!(Portfolio, portfolio.id) end
+    end
+
+    test "delete_portfolio/1 creates an error changeset for a portfolio with positions" do
+      {portfolio, _position} = position_fixture()
+
+      assert {:error, %Ecto.Changeset{} = changeset} = Investment.delete_portfolio(portfolio)
+      assert ["Portfolio contains positions"] = errors_on(changeset).positions
       assert portfolio == Repo.get!(Portfolio, portfolio.id)
     end
   end

@@ -1,4 +1,7 @@
 defmodule Profitry.SchemaFixtures.Test do
+  @moduledoc """
+  This module defines a test schema  
+  """
   use Ecto.Schema
 
   schema "test" do
