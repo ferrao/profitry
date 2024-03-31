@@ -60,4 +60,24 @@ defmodule Profitry.Investment.Orders do
   def get_order(id) do
     Repo.get(Order, id)
   end
+
+  @doc """
+
+  Updates an order
+
+  ## Examples
+
+    iex> update_order(order, %{field: new_value})
+    {:ok, %Order{}}
+
+    iex> update_order(order, %{field: bad_value})
+    {:error, %Ecto.Changeset{}}
+
+  """
+  @spec update_order(Order.t(), Map.t()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def update_order(order, attrs) do
+    order
+    |> Order.changeset(attrs)
+    |> Repo.update()
+  end
 end

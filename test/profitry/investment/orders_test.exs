@@ -77,5 +77,28 @@ defmodule Profitry.Investment.OrdersTest do
     test "get_order/1 returns nill for invalid order id" do
       assert Investment.get_order(999) == nil
     end
+
+    test "update_order/2 with valid data updates order" do
+      {_portfolio, _position, order} = order_fixture()
+
+      attrs = %{
+        instrument: "option",
+        option: %{strike: 50, expiration: "2024-02-01"}
+      }
+
+      assert {:ok, %Order{} = order} =
+               Investment.update_order(order |> Repo.preload(:option), attrs)
+
+      assert order.instrument == String.to_atom(attrs.instrument)
+      assert order.option.strike == attrs.option.strike
+      assert order.option.expiration == Date.from_iso8601!(attrs.option.expiration)
+    end
+
+    test "update_order/2 with invalid data creates an error changeset" do
+      {_portfolio, _position, order} = order_fixture()
+
+      assert {:error, %Ecto.Changeset{}} = Investment.update_order(order, %{instrument: nil})
+      assert {:error, %Ecto.Changeset{}} = Investment.update_order(order, %{price: nil})
+    end
   end
 end
