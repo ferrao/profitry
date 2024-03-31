@@ -17,6 +17,7 @@ defmodule Profitry.Investment.Schema.Order do
           instrument: instrument,
           quantity: Decimal.t(),
           price: Decimal.t(),
+          option: nil | Option.t(),
           inserted_at: DateTime.t(),
           updated_at: DateTime.t()
         }
@@ -36,6 +37,7 @@ defmodule Profitry.Investment.Schema.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:type, :instrument, :quantity, :price, :inserted_at])
+    |> cast_assoc(:option)
     |> validate_required([:type, :instrument, :quantity, :price, :inserted_at])
     |> validate_number(:quantity, greater_than: 0)
     |> validate_number(:price, greater_than_or_equal_to: 0)

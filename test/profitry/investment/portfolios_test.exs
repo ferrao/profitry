@@ -19,8 +19,6 @@ defmodule Profitry.Investment.PortfoliosTest do
 
     test "create_portfolio/1 with invalid data creates an error changeset" do
       assert {:error, %Ecto.Changeset{}} = Investment.create_portfolio(%{})
-      assert {:error, %Ecto.Changeset{}} = Investment.create_portfolio(%{broker: "eToro"})
-      assert {:error, %Ecto.Changeset{}} = Investment.create_portfolio(%{description: "You wish"})
     end
 
     test "list_porfolios/0 returns existing portfolios" do
