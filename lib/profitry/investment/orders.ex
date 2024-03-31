@@ -19,7 +19,7 @@ defmodule Profitry.Investment.Orders do
   """
   @spec create_order(Position.t(), Map.t()) ::
           {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
-  def create_order(position, attrs \\ %{}) do
+  def create_order(%Position{} = position, attrs \\ %{}) do
     %Order{}
     |> Order.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:position, position)
@@ -75,9 +75,42 @@ defmodule Profitry.Investment.Orders do
 
   """
   @spec update_order(Order.t(), Map.t()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
-  def update_order(order, attrs) do
+  def update_order(%Order{} = order, attrs) do
     order
     |> Order.changeset(attrs)
     |> Repo.update()
+  end
+
+  @doc """
+
+  Deletes an order
+
+  ## Examples
+
+    iex> delete_order(order)
+    {:ok, %Order{}}
+
+    iex> delete_order(order)
+    {:error, %Ecto.Changeset{}}
+
+  """
+  @spec delete_order(Order.t()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def delete_order(%Order{} = order) do
+    order
+    |> change_order()
+    |> Repo.delete()
+  end
+
+  @doc """
+
+  ## Examples
+
+    iex> change_order(order)
+    %Ecto.Changeset{data: %Order{}}
+
+  """
+  @spec change_order(Order.t(), Map.t()) :: Ecto.Changeset.t()
+  def change_order(%Order{} = order, attrs \\ %{}) do
+    Order.changeset(order, attrs)
   end
 end

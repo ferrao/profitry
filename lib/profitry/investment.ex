@@ -21,4 +21,5 @@ defmodule Profitry.Investment do
   defdelegate list_orders(position), to: Orders
   defdelegate get_order(id), to: Orders
   defdelegate update_order(order, attrs), to: Orders
+  defdelegate delete_order(order), to: Orders
 end

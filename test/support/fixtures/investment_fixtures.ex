@@ -6,7 +6,7 @@ defmodule Profitry.InvestmentFixtures do
 
   """
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.{Portfolio, Position, Order}
+  alias Profitry.Investment.Schema.{Portfolio, Position, Order, Option}
 
   @doc """
 
@@ -56,6 +56,32 @@ defmodule Profitry.InvestmentFixtures do
       quantity: Decimal.new("1.3"),
       price: Decimal.new("123.7"),
       inserted_at: ~N[2023-01-01 12:00:07]
+    }
+    |> Order.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:position, position)
+    |> Repo.insert!()
+  end
+
+  @doc """
+
+  Generates an option for an order
+
+  """
+  def option_fixture() do
+    {portfolio, position} = position_fixture()
+    order = option_fixture(position)
+
+    {portfolio, position, order}
+  end
+
+  def option_fixture(position, attrs \\ %{}) do
+    %Order{
+      type: :buy,
+      instrument: :option,
+      quantity: Decimal.new("1"),
+      price: Decimal.new("123.7"),
+      inserted_at: ~N[2023-01-01 12:00:07],
+      option: %Option{strike: 50, expiration: ~D[2024-02-01]}
     }
     |> Order.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:position, position)

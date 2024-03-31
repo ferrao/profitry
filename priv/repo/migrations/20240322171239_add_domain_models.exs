@@ -2,6 +2,7 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
   use Ecto.Migration
 
   def change do
+    # Postgres docker image needs case insensitive text extension to be explicitely enabled
     execute "CREATE EXTENSION IF NOT EXISTS citext"
 
     create table(:portfolios) do
@@ -37,7 +38,9 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
     create table(:options) do
       add :strike, :integer, null: false
       add :expiration, :date, null: false
-      add :order_id, references(:orders, on_delete: :nothing)
+
+      # delete option if parent order is deleted
+      add :order_id, references(:orders, on_delete: :delete_all)
 
       timestamps()
     end

@@ -4,8 +4,8 @@ defmodule Profitry.Investment.OrdersTest do
   import Profitry.InvestmentFixtures
 
   alias Profitry.Investment
-  # alias Profitry.Investment.Orders
-  alias Profitry.Investment.Schema.Order
+  alias Profitry.Investment.Orders
+  alias Profitry.Investment.Schema.{Order, Option}
 
   describe "order" do
     test "create_order/2 with valid data but no option creates an order" do
@@ -99,6 +99,26 @@ defmodule Profitry.Investment.OrdersTest do
 
       assert {:error, %Ecto.Changeset{}} = Investment.update_order(order, %{instrument: nil})
       assert {:error, %Ecto.Changeset{}} = Investment.update_order(order, %{price: nil})
+    end
+
+    test "change_order/1 returns an order changeset" do
+      {_portfolio, _position, order} = order_fixture()
+
+      assert %Ecto.Changeset{} = Orders.change_order(order)
+    end
+
+    test "delete_order/1 deletes order " do
+      {_portfolio, _position, order} = order_fixture()
+
+      assert {:ok, %Order{}} = Investment.delete_order(order)
+      assert_raise Ecto.NoResultsError, fn -> Repo.get!(Order, order.id) end
+    end
+
+    test "delete_order/1 deletes option" do
+      {_portfolio, _position, order} = option_fixture()
+
+      assert {:ok, %Order{}} = Investment.delete_order(order)
+      assert_raise Ecto.NoResultsError, fn -> Repo.get!(Option, order.option.id) end
     end
   end
 end
