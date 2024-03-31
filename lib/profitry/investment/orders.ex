@@ -42,4 +42,22 @@ defmodule Profitry.Investment.Orders do
     |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
+
+  @doc """
+
+  Get a single order
+
+  ## Examples
+
+    iex> get_order(123) 
+    %Order{}
+
+    iex> get_order(456)
+    nil
+
+  """
+  @spec get_order(integer()) :: Order.t() | nil
+  def get_order(id) do
+    Repo.get(Order, id)
+  end
 end

@@ -19,4 +19,5 @@ defmodule Profitry.Investment do
 
   defdelegate create_order(position, attrs), to: Orders
   defdelegate list_orders(position), to: Orders
+  defdelegate get_order(id), to: Orders
 end

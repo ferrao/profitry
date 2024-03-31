@@ -7,30 +7,30 @@ defmodule Profitry.Investment.OrdersTest do
   # alias Profitry.Investment.Orders
   alias Profitry.Investment.Schema.Order
 
-  test "create_order/2 with valid data but no option creates an order" do
-    {_portfolio, position} = position_fixture()
-
-    attrs = %{
-      type: "buy",
-      instrument: "option",
-      quantity: "1.3",
-      price: "132.3",
-      inserted_at: "2024-01-01 12:00:07"
-    }
-
-    {:ok, %Order{} = order} = Investment.create_order(position, attrs)
-    assert order.type == String.to_atom(attrs.type)
-    assert order.instrument == String.to_atom(attrs.instrument)
-    assert order.quantity == Decimal.new(attrs.quantity)
-    assert order.price == Decimal.new(attrs.price)
-    assert order.inserted_at == NaiveDateTime.from_iso8601!(attrs.inserted_at)
-
-    assert order ==
-             Repo.get(Order, order.id)
-             |> Repo.preload(position: :portfolio)
-  end
-
   describe "order" do
+    test "create_order/2 with valid data but no option creates an order" do
+      {_portfolio, position} = position_fixture()
+
+      attrs = %{
+        type: "buy",
+        instrument: "option",
+        quantity: "1.3",
+        price: "132.3",
+        inserted_at: "2024-01-01 12:00:07"
+      }
+
+      {:ok, %Order{} = order} = Investment.create_order(position, attrs)
+      assert order.type == String.to_atom(attrs.type)
+      assert order.instrument == String.to_atom(attrs.instrument)
+      assert order.quantity == Decimal.new(attrs.quantity)
+      assert order.price == Decimal.new(attrs.price)
+      assert order.inserted_at == NaiveDateTime.from_iso8601!(attrs.inserted_at)
+
+      assert order ==
+               Repo.get(Order, order.id)
+               |> Repo.preload(position: :portfolio)
+    end
+
     test "create_order/2 with valid data and option creates an order" do
       {_portfolio, position} = position_fixture()
 
@@ -66,6 +66,16 @@ defmodule Profitry.Investment.OrdersTest do
 
       assert Investment.list_orders(position)
              |> Repo.preload(position: :portfolio) == [order]
+    end
+
+    test "get_order/1 returns existing order" do
+      {_portfolio, _position, order} = order_fixture()
+
+      assert order == Investment.get_order(order.id) |> Repo.preload(position: :portfolio)
+    end
+
+    test "get_order/1 returns nill for invalid order id" do
+      assert Investment.get_order(999) == nil
     end
   end
 end

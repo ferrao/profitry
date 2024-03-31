@@ -56,7 +56,7 @@ defmodule Profitry.Investment.Portfolios do
       nil
 
   """
-  @spec get_portfolio(integer()) :: Portfolio.t()
+  @spec get_portfolio(integer()) :: Portfolio.t() | nil
   def get_portfolio(id) do
     Repo.get(Portfolio, id)
   end
