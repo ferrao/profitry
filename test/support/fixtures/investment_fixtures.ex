@@ -59,6 +59,6 @@ defmodule Profitry.InvestmentFixtures do
     }
     |> Order.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:position, position)
-    |> Repo.insert()
+    |> Repo.insert!()
   end
 end

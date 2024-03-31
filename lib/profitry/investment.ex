@@ -1,5 +1,5 @@
 defmodule Profitry.Investment do
-  alias Profitry.Investment.{Portfolios, Positions}
+  alias Profitry.Investment.{Portfolios, Positions, Orders}
 
   @moduledoc """
 
@@ -16,4 +16,6 @@ defmodule Profitry.Investment do
   defdelegate create_position(portfolio, attrs), to: Positions
   defdelegate update_position(position, attrs), to: Positions
   defdelegate delete_position(position), to: Positions
+
+  defdelegate list_orders(position), to: Orders
 end
