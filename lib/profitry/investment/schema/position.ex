@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Schema.Position do
   @moduledoc """
 
-    Schema representing a portfolio position
+  Schema representing a portfolio position
 
   """
 
@@ -15,8 +15,8 @@ defmodule Profitry.Investment.Schema.Position do
   @type t :: %__MODULE__{
           ticker: String.t(),
           orders: list(Order.t()),
-          inserted_at: DateTime.t(),
-          updated_at: DateTime.t()
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
         }
 
   schema "positions" do

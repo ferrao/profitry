@@ -16,8 +16,8 @@ defmodule Profitry.Investment.Schema.Portfolio do
           broker: String.t(),
           description: String.t(),
           positions: list(Position.t()),
-          inserted_at: DateTime.t(),
-          updated_at: DateTime.t()
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
         }
 
   schema "portfolios" do

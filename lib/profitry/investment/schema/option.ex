@@ -13,8 +13,8 @@ defmodule Profitry.Investment.Schema.Option do
           strike: Integer.t(),
           expiration: Date.t(),
           order: Order.t(),
-          inserted_at: DateTime.t(),
-          updated_at: DateTime.t()
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
         }
 
   schema "options" do

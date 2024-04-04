@@ -18,8 +18,8 @@ defmodule Profitry.Investment.Schema.Order do
           quantity: Decimal.t(),
           price: Decimal.t(),
           option: nil | Option.t(),
-          inserted_at: DateTime.t(),
-          updated_at: DateTime.t()
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
         }
 
   schema "orders" do
