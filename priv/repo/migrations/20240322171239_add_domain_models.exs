@@ -46,5 +46,13 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
     end
 
     create index(:options, [:order_id])
+
+    create table(:splits) do
+      add :ticker, :citext, null: false
+      add :multiplier, :integer, null: false
+      add :reverse, :boolean, null: false
+
+      timestamps()
+    end
   end
 end
