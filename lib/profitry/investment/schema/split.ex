@@ -18,7 +18,7 @@ defmodule Profitry.Investment.Schema.Split do
           updated_at: NaiveDateTime.t()
         }
 
-  schema "split" do
+  schema "splits" do
     field :ticker, :string
     field :multiplier, :integer
     field :reverse, :boolean
