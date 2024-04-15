@@ -6,7 +6,7 @@ defmodule Profitry.InvestmentFixtures do
 
   """
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.{Portfolio, Position, Order, Option}
+  alias Profitry.Investment.Schema.{Portfolio, Position, Order, Option, Split}
 
   @doc """
 
@@ -85,6 +85,22 @@ defmodule Profitry.InvestmentFixtures do
     }
     |> Order.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:position, position)
+    |> Repo.insert!()
+  end
+
+  @doc """
+
+  Generates a stock split
+
+  """
+  def split_fixture(attrs \\ %{}) do
+    %Split{
+      ticker: "TSLA",
+      multiplier: 3,
+      reverse: false,
+      inserted_at: ~N[2023-01-01 12:00:07]
+    }
+    |> Split.changeset(attrs)
     |> Repo.insert!()
   end
 end

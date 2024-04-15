@@ -40,7 +40,7 @@ defmodule Profitry.Investment.PositionsTest do
       assert {:error, %Ecto.Changeset{}} = Investment.update_position(position, attrs)
     end
 
-    test "change_positions/1 returns a position changeset" do
+    test "change_position/1 returns a position changeset" do
       {_portfolio, position} = position_fixture()
 
       assert %Ecto.Changeset{} = Positions.change_position(position)

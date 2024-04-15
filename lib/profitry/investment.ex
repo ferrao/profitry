@@ -1,5 +1,5 @@
 defmodule Profitry.Investment do
-  alias Profitry.Investment.{Portfolios, Positions, Orders}
+  alias Profitry.Investment.{Portfolios, Positions, Orders, Splits}
 
   @moduledoc """
 
@@ -22,4 +22,10 @@ defmodule Profitry.Investment do
   defdelegate get_order(id), to: Orders
   defdelegate update_order(order, attrs), to: Orders
   defdelegate delete_order(order), to: Orders
+
+  defdelegate create_split(attrs), to: Splits
+  defdelegate update_split(split, attr), to: Splits
+  defdelegate delete_split(split), to: Splits
+  defdelegate list_splits(), to: Splits
+  defdelegate find_splits(ticker), to: Splits
 end
