@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Schema.Order do
   @moduledoc """
 
-  Schema representing a buy or a sell order on stocks or premium
+  Ecto schema representing a buy or a sell order on stocks or premium
 
   """
 

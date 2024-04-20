@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Schema.Portfolio do
   @moduledoc """
 
-  Schema representing a portfolio of positions  
+  Ecto Schema representing a portfolio of positions  
 
   """
 

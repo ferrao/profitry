@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Schema.Option do
   @moduledoc """
 
-  Schema representing the details of an options contract for an order to buy/sell premium
+  Ecto schema representing the details of an options contract for an order to buy/sell premium
 
   """
 
