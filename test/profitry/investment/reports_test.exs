@@ -14,14 +14,16 @@ defmodule Profitry.Investment.ReportsTest do
       %OptionsReport{
         strike: 200,
         expiration: ~D[2023-01-01],
-        contracts: 2
+        contracts: 2,
+        investment: Decimal.new("140.20")
       }
     ],
     short_options: [
       %OptionsReport{
         strike: 250,
         expiration: ~D[2023-01-01],
-        contracts: 2
+        contracts: 2,
+        investment: Decimal.new("320.40")
       }
     ]
   }
@@ -46,11 +48,11 @@ defmodule Profitry.Investment.ReportsTest do
       assert Decimal.compare(report.investment, Decimal.new("24158.1")) == :eq
 
       assert report.long_options == [
-               %OptionsReport{strike: 200, contracts: 2, expiration: ~D[2023-01-01]}
+               %OptionsReport{strike: 200, contracts: 2, expiration: ~D[2023-01-01], investment: Decimal.new("140.20")}
              ]
 
       assert report.short_options == [
-               %OptionsReport{strike: 250, contracts: 2, expiration: ~D[2023-01-01]}
+               %OptionsReport{strike: 250, contracts: 2, expiration: ~D[2023-01-01] ,investment: Decimal.new("320.40")}
              ]
     end
 
@@ -68,11 +70,11 @@ defmodule Profitry.Investment.ReportsTest do
       assert Decimal.compare(report.investment, Decimal.new("22641.9")) == :eq
 
       assert report.long_options == [
-               %OptionsReport{strike: 200, contracts: 2, expiration: ~D[2023-01-01]}
+               %OptionsReport{strike: 200, contracts: 2, expiration: ~D[2023-01-01], investment: Decimal.new("140.20")}
              ]
 
       assert report.short_options == [
-               %OptionsReport{strike: 250, contracts: 2, expiration: ~D[2023-01-01]}
+               %OptionsReport{strike: 250, contracts: 2, expiration: ~D[2023-01-01], investment: Decimal.new("320.40")}
              ]
     end
   end
@@ -102,7 +104,8 @@ defmodule Profitry.Investment.ReportsTest do
              %OptionsReport{
                strike: 200,
                expiration: ~D[2023-01-01],
-               contracts: 4
+               contracts: 4,
+               investment: Decimal.new("480.20")
              }
            ]
   end
@@ -132,7 +135,8 @@ defmodule Profitry.Investment.ReportsTest do
              %OptionsReport{
                strike: 250,
                expiration: ~D[2023-01-01],
-               contracts: 4
+               contracts: 4,
+               investment: Decimal.new("-19.60")
              }
            ]
   end

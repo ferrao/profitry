@@ -25,6 +25,24 @@ defmodule Profitry.Investment.Schema.Option do
     timestamps()
   end
 
+  @shares_per_contract 100
+
+  @doc """
+
+  The number of shares per option contract
+
+  """
+  @spec shares_per_contract() :: Integer.t()
+  def shares_per_contract, do: @shares_per_contract
+
+  @doc """
+
+  The value of the option contract
+
+  """
+  @spec option_value(Decimal.t()) :: Decimal.t()
+  def option_value(price), do: Decimal.mult(@shares_per_contract, price)
+
   def changeset(option, attrs) do
     option
     |> cast(attrs, [:strike, :expiration])

@@ -4,6 +4,14 @@ defmodule Profitry.Investment.Schema.OptionTest do
   alias Profitry.Investment.Schema.Option
 
   describe "option" do
+    test "number of shares per contracts is 100" do
+      assert Option.shares_per_contract() == 100
+    end
+
+    test "calculates option value " do
+      assert Option.option_value(Decimal.new("1.27")) |> Decimal.to_string() == "127.00"
+    end
+
     test "strike is required" do
       changeset = Option.changeset(%Option{}, %{})
       assert ["can't be blank"] = errors_on(changeset).strike

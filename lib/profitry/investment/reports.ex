@@ -5,11 +5,11 @@ defmodule Profitry.Investment.Reports do
 
   """
 
+  alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Investment.Schema.OptionsReport
   alias Profitry.Investment.Schema.{Position, PositionReport, Order, Option}
-  alias Profitry.Exchanges.Schema.Quote
 
-  @shares_per_contract 100
+  import Profitry.Investment.Schema.Option, only: [option_value: 1]
 
   @doc """
 
@@ -17,7 +17,7 @@ defmodule Profitry.Investment.Reports do
 
   """
   @spec make_report(Position.t(), Quote.t()) :: Report.t()
-  def make_report(%Position{ticker: ticker, orders: orders}, _quote \\ nil) do
+  def make_report(%Position{ticker: ticker, orders: orders}, %Quote{} = quote \\ %Quote{price: 0}) do
     report = %PositionReport{ticker: ticker}
 
     report =
@@ -25,7 +25,14 @@ defmodule Profitry.Investment.Reports do
         calculate_order(report, order)
       end)
 
+    has_shares = Decimal.gt?(report.shares, 0)
+
     report
+    |> PositionReport.calculate_cost_basis(has_shares)
+    |> PositionReport.calculate_profit(quote.price)
+    |> PositionReport.calculate_value(quote.price)
+    |> Map.put(:ticker, ticker)
+    |> Map.put(:price, quote.price)
   end
 
   # buy stock 
@@ -37,7 +44,7 @@ defmodule Profitry.Investment.Reports do
       }) do
     %PositionReport{
       report
-      | investment: Decimal.add(report.investment, Decimal.mult(quantity, price)),
+      | investment: Decimal.add(report.investment, stock_investment(quantity, price)),
         shares: Decimal.add(report.shares, quantity)
     }
   end
@@ -51,7 +58,7 @@ defmodule Profitry.Investment.Reports do
       }) do
     %PositionReport{
       report
-      | investment: Decimal.sub(report.investment, Decimal.mult(quantity, price)),
+      | investment: Decimal.sub(report.investment, stock_investment(quantity, price)),
         shares: Decimal.sub(report.shares, quantity)
     }
   end
@@ -70,16 +77,13 @@ defmodule Profitry.Investment.Reports do
     %PositionReport{
       report
       | investment:
-          Decimal.add(
-            report.investment,
-            quantity |> Decimal.mult(price) |> Decimal.mult(@shares_per_contract)
-          ),
+          Decimal.add(report.investment, option_investment( quantity, price)),
         long_options:
           OptionsReport.update_reports(report.long_options, %OptionsReport{
             strike: strike,
             expiration: expiration,
             contracts: quantity,
-            value: price
+            investment: option_investment(quantity, price)
           })
     }
   end
@@ -98,17 +102,18 @@ defmodule Profitry.Investment.Reports do
     %PositionReport{
       report
       | investment:
-          Decimal.sub(
-            report.investment,
-            quantity |> Decimal.mult(price) |> Decimal.mult(@shares_per_contract)
-          ),
+          Decimal.sub(report.investment, option_investment( quantity, price)),
         short_options:
           OptionsReport.update_reports(report.short_options, %OptionsReport{
             strike: strike,
             expiration: expiration,
             contracts: quantity,
-            value: price
+            investment: Decimal.mult(option_investment(quantity, price), -1)
           })
     }
   end
+
+  defp stock_investment(quantity, price), do: Decimal.mult(quantity, price)
+  defp option_investment(quantity, price), do: Decimal.mult(quantity, option_value(price))
+
 end
