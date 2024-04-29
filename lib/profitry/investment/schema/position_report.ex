@@ -21,12 +21,12 @@ defmodule Profitry.Investment.Schema.PositionReport do
 
   defstruct [
     :ticker,
-    investment: 0,
-    shares: 0,
-    cost_basis: 0,
-    price: 0,
-    value: 0,
-    profit: 0,
+    investment: Decimal.new(0),
+    shares: Decimal.new(0),
+    cost_basis: Decimal.new(0),
+    price: Decimal.new(0),
+    value: Decimal.new(0),
+    profit: Decimal.new(0),
     long_options: [],
     short_options: []
   ]
@@ -53,7 +53,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
   """
   # with no quote
   def calculate_profit(report, nil) do
-    Map.put(report, :profit, 0)
+    Map.put(report, :profit, Decimal.new(0))
   end
 
   # with a quote
@@ -68,7 +68,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
 
   # with no quote
   def calculate_value(report, nil) do
-    Map.put(report, :value, 0)
+    Map.put(report, :value, Decimal.new(0))
   end
 
   # with quote

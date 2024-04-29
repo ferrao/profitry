@@ -12,7 +12,7 @@ defmodule Profitry.Investment.Schema.OptionsReport do
           contracts: Integer.t()
         }
 
-  defstruct [:strike, :expiration, investment: 0, contracts: 1, value: 0, profit: 0]
+  defstruct [:strike, :expiration, investment: Decimal.new(0), contracts: 1]
 
   @doc """
 
@@ -24,8 +24,21 @@ defmodule Profitry.Investment.Schema.OptionsReport do
 
   @spec update_reports(list(OptionsReport.t()), OptionsReport.t()) :: list(OptionsReport.t())
   def update_reports(
-        [%__MODULE__{strike: strike, expiration: expiration, contracts: contracts, investment: investment} = h | t],
-        %__MODULE__{strike: strike, expiration: expiration, contracts: new_contracts, investment: new_investment}
+        [
+          %__MODULE__{
+            strike: strike,
+            expiration: expiration,
+            contracts: contracts,
+            investment: investment
+          } = h
+          | t
+        ],
+        %__MODULE__{
+          strike: strike,
+          expiration: expiration,
+          contracts: new_contracts,
+          investment: new_investment
+        }
       ) do
     [
       %__MODULE__{

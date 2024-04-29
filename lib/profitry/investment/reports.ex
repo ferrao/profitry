@@ -16,8 +16,11 @@ defmodule Profitry.Investment.Reports do
   Creates a report on a portfolio position
 
   """
-  @spec make_report(Position.t(), Quote.t()) :: Report.t()
-  def make_report(%Position{ticker: ticker, orders: orders}, %Quote{} = quote \\ %Quote{price: 0}) do
+  @spec make_report(Position.t(), Quote.t()) :: PositionReport.t()
+  def make_report(
+        %Position{ticker: ticker, orders: orders},
+        quote \\ %Quote{price: Decimal.new(0)}
+      ) do
     report = %PositionReport{ticker: ticker}
 
     report =
@@ -76,8 +79,7 @@ defmodule Profitry.Investment.Reports do
       }) do
     %PositionReport{
       report
-      | investment:
-          Decimal.add(report.investment, option_investment( quantity, price)),
+      | investment: Decimal.add(report.investment, option_investment(quantity, price)),
         long_options:
           OptionsReport.update_reports(report.long_options, %OptionsReport{
             strike: strike,
@@ -101,8 +103,7 @@ defmodule Profitry.Investment.Reports do
       }) do
     %PositionReport{
       report
-      | investment:
-          Decimal.sub(report.investment, option_investment( quantity, price)),
+      | investment: Decimal.sub(report.investment, option_investment(quantity, price)),
         short_options:
           OptionsReport.update_reports(report.short_options, %OptionsReport{
             strike: strike,
@@ -115,5 +116,4 @@ defmodule Profitry.Investment.Reports do
 
   defp stock_investment(quantity, price), do: Decimal.mult(quantity, price)
   defp option_investment(quantity, price), do: Decimal.mult(quantity, option_value(price))
-
 end
