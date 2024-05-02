@@ -17,10 +17,7 @@ defmodule Profitry.Investment.Reports do
 
   """
   @spec make_report(Position.t(), Quote.t()) :: PositionReport.t()
-  def make_report(
-        %Position{ticker: ticker, orders: orders},
-        quote \\ %Quote{price: Decimal.new(0)}
-      ) do
+  def make_report(%Position{ticker: ticker, orders: orders}, quote \\ %Quote{}) do
     report = %PositionReport{ticker: ticker}
 
     report =
@@ -35,7 +32,8 @@ defmodule Profitry.Investment.Reports do
     |> PositionReport.calculate_profit(quote.price)
     |> PositionReport.calculate_value(quote.price)
     |> Map.put(:ticker, ticker)
-    |> Map.put(:price, quote.price)
+
+    # |> Map.put(:price, quote.price)
   end
 
   # buy stock 

@@ -6,9 +6,9 @@ defmodule Profitry.Exchanges.Schema.Quote do
   """
 
   @type t :: %__MODULE__{
-          ticker: String.t(),
-          price: Decimal.t(),
-          timestamp: DateTime.t()
+          ticker: String.t() | nil,
+          price: Decimal.t() | nil,
+          timestamp: DateTime.t() | nil
         }
 
   defstruct [:ticker, :price, :timestamp]

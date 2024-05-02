@@ -17,7 +17,7 @@ defmodule Profitry.Investment.Orders do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_order(Position.t(), Map.t()) ::
+  @spec create_order(Position.t(), map()) ::
           {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
   def create_order(%Position{} = position, attrs \\ %{}) do
     %Order{}
@@ -74,7 +74,7 @@ defmodule Profitry.Investment.Orders do
     {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_order(Order.t(), Map.t()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  @spec update_order(Order.t(), map()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
   def update_order(%Order{} = order, attrs) do
     order
     |> Order.changeset(attrs)
@@ -109,7 +109,7 @@ defmodule Profitry.Investment.Orders do
     %Ecto.Changeset{data: %Order{}}
 
   """
-  @spec change_order(Order.t(), Map.t()) :: Ecto.Changeset.t()
+  @spec change_order(Order.t(), map()) :: Ecto.Changeset.t()
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
   end

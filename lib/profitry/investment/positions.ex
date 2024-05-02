@@ -15,7 +15,7 @@ defmodule Profitry.Investment.Positions do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_position(Portfolio.t(), Map.t()) ::
+  @spec create_position(Portfolio.t(), map()) ::
           {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
   def create_position(portfolio, attrs \\ %{}) do
     %Position{}
@@ -37,7 +37,7 @@ defmodule Profitry.Investment.Positions do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_position(Position.t(), Map.t()) ::
+  @spec update_position(Position.t(), map()) ::
           {:ok, Position.t()} | {:error, Ecto.Changeset.t()}
   def update_position(%Position{} = position, attrs) do
     position
@@ -75,7 +75,7 @@ defmodule Profitry.Investment.Positions do
       %Ecto.Changeset{data: %Position{}}
 
   """
-  @spec change_position(Position.t(), Map.t()) :: Ecto.Changeset.t()
+  @spec change_position(Position.t(), map()) :: Ecto.Changeset.t()
   def change_position(%Position{} = position, attrs \\ %{}) do
     Position.changeset(position, attrs)
   end

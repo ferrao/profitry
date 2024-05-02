@@ -10,7 +10,7 @@ defmodule Profitry.Investment.Schema.Option do
   alias Profitry.Investment.Schema.Order
 
   @type t :: %__MODULE__{
-          strike: Integer.t(),
+          strike: integer(),
           expiration: Date.t(),
           order: Order.t(),
           inserted_at: NaiveDateTime.t(),
@@ -32,7 +32,7 @@ defmodule Profitry.Investment.Schema.Option do
   The number of shares per option contract
 
   """
-  @spec shares_per_contract() :: Integer.t()
+  @spec shares_per_contract() :: integer()
   def shares_per_contract, do: @shares_per_contract
 
   @doc """

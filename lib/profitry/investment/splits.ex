@@ -17,7 +17,7 @@ defmodule Profitry.Investment.Splits do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_split(Map.t()) :: {:ok, Split.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_split(map()) :: {:ok, Split.t()} | {:error, Ecto.Changeset.t()}
   def create_split(attrs \\ %{}) do
     %Split{}
     |> Split.changeset(attrs)
@@ -80,7 +80,7 @@ defmodule Profitry.Investment.Splits do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_split(Split.t(), Map.t()) :: {:ok, Split.t()} | {:error, Ecto.Changeset.t()}
+  @spec update_split(Split.t(), map()) :: {:ok, Split.t()} | {:error, Ecto.Changeset.t()}
   def update_split(%Split{} = split, attrs) do
     split
     |> Split.changeset(attrs)
@@ -118,7 +118,7 @@ defmodule Profitry.Investment.Splits do
       %Ecto.Changeset{data: %Split{}}
 
   """
-  @spec change_split(Split.t(), Map.t()) :: Ecto.Changeset.t()
+  @spec change_split(Split.t(), map()) :: Ecto.Changeset.t()
   def change_split(%Split{} = split, attrs \\ %{}) do
     Split.changeset(split, attrs)
   end

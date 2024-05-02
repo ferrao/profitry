@@ -15,7 +15,7 @@ defmodule Profitry.Investment.Portfolios do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_portfolio(Map.t()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_portfolio(map()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
   def create_portfolio(attrs \\ %{}) do
     %Portfolio{}
     |> Portfolio.changeset(attrs)
@@ -74,7 +74,7 @@ defmodule Profitry.Investment.Portfolios do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_portfolio(Portfolio.t(), Map.t()) ::
+  @spec update_portfolio(Portfolio.t(), map()) ::
           {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
   def update_portfolio(portfolio, attrs) do
     portfolio
@@ -112,7 +112,7 @@ defmodule Profitry.Investment.Portfolios do
       %Ecto.Changeset{data: %Portfolio{}}
 
   """
-  @spec change_portfolio(Portfolio.t(), Map.t()) :: Ecto.Changeset.t()
+  @spec change_portfolio(Portfolio.t(), map()) :: Ecto.Changeset.t()
   def change_portfolio(%Portfolio{} = portfolio, attrs \\ %{}) do
     Portfolio.changeset(portfolio, attrs)
   end
