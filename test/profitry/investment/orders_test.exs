@@ -20,15 +20,13 @@ defmodule Profitry.Investment.OrdersTest do
       }
 
       {:ok, %Order{} = order} = Investment.create_order(position, attrs)
-      assert order.type == String.to_atom(attrs.type)
-      assert order.instrument == String.to_atom(attrs.instrument)
-      assert order.quantity == Decimal.new(attrs.quantity)
-      assert order.price == Decimal.new(attrs.price)
-      assert order.inserted_at == NaiveDateTime.from_iso8601!(attrs.inserted_at)
+      assert order.type === String.to_atom(attrs.type)
+      assert order.instrument === String.to_atom(attrs.instrument)
+      assert Decimal.compare(order.quantity, attrs.quantity) === :eq
+      assert Decimal.compare(order.price, attrs.price) === :eq
+      assert order.inserted_at === NaiveDateTime.from_iso8601!(attrs.inserted_at)
 
-      assert order ==
-               Repo.get(Order, order.id)
-               |> Repo.preload(position: :portfolio)
+      assert order === Repo.get(Order, order.id) |> Repo.preload(position: :portfolio)
     end
 
     test "create_order/2 with valid data and option creates an order" do
@@ -44,11 +42,11 @@ defmodule Profitry.Investment.OrdersTest do
       }
 
       {:ok, %Order{} = order} = Investment.create_order(position, attrs)
-      assert order.type == String.to_atom(attrs.type)
-      assert order.instrument == String.to_atom(attrs.instrument)
-      assert order.quantity == Decimal.new(attrs.quantity)
-      assert order.price == Decimal.new(attrs.price)
-      assert order.inserted_at == NaiveDateTime.from_iso8601!(attrs.inserted_at)
+      assert order.type === String.to_atom(attrs.type)
+      assert order.instrument === String.to_atom(attrs.instrument)
+      assert Decimal.compare(order.quantity, attrs.quantity) === :eq
+      assert Decimal.compare(order.price, attrs.price) === :eq
+      assert order.inserted_at === NaiveDateTime.from_iso8601!(attrs.inserted_at)
 
       assert order ==
                Repo.get(Order, order.id)
@@ -65,17 +63,17 @@ defmodule Profitry.Investment.OrdersTest do
       {_portfolio, position, order} = order_fixture()
 
       assert Investment.list_orders(position)
-             |> Repo.preload(position: :portfolio) == [order]
+             |> Repo.preload(position: :portfolio) === [order]
     end
 
     test "get_order/1 returns existing order" do
       {_portfolio, _position, order} = order_fixture()
 
-      assert order == Investment.get_order(order.id) |> Repo.preload(position: :portfolio)
+      assert order === Investment.get_order(order.id) |> Repo.preload(position: :portfolio)
     end
 
     test "get_order/1 returns nill for invalid order id" do
-      assert Investment.get_order(999) == nil
+      assert Investment.get_order(999) === nil
     end
 
     test "update_order/2 with valid data updates order" do
@@ -89,9 +87,9 @@ defmodule Profitry.Investment.OrdersTest do
       assert {:ok, %Order{} = order} =
                Investment.update_order(order |> Repo.preload(:option), attrs)
 
-      assert order.instrument == String.to_atom(attrs.instrument)
-      assert order.option.strike == attrs.option.strike
-      assert order.option.expiration == Date.from_iso8601!(attrs.option.expiration)
+      assert order.instrument === String.to_atom(attrs.instrument)
+      assert order.option.strike === attrs.option.strike
+      assert order.option.expiration === Date.from_iso8601!(attrs.option.expiration)
     end
 
     test "update_order/2 with invalid data creates an error changeset" do

@@ -44,15 +44,25 @@ defmodule Profitry.Investment.ReportsTest do
 
       report = Reports.calculate_order(@report, order)
 
-      assert Decimal.compare(report.shares, Decimal.new("103")) == :eq
-      assert Decimal.compare(report.investment, Decimal.new("24158.1")) == :eq
+      assert Decimal.compare(report.shares, "103") === :eq
+      assert Decimal.compare(report.investment, "24158.1") === :eq
 
       assert report.long_options == [
-               %OptionsReport{strike: 200, contracts: 2, expiration: ~D[2023-01-01], investment: Decimal.new("140.20")}
+               %OptionsReport{
+                 strike: 200,
+                 contracts: 2,
+                 expiration: ~D[2023-01-01],
+                 investment: Decimal.new("140.20")
+               }
              ]
 
       assert report.short_options == [
-               %OptionsReport{strike: 250, contracts: 2, expiration: ~D[2023-01-01] ,investment: Decimal.new("320.40")}
+               %OptionsReport{
+                 strike: 250,
+                 contracts: 2,
+                 expiration: ~D[2023-01-01],
+                 investment: Decimal.new("320.40")
+               }
              ]
     end
 
@@ -66,15 +76,25 @@ defmodule Profitry.Investment.ReportsTest do
 
       report = Reports.calculate_order(@report, order)
 
-      assert Decimal.compare(report.shares, Decimal.new("97")) == :eq
-      assert Decimal.compare(report.investment, Decimal.new("22641.9")) == :eq
+      assert Decimal.compare(report.shares, 97) === :eq
+      assert Decimal.compare(report.investment, "22641.9") === :eq
 
       assert report.long_options == [
-               %OptionsReport{strike: 200, contracts: 2, expiration: ~D[2023-01-01], investment: Decimal.new("140.20")}
+               %OptionsReport{
+                 strike: 200,
+                 contracts: 2,
+                 expiration: ~D[2023-01-01],
+                 investment: Decimal.new("140.20")
+               }
              ]
 
       assert report.short_options == [
-               %OptionsReport{strike: 250, contracts: 2, expiration: ~D[2023-01-01], investment: Decimal.new("320.40")}
+               %OptionsReport{
+                 strike: 250,
+                 contracts: 2,
+                 expiration: ~D[2023-01-01],
+                 investment: Decimal.new("320.40")
+               }
              ]
     end
   end
@@ -95,10 +115,10 @@ defmodule Profitry.Investment.ReportsTest do
 
     assert report.ticker == @report.ticker
     assert report.short_options == @report.short_options
-    assert Decimal.compare(report.shares, @report.shares) == :eq
-    assert Decimal.compare(report.price, @report.price) == :eq
+    assert Decimal.compare(report.shares, @report.shares) === :eq
+    assert Decimal.compare(report.price, @report.price) === :eq
 
-    assert Decimal.compare(report.investment, Decimal.new("23740")) == :eq
+    assert Decimal.compare(report.investment, "23740") === :eq
 
     assert report.long_options == [
              %OptionsReport{
@@ -126,10 +146,10 @@ defmodule Profitry.Investment.ReportsTest do
 
     assert report.ticker == @report.ticker
     assert report.long_options == @report.long_options
-    assert Decimal.compare(report.shares, @report.shares) == :eq
-    assert Decimal.compare(report.price, @report.price) == :eq
+    assert Decimal.compare(report.shares, @report.shares) === :eq
+    assert Decimal.compare(report.price, @report.price) === :eq
 
-    assert Decimal.compare(report.investment, Decimal.new("23060")) == :eq
+    assert Decimal.compare(report.investment, "23060") === :eq
 
     assert report.short_options == [
              %OptionsReport{

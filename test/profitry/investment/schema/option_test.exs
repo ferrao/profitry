@@ -5,11 +5,11 @@ defmodule Profitry.Investment.Schema.OptionTest do
 
   describe "option" do
     test "number of shares per contracts is 100" do
-      assert Option.shares_per_contract() == 100
+      assert Option.shares_per_contract() === 100
     end
 
     test "calculates option value " do
-      assert Option.option_value(Decimal.new("1.27")) |> Decimal.to_string() == "127.00"
+      assert Decimal.compare(Option.option_value(Decimal.new("1.27")), "127.00") === :eq
     end
 
     test "strike is required" do

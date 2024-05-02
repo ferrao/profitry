@@ -13,9 +13,9 @@ defmodule Profitry.Investment.PositionsTest do
       attrs = %{ticker: "aapl"}
 
       assert {:ok, %Position{} = position} = Investment.create_position(portfolio, attrs)
-      assert position.ticker == String.upcase(attrs.ticker)
-      assert position.portfolio_id == portfolio.id
-      assert position == Repo.get!(Position, position.id) |> Repo.preload(:portfolio)
+      assert position.ticker === String.upcase(attrs.ticker)
+      assert position.portfolio_id === portfolio.id
+      assert position === Repo.get!(Position, position.id) |> Repo.preload(:portfolio)
     end
 
     test "create_position/2 with invalid data creates an error changeset" do
@@ -29,8 +29,8 @@ defmodule Profitry.Investment.PositionsTest do
       attrs = %{ticker: "aapl"}
 
       assert {:ok, %Position{} = position} = Investment.update_position(position, attrs)
-      assert position.ticker == String.upcase(attrs.ticker)
-      assert position.portfolio_id == portfolio.id
+      assert position.ticker === String.upcase(attrs.ticker)
+      assert position.portfolio_id === portfolio.id
     end
 
     test "update_position/2 with invalid data creates an error changeset" do
@@ -58,7 +58,7 @@ defmodule Profitry.Investment.PositionsTest do
 
       assert {:error, %Ecto.Changeset{} = changeset} = Investment.delete_position(position)
       assert ["Position contains orders"] = errors_on(changeset).orders
-      assert position == Repo.get!(Position, position.id) |> Repo.preload(:portfolio)
+      assert position === Repo.get!(Position, position.id) |> Repo.preload(:portfolio)
     end
   end
 end
