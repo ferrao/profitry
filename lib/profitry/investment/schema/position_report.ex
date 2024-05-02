@@ -37,11 +37,13 @@ defmodule Profitry.Investment.Schema.PositionReport do
 
   """
   # with no shares
+  @spec calculate_cost_basis(t(), boolean()) :: t()
   def calculate_cost_basis(report, _has_shares = false) do
     Map.put(report, :cost_basis, "0.00")
   end
 
   # with shares
+  @spec calculate_cost_basis(t(), boolean()) :: t()
   def calculate_cost_basis(report, _has_shares) do
     Map.put(report, :cost_basis, Decimal.div(report.investment, report.shares))
   end
@@ -52,11 +54,13 @@ defmodule Profitry.Investment.Schema.PositionReport do
 
   """
   # with no quote
+  @spec calculate_profit(t(), nil) :: t()
   def calculate_profit(report, nil) do
     Map.put(report, :profit, Decimal.new(0))
   end
 
   # with a quote
+  @spec calculate_profit(t(), Decimal.t()) :: t()
   def calculate_profit(report, price) do
     profit =
       Decimal.mult(report.shares, price)
@@ -67,11 +71,13 @@ defmodule Profitry.Investment.Schema.PositionReport do
   end
 
   # with no quote
+  @spec calculate_value(t(), nil) :: t()
   def calculate_value(report, nil) do
     Map.put(report, :value, Decimal.new(0))
   end
 
   # with quote
+  @spec calculate_value(t(), Decimal.t()) :: t()
   def calculate_value(report, price) do
     Map.put(report, :value, Decimal.mult(report.shares, price))
   end

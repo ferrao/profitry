@@ -19,10 +19,10 @@ defmodule Profitry.Investment.Schema.OptionsReport do
   Adds or updates a list of option reports with a new set of options contracts
 
   """
-  @spec update_reports(list(__MODULE__.t()), __MODULE__.t()) :: list(__MODULE__.t())
+  @spec update_reports(list(t()), t()) :: list(t())
   def update_reports([], options_report), do: [options_report]
 
-  @spec update_reports(list(__MODULE__.t()), __MODULE__.t()) :: list(__MODULE__.t())
+  @spec update_reports(list(t()), t()) :: list(t())
   def update_reports(
         [
           %__MODULE__{
@@ -50,6 +50,6 @@ defmodule Profitry.Investment.Schema.OptionsReport do
     ]
   end
 
-  @spec update_reports(list(__MODULE__.t()), __MODULE__.t()) :: list(__MODULE__.t())
+  @spec update_reports(list(t()), t()) :: list(t())
   def update_reports([h | t], options_report), do: [h | update_reports(t, options_report)]
 end
