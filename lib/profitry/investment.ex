@@ -30,4 +30,5 @@ defmodule Profitry.Investment do
   defdelegate find_splits(ticker), to: Splits
 
   defdelegate make_report(position, quote), to: Reports
+  defdelegate make_report(position), to: Reports
 end

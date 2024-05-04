@@ -31,9 +31,8 @@ defmodule Profitry.Investment.Reports do
     |> PositionReport.calculate_cost_basis(has_shares)
     |> PositionReport.calculate_profit(quote.price)
     |> PositionReport.calculate_value(quote.price)
+    |> Map.put(:price, quote.price || Decimal.new(0))
     |> Map.put(:ticker, ticker)
-
-    # |> Map.put(:price, quote.price)
   end
 
   # buy stock 
