@@ -1,0 +1,262 @@
+﻿Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers Central Europe Zrt.
+Statement,Data,BrokerAddress,"Madach Imre ut 13-14, Floor 5, Budapest, 1075, Hungary"
+Statement,Data,Title,Activity Statement
+Statement,Data,Period,"January 1, 2021 - December 31, 2021"
+Statement,Data,WhenGenerated,"2024-04-02, 13:07:10 EDT"
+Account Information,Header,Field Name,Field Value
+Account Information,Data,Name,Rui P Ferrao
+Account Information,Data,Account,U5803181
+Account Information,Data,Account Type,Individual
+Account Information,Data,Customer Type,Individual
+Account Information,Data,Account Capabilities,Margin
+Account Information,Data,Base Currency,USD
+Net Asset Value,Header,Asset Class,Prior Total,Current Long,Current Short,Current Total,Change
+Net Asset Value,Data,Cash ,0,4370.6334782,0,4370.6334782,4370.6334782
+Net Asset Value,Data,Collateral Value,0,12259.71,0,12259.71,12259.71
+Net Asset Value,Data,Stock,0,139246.92,0,139246.92,139246.92
+Net Asset Value,Data,Securities Right To Use,0,0,-12259.71,-12259.71,-12259.71
+Net Asset Value,Data,Options,0,180.75,-5044.09,-4863.34,-4863.34
+Net Asset Value,Data,Total,0,156058.0134782,-17303.8,138754.2134782,138754.2134782
+Net Asset Value,Header,Time Weighted Rate of Return
+Net Asset Value,Data,45.42235183%
+Change in NAV,Header,Field Name,Field Value
+Change in NAV,Data,Starting Value,0
+Change in NAV,Data,Mark-to-Market,43353.94
+Change in NAV,Data,Position Transfers,95414.64
+Change in NAV,Data,Interest,-3.11
+Change in NAV,Data,Commissions,-11.2335218
+Change in NAV,Data,Sales Tax,-0.023
+Change in NAV,Data,Ending Value,138754.2134782
+Mark-to-Market Performance Summary,Header,Asset Category,Symbol,Prior Quantity,Current Quantity,Prior Price,Current Price,Mark-to-Market P/L Position,Mark-to-Market P/L Transaction,Mark-to-Market P/L Commissions,Mark-to-Market P/L Other,Mark-to-Market P/L Total,Code
+Mark-to-Market Performance Summary,Data,Stocks,CLOV,0,100,--,3.7200,-203,6,-1,0,-198,
+Mark-to-Market Performance Summary,Data,Stocks,DM,0,100,--,4.9500,-263,-242,0,0,-505,
+Mark-to-Market Performance Summary,Data,Stocks,MILE,0,100,--,2.1900,-103,-178,0,0,-281,
+Mark-to-Market Performance Summary,Data,Stocks,PSFE,0,100,--,3.9100,2,-111,0,0,-109,
+Mark-to-Market Performance Summary,Data,Stocks,SSYS,0,45,--,24.4900,10.35,0,0,0,10.35,
+Mark-to-Market Performance Summary,Data,Stocks,TSLA,0,125,--,"1,056.7800",64454,-20449,-0.5729,0,44004.4271,
+Mark-to-Market Performance Summary,Data,Stocks,UBER,0,109,--,41.9300,-1660.07,0,0,0,-1660.07,
+Mark-to-Market Performance Summary,Data,Total,,,,,,62237.28,-20974,-1.5729,0,41261.7071,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,APPH 21JAN22 7.5 P,0,-1,--,3.6367,-132.05,-6.62,-1.8744975,0,-140.5444975,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,APPH 20MAY22 7.5 C,0,1,--,0.2250,-47.5,-5,-0.17135,0,-52.67135,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,DM 20AUG21 10.0 P,0,0,--,--,-118.16,238.16,-0.560412,0,119.439588,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,MILE 15OCT21 5.0 P,0,0,--,--,-55.11,172.11,-0.2555967,0,116.7444033,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,NNDM 20MAY22 5.0 C,0,1,--,0.4075,-72.5,4.25,-0.67135,0,-68.92135,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,NNDM 20MAY22 5.0 P,0,-1,--,1.5072,-25.72,1,-0.6739926,0,-25.3939926,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,PSFE 17DEC21 5.0 P,0,0,--,--,9.7,110.3,-0.603962,0,119.396038,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SOFI 18FEB22 17.5 C,0,1,--,1.1750,-67.5,5,-1.02135,0,-63.52135,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,SOFI 15JUL22 17.5 P,0,-1,--,4.6097,92.78,-13.75,-1.026104,0,78.003896,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,TSLA 19NOV21 1100.0 C,0,0,--,--,-3421.5,3691.5,-0.745727,0,269.254273,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,TSLA 17DEC21 1100.0 P,0,0,--,--,-11158,15558,-1.03579,0,4398.96421,
+Mark-to-Market Performance Summary,Data,Equity and Index Options,TSLA 21JAN22 1100.0 C,0,-1,--,40.6873,-2488.45,-180.28,-1.02049,0,-2669.75049,
+Mark-to-Market Performance Summary,Data,Total,,,,,,-17484.01,19574.67,-9.6606218,0,2080.9993782,
+Mark-to-Market Performance Summary,Data,Forex,USD,0,4370.6334782,1.0000,1.0000,0,0,0,0,0,
+Mark-to-Market Performance Summary,Data,Total,,,,,,0,0,0,0,0,
+Mark-to-Market Performance Summary,Data,Total (All Assets),,,,,,44753.27,-1399.33,-11.2335218,0,43342.7064782,
+Mark-to-Market Performance Summary,Data,Broker Interest Paid,,,,,,,,,,-3.11,
+Total P/L for Statement Period,,,,,,,,,,,,43339.5964782,
+Realized & Unrealized Performance Summary,Header,Asset Category,Symbol,Cost Adj.,Realized S/T Profit,Realized S/T Loss,Realized L/T Profit,Realized L/T Loss,Realized Total,Unrealized S/T Profit,Unrealized S/T Loss,Unrealized L/T Profit,Unrealized L/T Loss,Unrealized Total,Total,Code
+Realized & Unrealized Performance Summary,Data,Stocks,CLOV,0,0,0,0,0,0,0,-198,0,0,-198,-198,
+Realized & Unrealized Performance Summary,Data,Stocks,DM,0,0,0,0,0,0,0,-385.560412,0,0,-385.560412,-385.560412,
+Realized & Unrealized Performance Summary,Data,Stocks,MILE,0,0,0,0,0,0,0,-164.255597,0,0,-164.255597,-164.255597,
+Realized & Unrealized Performance Summary,Data,Stocks,PSFE,0,0,0,0,0,0,10.396038,0,0,0,10.396038,10.396038,
+Realized & Unrealized Performance Summary,Data,Stocks,SSYS,0,0,0,0,0,0,10.35,0,0,0,10.35,10.35,
+Realized & Unrealized Performance Summary,Data,Stocks,TSLA,0,39794.681373,0,0,0,39794.681373,8877.96421,0,0,0,8877.96421,48672.645583,
+Realized & Unrealized Performance Summary,Data,Stocks,UBER,0,0,0,0,0,0,0,-1660.07,0,0,-1660.07,-1660.07,
+Realized & Unrealized Performance Summary,Data,Total,,0,39794.681373,0,0,0,39794.681373,8898.710248,-2407.886009,0,0,6490.824239,46285.505612,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,APPH 21JAN22 7.5 P,0,0,0,0,0,0,0,-140.544497,0,0,-140.544497,-140.544497,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,APPH 20MAY22 7.5 C,0,0,0,0,0,0,0,-52.67135,0,0,-52.67135,-52.67135,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,NNDM 20MAY22 5.0 C,0,0,0,0,0,0,0,-68.92135,0,0,-68.92135,-68.92135,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,NNDM 20MAY22 5.0 P,0,0,0,0,0,0,0,-25.393993,0,0,-25.393993,-25.393993,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SOFI 18FEB22 17.5 C,0,0,0,0,0,0,0,-63.52135,0,0,-63.52135,-63.52135,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,SOFI 15JUL22 17.5 P,0,0,0,0,0,0,78.003896,0,0,0,78.003896,78.003896,
+Realized & Unrealized Performance Summary,Data,Equity and Index Options,TSLA 21JAN22 1100.0 C,0,0,0,0,0,0,0,-2669.75049,0,0,-2669.75049,-2669.75049,
+Realized & Unrealized Performance Summary,Data,Total,,0,0,0,0,0,0,78.003896,-3020.80303,0,0,-2942.799134,-2942.799134,
+Realized & Unrealized Performance Summary,Data,Total (All Assets),,0,39794.681373,0,0,0,39794.681373,8976.714144,-5428.689039,0,0,3548.025105,43342.706478,
+Cash Report,Header,Currency Summary,Currency,Total,
+Cash Report,Data,Starting Cash,Base Currency Summary,0,
+Cash Report,Data,Commissions,Base Currency Summary,-11.2335218,
+Cash Report,Data,Broker Interest Paid,Base Currency Summary,-3.11,
+Cash Report,Data,Trades (Sales),Base Currency Summary,117318,
+Cash Report,Data,Trades (Purchase),Base Currency Summary,-112933,
+Cash Report,Data,Sales Tax,USD,-0.023,
+Cash Report,Data,Ending Cash,Base Currency Summary,4370.6334782,
+Cash Report,Data,Ending Settled Cash,Base Currency Summary,4370.6334782,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Stocks,USD,CLOV,100,1,5.7,570,3.72,372,-198,
+Open Positions,Data,Summary,Stocks,USD,DM,100,1,8.80560412,880.560412,4.95,495,-385.560412,
+Open Positions,Data,Summary,Stocks,USD,MILE,100,1,3.83255597,383.255597,2.19,219,-164.255597,
+Open Positions,Data,Summary,Stocks,USD,PSFE,100,1,3.80603962,380.603962,3.91,391,10.396038,
+Open Positions,Data,Summary,Stocks,USD,SSYS,45,1,24.26,1091.7,24.49,1102.05,10.35,
+Open Positions,Data,Summary,Stocks,USD,TSLA,125,1,985.75628632,123219.53579,1056.78,132097.5,8877.96421,
+Open Positions,Data,Summary,Stocks,USD,UBER,109,1,57.16,6230.44,41.93,4570.37,-1660.07,
+Open Positions,Total,,Stocks,USD,,,,,132756.095761,,139246.92,6490.824239,
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Equity and Index Options,USD,APPH 21JAN22 7.5 P,-1,100,2.23125503,-223.125503,3.6367,-363.67,-140.544497,
+Open Positions,Data,Summary,Equity and Index Options,USD,APPH 20MAY22 7.5 C,1,100,0.7517135,75.17135,0.225,22.5,-52.67135,
+Open Positions,Data,Summary,Equity and Index Options,USD,NNDM 20MAY22 5.0 C,1,100,1.0967135,109.67135,0.4075,40.75,-68.92135,
+Open Positions,Data,Summary,Equity and Index Options,USD,NNDM 20MAY22 5.0 P,-1,100,1.25326007,-125.326007,1.5072,-150.72,-25.393993,
+Open Positions,Data,Summary,Equity and Index Options,USD,SOFI 18FEB22 17.5 C,1,100,1.8102135,181.02135,1.175,117.5,-63.52135,
+Open Positions,Data,Summary,Equity and Index Options,USD,SOFI 15JUL22 17.5 P,-1,100,5.38973896,-538.973896,4.6097,-460.97,78.003896,
+Open Positions,Data,Summary,Equity and Index Options,USD,TSLA 21JAN22 1100.0 C,-1,100,13.9897951,-1398.97951,40.6873,-4068.73,-2669.75049,
+Open Positions,Total,,Equity and Index Options,USD,,,,,-1920.540866,,-4863.34,-2942.799134,
+Collateral for Customer Borrowing,Header,Asset Category,Currency,Symbol,Settled Quantity,Collateral Price,Value,Securities Segregated Quantity,Securities Segregated Value,Securities Not Segregated Quantity,Securities Not Segregated Value,Securities Not Segregated: Third Party "Right to Use"  Quantity,Securities Not Segregated: Third Party "Right to Use"  Value,Securities Not Segregated: Subject to Stock Yield Enhancement Program Quantity,Securities Not Segregated: Subject to Stock Yield Enhancement Program Value
+Collateral for Customer Borrowing,Data,Securities,USD,CLOV,100,3.8400,384.00,0,0.00,100,384.00,100,384.00,0,0.00
+Collateral for Customer Borrowing,Data,Securities,USD,DM,100,5.0700,507.00,0,0.00,100,507.00,100,507.00,0,0.00
+Collateral for Customer Borrowing,Data,Securities,USD,MILE,100,2.2200,222.00,0,0.00,100,222.00,100,222.00,0,0.00
+Collateral for Customer Borrowing,Data,Securities,USD,PSFE,100,3.9900,399.00,0,0.00,100,399.00,100,399.00,0,0.00
+Collateral for Customer Borrowing,Data,Securities,USD,SSYS,45,24.7700,"1,114.65",0,0.00,45,"1,114.65",45,"1,114.65",0,0.00
+Collateral for Customer Borrowing,Data,Securities,USD,TSLA,125,"1,070.3400","133,792.50",116,"124,159.44",9,"9,633.06",9,"9,633.06",0,0.00
+Collateral for Customer Borrowing,Data,Total,,,,,"136,419.15",,"124,159.44",,"12,259.71",,"12,259.71",,0.00
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Stocks,USD,CLOV,"2021-11-19, 10:38:39",100,5.69,5.75,-569,-1,570,0,6,O
+Trades,SubTotal,,Stocks,USD,CLOV,,100,,,-569,-1,570,0,6,
+Trades,Data,Order,Stocks,USD,TSLA,"2021-11-19, 16:20:00",-100,1100,1137.06,110000,-0.5729,-70474,39794.681373,-3706,A;C
+Trades,Total,,Stocks,USD,,,,,,-2569,-1.5729,42096,39794.681373,-20974, 
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
+Trades,Data,Order,Equity and Index Options,USD,SOFI 18FEB22 17.5 C,"2021-12-03, 12:47:43",1,1.8,1.85,-180,-1.02135,181.02135,0,5,O
+Trades,SubTotal,,Equity and Index Options,USD,SOFI 18FEB22 17.5 C,,1,,,-180,-1.02135,181.02135,0,5,
+Trades,Data,Order,Equity and Index Options,USD,SOFI 15JUL22 17.5 P,"2021-12-03, 12:46:50",-1,5.4,5.5375,540,-1.026104,-538.973896,0,-13.75,O
+Trades,SubTotal,,Equity and Index Options,USD,SOFI 15JUL22 17.5 P,,-1,,,540,-1.026104,-538.973896,0,-13.75,
+Trades,Data,Order,Equity and Index Options,USD,TSLA 17DEC21 1100.0 P,"2021-12-17, 16:20:00",1,0,167.43,0,0,4398.96421,0,16743,A;C
+Trades,SubTotal,,Equity and Index Options,USD,TSLA 17DEC21 1100.0 P,,0,,,4400,-1.03579,0,0,15558,
+Trades,Data,Order,Equity and Index Options,USD,TSLA 21JAN22 1100.0 C,"2021-12-21, 09:37:55",-1,14,15.8028,1400,-1.02049,-1398.97951,0,-180.28,O
+Trades,SubTotal,,Equity and Index Options,USD,TSLA 21JAN22 1100.0 C,,-1,,,1400,-1.02049,-1398.97951,0,-180.28,
+Trades,Total,,Equity and Index Options,USD,,,,,,6954,-9.6606218,-1920.5408662,0,19574.67, 
+Transfers,Header,Asset Category,Currency,Symbol,Date,Type,Direction,Xfer Company,Xfer Account,Qty,Xfer Price,Market Value,Realized P/L,Cash Amount,Code
+Transfers,Data,Stocks,USD,SSYS,2021-04-28,FOP,In,--,FOP,45,--,"1,091.70",0.00,0.00,
+Transfers,Data,Stocks,USD,TSLA,2021-04-28,FOP,In,--,FOP,125,--,"88,092.50",0.00,0.00,
+Transfers,Data,Stocks,USD,UBER,2021-04-28,FOP,In,--,FOP,109,--,"6,230.44",0.00,0.00,
+Transfers,Data,Total,,,,,,,,,,95414.64,0,0,
+Fees,Header,Subtitle,Currency,Date,Description,Amount
+Fees,Data,Other Fees,USD,2021-05-05,F******27:US CONSOLIDATED SNAPSHOT FOR APR 2021,-0.01
+Fees,Data,Other Fees,USD,2021-05-05,F******27:US CONSOLIDATED SNAPSHOT FOR APR 2021,0.01
+Fees,Data,Other Fees,USD,2021-08-03,F******27:GLOBAL SNAPSHOT PNP FOR JUL 2021,-0.09
+Fees,Data,Other Fees,USD,2021-08-03,F******27:GLOBAL SNAPSHOT PNP FOR JUL 2021,0.09
+Fees,Data,Total,,,,0
+Fees,Notes,"Market data is provided by Global Financial Information Services (GmbH). Your local broker collects amounts owed for fees and tax for such data on behalf of Global Financial Information Services (GmbH). Note, you are responsible for any applicable taxes relating to the provision of these services."
+Interest,Header,Currency,Date,Description,Amount
+Interest,Data,USD,2021-09-03,USD Investment Loan Interest for Aug-2021,-0.26
+Interest,Data,USD,2021-10-05,USD Investment Loan Interest for Sep-2021,-0.9
+Interest,Data,USD,2021-11-03,USD Investment Loan Interest for Oct-2021,-1.18
+Interest,Data,USD,2021-12-03,USD Investment Loan Interest for Nov-2021,-0.77
+Interest,Data,Total,,,-3.11
+Interest Accruals,Header,Currency,Field Name,Field Value
+Interest Accruals,Data,Base Currency Summary,Starting Accrual Balance,0
+Interest Accruals,Data,Base Currency Summary,Interest Accrued,-3.11
+Interest Accruals,Data,Base Currency Summary,Accrual Reversal,3.11
+Interest Accruals,Data,Base Currency Summary,Ending Accrual Balance,0
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Security ID,Listing Exch,Multiplier,Type,Code
+Financial Instrument Information,Data,Stocks,CLOV,CLOVER HEALTH INVESTMENTS CO,464040647,US18914F1030,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,DM,DESKTOP METAL INC-A,459450995,US25058X1054,NYSE,1,COMMON,
+Financial Instrument Information,Data,Stocks,MILE,METROMILE INC,470443528,US5916971071,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,PSFE,PAYSAFE LTD,479429948,BMG6964L1072,NYSE,1,COMMON,
+Financial Instrument Information,Data,Stocks,SSYS,STRATASYS LTD,118074725,IL0011267213,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,TSLA,TESLA INC,76792991,US88160R1014,NASDAQ,1,COMMON,
+Financial Instrument Information,Data,Stocks,UBER,UBER TECHNOLOGIES INC,365207014,US90353T1007,NYSE,1,COMMON,
+Financial Instrument Information,Header,Asset Category,Symbol,Description,Conid,Listing Exch,Multiplier,Expiry,Delivery Month,Type,Strike,Code
+Financial Instrument Information,Data,Equity and Index Options,APPH  220121P00007500,APPH 21JAN22 7.5 P,475193798,CBOE,100,2022-01-21,2022-01,P,7.5,
+Financial Instrument Information,Data,Equity and Index Options,APPH  220520C00007500,APPH 20MAY22 7.5 C,514792536,CBOE,100,2022-05-20,2022-05,C,7.5,
+Financial Instrument Information,Data,Equity and Index Options,DM    210820P00010000,DM 20AUG21 10.0 P,460860329,CBOE,100,2021-08-20,2021-08,P,10,
+Financial Instrument Information,Data,Equity and Index Options,MILE  211015P00005000,MILE 15OCT21 5.0 P,509395250,CBOE,100,2021-10-15,2021-10,P,5,
+Financial Instrument Information,Data,Equity and Index Options,NNDM  220520C00005000,NNDM 20MAY22 5.0 C,515066830,CBOE,100,2022-05-20,2022-05,C,5,
+Financial Instrument Information,Data,Equity and Index Options,NNDM  220520P00005000,NNDM 20MAY22 5.0 P,515066931,CBOE,100,2022-05-20,2022-05,P,5,
+Financial Instrument Information,Data,Equity and Index Options,PSFE  211217P00005000,PSFE 17DEC21 5.0 P,521027775,CBOE,100,2021-12-17,2021-12,P,5,
+Financial Instrument Information,Data,Equity and Index Options,SOFI  220218C00017500,SOFI 18FEB22 17.5 C,522162434,CBOE,100,2022-02-18,2022-02,C,17.5,
+Financial Instrument Information,Data,Equity and Index Options,SOFI  220715P00017500,SOFI 15JUL22 17.5 P,527593595,CBOE,100,2022-07-15,2022-07,P,17.5,
+Financial Instrument Information,Data,Equity and Index Options,TSLA  211119C01100000,TSLA 19NOV21 1100.0 C,494425250,CBOE,100,2021-11-19,2021-11,C,1100,
+Financial Instrument Information,Data,Equity and Index Options,TSLA  211217P01100000,TSLA 17DEC21 1100.0 P,472573822,CBOE,100,2021-12-17,2021-12,P,1100,
+Financial Instrument Information,Data,Equity and Index Options,TSLA  220121C01100000,TSLA 21JAN22 1100.0 C,457668536,CBOE,100,2022-01-21,2022-01,C,1100,
+Codes,Header,Code,Meaning,Code (Cont.),Meaning (Cont.)
+Codes,Data,A,Assignment
+Codes,Data,ADR,ADR Fee Accrual
+Codes,Data,AEx,Automatic exercise for dividend-related recommendation.
+Codes,Data,AFx,AutoFX conversion resulting from trading
+Codes,Data,Adj,Adjustment
+Codes,Data,Al,Allocation
+Codes,Data,Aw,Away Trade
+Codes,Data,B,Automatic Buy-in
+Codes,Data,Bo,Direct Borrow
+Codes,Data,C,Closing Trade
+Codes,Data,CD,Cash Delivery
+Codes,Data,CP,Complex Position
+Codes,Data,Ca,Cancelled
+Codes,Data,Co,Corrected Trade
+Codes,Data,Cx,Part or all of this transaction was a Crossing executed as dual agent by IB for two IB customers
+Codes,Data,ETF,ETF Creation/Redemption
+Codes,Data,Ep,Resulted from an Expired Position
+Codes,Data,Ex,Exercise
+Codes,Data,FP,The fractional portion of this trade was executed against IB or an affiliate.
+Codes,Data,FPA,The fractional portion of this trade was executed against IB or an affiliate. IB acted as agent for the whole share portion of this trade.
+Codes,Data,G,Trade in Guaranteed Account Segment
+Codes,Data,GEA,Exercise or Assignment resulting from offsetting positions
+Codes,Data,HC,Highest Cost tax basis election
+Codes,Data,HFI,Investment Transferred to Hedge Fund
+Codes,Data,HFR,Redemption from Hedge Fund
+Codes,Data,I,Internal Transfer
+Codes,Data,IA,The transaction was executed against IB or an affiliate
+Codes,Data,IM,A portion of the order was executed against IB or an affiliate; IB acted as agent on a portion.
+Codes,Data,INV,Investment Transfer from Investor
+Codes,Data,IPO,This transaction was executed as part of an IPO in which IB was a member of the selling group and is classified as a Principal trade.
+Codes,Data,L,Ordered by IB (Margin Violation)
+Codes,Data,LD,Adjusted by Loss Disallowed from Wash Sale
+Codes,Data,LI,"Last In, First Out (LIFO) tax basis election"
+Codes,Data,LT,Long Term P/L
+Codes,Data,Lo,Direct Loan
+Codes,Data,M,Entered manually by IB
+Codes,Data,MEx,Manual exercise for dividend-related recommendation.
+Codes,Data,ML,Maximize Losses tax basis election
+Codes,Data,MLG,Maximize Long Term Gain tax basis election
+Codes,Data,MLL,Maximize Long Term Loss tax basis election
+Codes,Data,MSG,Maximize Short Term Gain tax basis election
+Codes,Data,MSL,Maximize Short Term Loss tax basis election
+Codes,Data,O,Opening Trade
+Codes,Data,P,Partial Execution
+Codes,Data,PE,Perpetual Investment
+Codes,Data,PI,Price Improvement
+Codes,Data,Po,Interest or Dividend Accrual Posting
+Codes,Data,Pr,Part or all of this transaction was executed by the Exchange as a Crossing by IB against an IB affiliate and is therefore classified as a Principal and not an agency trade
+Codes,Data,R,Dividend Reinvestment
+Codes,Data,RED,Redemption to Investor
+Codes,Data,RI,Recurring Investment
+Codes,Data,RP,"IB acted as agent for the fractional share portion of this trade, which was executed by an IB affiliate as riskless principal."
+Codes,Data,RPA,IB acted as agent for both the fractional share portion and the whole share portion of this trade; the fractional share portion was executed by an IB Affiliate as riskless principal.
+Codes,Data,Rb,Rebill
+Codes,Data,Re,Interest or Dividend Accrual Reversal
+Codes,Data,Ri,Reimbursement
+Codes,Data,SF,Trade is subject to IBKR Lite Surcharge Fee if volume of such trades exceeds 10% of the total monthly Lite trade volume
+Codes,Data,SI,This order was solicited by Interactive Brokers
+Codes,Data,SL,Specific Lot tax basis election
+Codes,Data,SO,This order was marked as solicited by your Introducing Broker
+Codes,Data,SS,Customer designated this trade for shortened settlement and so is subject to execution at prices above the prevailing market
+Codes,Data,ST,Short Term P/L
+Codes,Data,T,Transfer
+Codes,Data,Un,Unvested shares from stock grant
+Codes,Data,XCH,Mutual Fund Exchange Transaction
+Notes/Legal Notes,Header,Type,Note
+Notes/Legal Notes,Data,Notes,"Most stock exchange transactions settle on the trade date plus two business days. Options, futures and US open-end mutual fund transactions settle on trade date plus one business day. (Some exchanges and other transaction types may have longer or shorter settlement periods.) Ending settled cash reflects the cash that has actually settled.  "
+Notes/Legal Notes,Data,Notes,Initial and maintenance margin requirements are available within the Account Window of the Trader Workstation.
+Notes/Legal Notes,Data,Notes,Quantities preceded by a "-" sign indicate sell transactions. Other transactions are purchases. 
+Notes/Legal Notes,Data,Notes,"IB acts as agent in executing the fractional share portion of your order. In certain circumstances, IB routes the fractional portion of your order to an affiliate, which may execute the fractional portion of the order as principal. In such circumstances, this is indicated by the codes associated with the trade. If an IB affiliate acts as principal in executing any fractional share portion of your order, the order will be executed at the price displayed for the opposite side of the NBBO from your order (the offer if you are buying and the bid if you are selling) at the time of execution. If an IB affiliate is acting as riskless principal in connection with filling the fractional share portion of your order, the affiliate will execute the fractional share portion of your order at the price it receives for the execution of the whole share."
+Notes/Legal Notes,Data,Notes,"In case of partial executions, commissions are charged on the total quantity executed on the original order. The commission is displayed on the first partial execution only."
+Notes/Legal Notes,Data,Notes,Each closed lot indicated above with a reference to note (6) was chosen by the end of the trading day to be sold versus the specific opening purchase identified in that row.
+Notes/Legal Notes,Data,Notes,Trade execution times are displayed in Eastern Time.
+Notes/Legal Notes,Data,Notes,Applicable regulatory fees for your transactions are available on the IB website at www.interactivebrokers.com/en/accounts/fees/exchangeAndRegulatoryFees.php.
+Notes/Legal Notes,Data,Notes,"Borrow Fee Rate represents the cost to borrow stock expressed in percent per annum. It is applied to the collateral value on the stock borrow contract and is separate from any interest earned on credit cash balances. Similarly, Loan Fee Rate represents the benefit to lend stock. A positive rate indicates a cost to the borrower/benefit to the lender and a negative rate indicates a benefit to the borrower/cost to the lender. In general, the fee rates for hard-to-borrow stocks are higher than for normal availability stocks."
+Notes/Legal Notes,Data,Notes,Interest Rate on Customer Collateral represents the interest paid on the collateral posted to the customer's account and received from lending stock.  A positive rate indicates a benefit to the lender.
+Notes/Legal Notes,Data,Notes,"The closing prices on this Activity Statement are indicative and may come from third-party sources. Interactive Brokers does not warrant the accuracy of the prices provided by third-party sources. Due to time zone differences, certain non-US mutual funds may deliver closing prices after the Activity Statement has been produced and the closing prices for such funds will reflect the previous day's price."
+Notes/Legal Notes,Data,Notes,All Market Data and Research services are provided through Global Financial Information Services (GmbH).
+Notes/Legal Notes,Data,Notes,"Market data is provided by Global Financial Information Services (GmbH). Your local broker collects amounts owed for fees and tax for such data on behalf of Global Financial Information Services (GmbH). Note, you are responsible for any applicable taxes relating to the provision of these services."
+Notes/Legal Notes,Data,Notes,"Directive 2014/65/EU and its implementing measures (MiFID II) applies to all client funds and client financial instruments (Client Assets) on this statement except those Client Assets that are not classified as segregated assets, namely securities lent under the Stock Yield Enhancement Programme as identified in the IBKR Managed Securities Lent section of this statement and Client Assets noted as Not Segregated in the Collateral for Customer Borrowing section of this statement.  IBCE applies the MiFID II Client Asset protection requirements to funds and instruments that are not subject to MiFID II in the same way as it applies those requirements to Client Assets."
+Notes/Legal Notes,Data,Mutual Fund Notes,"All purchase and sales of mutual funds are calculated against the published NAV (Net Asset Value) of the underlying fund and is displayed on this confirmation as the ""C. Price"" (Closing Price). Due to any fees charged by a fund and/or any share rounding, the net price you pay may vary from the published NAV and is shown on this confirmation as the ""T. Price"" (Trade Price)."
+Notes/Legal Notes,Data,Fixed Income Notes,"Call features for bonds or preferred stocks may affect the yield. For zero coupon, compound interest and multiplier securities, there are no periodic payments and securities may be callable below maturity value without notice to holder unless registered. For asset-backed securities, the actual yield may vary depending on the speed at which the underlying note is pre-paid. For additional information regarding bond yield, please contact the IB Help Desk at: help@interactivebrokers.com. If this debt security is unrated by a nationally recognized statistical rating organization, it may pose a high risk of default. You should consult a financial advisor to determine whether unrated bonds are appropriate for your portfolio in light of your goals and your financial circumstances. Fees charged by bond trading centers are included in the cost of bond transactions."
+Notes/Legal Notes,Data,Legal Notes,"Please promptly report any inaccuracy or discrepancy in this statement, or in your account, to Interactive Brokers Central Europe Zrt. (""IBCE""). You can contact the IBCE Customer Service Department using the online form available on the IBCE website, interactivebrokers.hu. You may also contact IBCE by telephone +36 80 088 400, but if you report an error by telephone, you should re-confirm such oral communication in writing in order to protect your rights, including your rights under Tpt. (a tökepiacról szóló 2001. évi CXX. törvény, Act CXX of 2001 on the Capital Market)."
+Notes/Legal Notes,Data,Legal Notes,"Unless otherwise noted, IBCE acted as agent in the execution of the above transactions. IBCE may execute your trades through affiliates or third-party brokers who are members of the relevant exchange or market center. IBCE uses its affiliates Interactive Brokers LLC and Interactive Brokers (U.K.) Limited to custody financial instruments."
+Notes/Legal Notes,Data,Legal Notes,"IBCE acts as agent or riskless principal in foreign currency exchange transactions and CFDs. Such transactions are executed against an IBCE affiliate, which acts as principal in such transactions and may have a long or short position and may have profited or lost in connection with the transaction."
+Notes/Legal Notes,Data,Legal Notes,"IBCE routes orders in US products through its US affiliate, Interactive Brokers LLC (""IBLLC""). IBLLC accepts liquidity rebates or other order flow payments from Alternative Trading Systems, market makers and exchanges for certain orders in US stocks. IBLLC receives payment for some US option orders pursuant to exchange-mandated marketing fee programs or other arrangements."
+Notes/Legal Notes,Data,Legal Notes,Please promptly notify IB-CE of any material change in your investment objectives or financial situation or circumstances.
+Notes/Legal Notes,Data,Legal Notes,"An up-to-date financial statement of IBCE is available for your personal inspection at interactivebrokers.hu or at its offices, or a copy of the financial statement will be mailed to you upon your written request."
+Notes/Legal Notes,Data,Legal Notes,"IBCE is a member of BEVA. As with all securities firms, BEVA coverage provides protection against failure of a broker-dealer. BEVA coverage is limited to a maximum payment of EUR 100,000 per investor."
+Notes/Legal Notes,Data,Legal Notes,The General Business Rules and client disclosures of IBCE may be found at interactivebrokers.hu
+Notes/Legal Notes,Data,Legal Notes,Interactive Brokers Central Europe Zrt. is regulated by the MNB.
+Notes/Legal Notes,Data,Legal Notes,This activity statement is being provided to clients by Interactive Brokers Central Europe Zrt. as the Annual Tax Certificate required by the Hungarian tax authority with respect to certain transactions included on this statement.

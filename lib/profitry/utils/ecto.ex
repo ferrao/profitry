@@ -1,10 +1,15 @@
 defmodule Profitry.Utils.Ecto do
   @moduledoc """
 
-    Capitalize changes on a Changeset
+    Ecto related utilities
 
   """
 
+  @doc """
+
+    Capitalize changes on a Changeset
+
+  """
   @spec capitalize(Ecto.Changeset.t(), list(atom())) :: Ecto.Changeset.t()
   def capitalize(changeset, fields) when is_list(fields) do
     Enum.reduce(fields, changeset, fn field, changeset -> capitalize(changeset, field) end)
