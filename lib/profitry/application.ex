@@ -12,8 +12,9 @@ defmodule Profitry.Application do
       ProfitryWeb.Telemetry,
       # Start the Ecto repository
       Profitry.Repo,
+      # {DNSCluster, query: Application.get_env(:profitry, :dns_cluster_query) || :ignore},
       # Start the PubSub system
-      # {Phoenix.PubSub, name: Profitry.PubSub},
+      {Phoenix.PubSub, name: Profitry.PubSub},
       # Start Finch
       {Finch, name: Profitry.Finch},
       # Start the Endpoint (http/https)
