@@ -1,0 +1,10 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#settings-files
+{
+  // Add files or globs of files that will be excluded by Zed entirely:
+  // they will be skipped during FS scan(s), file tree and file search
+  // will lack the corresponding file entries.
+  "file_scan_exclusions": ["**/.git", "_build", "deps"]
+}
