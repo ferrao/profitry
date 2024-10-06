@@ -3,8 +3,8 @@ defmodule Profitry.Parsers.Ibkr do
 
   import Profitry.ParsersFixtures
 
-  alias Profitry.Parsers.Ibkr.Parser
-  alias Profitry.Parsers.Schema.Trade
+  alias Profitry.Import.Parsers.Ibkr.Parser
+  alias Profitry.Import.Parsers.Schema.Trade
 
   @symbol1 "TSLA 19NOV21 1100.0 C"
   @symbol2 "SOFI 15JUL22 17.5 P"

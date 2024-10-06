@@ -5,7 +5,7 @@ defmodule Profitry.ParsersFixtures do
 
   """
 
-  alias Profitry.Parsers.Schema.Trade
+  alias Profitry.Import.Parsers.Schema.Trade
 
   @doc """
 

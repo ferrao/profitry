@@ -1,11 +1,11 @@
-defmodule Profitry.Parsers.Ibkr.Parser do
+defmodule Profitry.Import.Parsers.Ibkr.Parser do
   @moduledoc """
 
   Parser for Interactive Brokers activity statement
 
   """
 
-  alias Profitry.Parsers.Schema.Trade
+  alias Profitry.Import.Parsers.Schema.Trade
   alias NimbleCSV.RFC4180, as: CSV
   alias Profitry.Utils.Date, as: DateUtils
 
@@ -19,7 +19,7 @@ defmodule Profitry.Parsers.Ibkr.Parser do
   ## Examples
 
     iex> parse("ibkr_activity_statement-2021.csv")
-    
+
 
   """
   @spec parse(String.t()) :: list(Trade.t())
