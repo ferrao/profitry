@@ -25,6 +25,7 @@ defmodule Profitry.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -78,7 +79,7 @@ defmodule Profitry.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind profitry", "esbuild profitry"],
-      "assets.deploy": [ "tailwind profitry --minify", "esbuild profitry --minify", "phx.digest"]
+      "assets.deploy": ["tailwind profitry --minify", "esbuild profitry --minify", "phx.digest"]
     ]
   end
 end
