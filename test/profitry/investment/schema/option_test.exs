@@ -12,6 +12,11 @@ defmodule Profitry.Investment.Schema.OptionTest do
       assert Decimal.compare(Option.option_value(Decimal.new("1.27")), "127.00") === :eq
     end
 
+    test "type is required" do
+      changeset = Option.changeset(%Option{}, %{})
+      assert ["can't be blank"] = errors_on(changeset).type
+    end
+
     test "strike is required" do
       changeset = Option.changeset(%Option{}, %{})
       assert ["can't be blank"] = errors_on(changeset).strike

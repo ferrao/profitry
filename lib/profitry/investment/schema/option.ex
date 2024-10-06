@@ -9,16 +9,19 @@ defmodule Profitry.Investment.Schema.Option do
   import Ecto.Changeset
   alias Profitry.Investment.Schema.Order
 
+  @type contract_type :: :call | :put
   @type t :: %__MODULE__{
           strike: integer(),
           expiration: Date.t(),
+          type: contract_type,
           order: Order.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
 
   schema "options" do
-    field :strike, :integer
+    field :type, Ecto.Enum, values: [:call, :put]
+    field :strike, :decimal
     field :expiration, :date
     belongs_to :order, Order
 
@@ -45,8 +48,8 @@ defmodule Profitry.Investment.Schema.Option do
 
   def changeset(option, attrs) do
     option
-    |> cast(attrs, [:strike, :expiration])
-    |> validate_required([:strike, :expiration])
+    |> cast(attrs, [:type, :strike, :expiration])
+    |> validate_required([:type, :strike, :expiration])
     |> validate_number(:strike, greater_than: 0)
   end
 end

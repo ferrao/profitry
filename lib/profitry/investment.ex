@@ -6,7 +6,6 @@ defmodule Profitry.Investment do
     The Investment Context
 
   """
-
   defdelegate create_portfolio(attrs), to: Portfolios
   defdelegate list_portfolios(), to: Portfolios
   defdelegate get_portfolio(id), to: Portfolios

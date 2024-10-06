@@ -10,7 +10,7 @@ defmodule Profitry.InvestmentFixtures do
 
   @doc """
 
-  Generate a portfolio 
+  Generate a portfolio
 
   """
   def portfolio_fixture(attrs \\ %{}) do
@@ -81,7 +81,11 @@ defmodule Profitry.InvestmentFixtures do
       quantity: Decimal.new("1"),
       price: Decimal.new("123.7"),
       inserted_at: ~N[2023-01-01 12:00:07],
-      option: %Option{strike: 50, expiration: ~D[2024-02-01]}
+      option: %Option{
+        type: :call,
+        strike: 50,
+        expiration: ~D[2024-02-01]
+      }
     }
     |> Order.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:position, position)

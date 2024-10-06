@@ -4,6 +4,7 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
   alias Profitry.Investment.Schema.OptionsReport
 
   @report1 %OptionsReport{
+    type: :call,
     strike: 10,
     contracts: 3,
     expiration: ~D[2023-01-01],
@@ -12,7 +13,9 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
 
   @report2 %OptionsReport{
     @report1
-    | strike: @report1.strike + 1,
+    | type: :put,
+      strike: @report1.strike + 1,
+      contracts: 6,
       expiration: Date.add(@report1.expiration, 10),
       investment: Decimal.new("203.20")
   }
@@ -28,6 +31,7 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
       [report | rest] = OptionsReport.update_reports([@report1, @report2], @report1)
 
       assert report.contracts === 2 * @report1.contracts
+      assert report.type === @report1.type
       assert report.expiration === @report1.expiration
       assert report.strike === @report1.strike
 
@@ -35,25 +39,40 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
       assert rest === [@report2]
     end
 
-    test "updates a list with an option report for a contract with a diferent strike" do
-      [report1 | [report2]] = OptionsReport.update_reports([@report1], @report2)
+    test "updates a list with an option report for a dfferent contract type" do
+      [report1 | [report2]] =
+        OptionsReport.update_reports([@report1], %{@report1 | type: @report2.type})
 
       assert report1 === @report1
-      assert report2.contracts === @report2.contracts
-      assert report2.expiration === @report2.expiration
+      assert report2.type === @report2.type
+      assert report2.contracts === @report1.contracts
+      assert report2.expiration === @report1.expiration
+      assert report2.strike === @report1.strike
+      assert report2.investment === @report1.investment
+    end
+
+    test "updates a list with an option report for a contract with a diferent strike" do
+      [report1 | [report2]] =
+        OptionsReport.update_reports([@report1], %{@report1 | strike: @report2.strike})
+
+      assert report1 === @report1
+      assert report2.type === @report1.type
+      assert report2.contracts === @report1.contracts
+      assert report2.expiration === @report1.expiration
       assert report2.strike === @report2.strike
-      assert report2.investment === @report2.investment
+      assert report2.investment === @report1.investment
     end
 
     test "updates a list with an option report for a contract with a diferent expiration date" do
       [report1 | [report2]] =
-        OptionsReport.update_reports([@report1], @report2)
+        OptionsReport.update_reports([@report1], %{@report1 | expiration: @report2.expiration})
 
       assert report1 === @report1
-      assert report2.contracts === @report2.contracts
-      assert report2.strike === @report2.strike
+      assert report2.type === @report1.type
+      assert report2.contracts === @report1.contracts
+      assert report2.strike === @report1.strike
+      assert report2.investment === @report1.investment
       assert report2.expiration === @report2.expiration
-      assert report2.investment === @report2.investment
     end
   end
 end

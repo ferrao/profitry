@@ -5,14 +5,17 @@ defmodule Profitry.Investment.Schema.OptionsReport do
 
   """
 
+  alias Profitry.Investment.Schema.Option
+
   @type t :: %__MODULE__{
           investment: Decimal.t(),
+          type: Option.contract_type(),
           strike: integer(),
           expiration: Date.t(),
           contracts: integer()
         }
 
-  defstruct [:strike, :expiration, investment: Decimal.new(0), contracts: 1]
+  defstruct [:strike, :expiration, investment: Decimal.new(0), type: :call, contracts: 1]
 
   @doc """
 
@@ -26,6 +29,7 @@ defmodule Profitry.Investment.Schema.OptionsReport do
   def update_reports(
         [
           %__MODULE__{
+            type: type,
             strike: strike,
             expiration: expiration,
             contracts: contracts,
@@ -34,6 +38,7 @@ defmodule Profitry.Investment.Schema.OptionsReport do
           | t
         ],
         %__MODULE__{
+          type: type,
           strike: strike,
           expiration: expiration,
           contracts: new_contracts,

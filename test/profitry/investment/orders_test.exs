@@ -62,8 +62,7 @@ defmodule Profitry.Investment.OrdersTest do
     test "list_orders/1 returns the orders for a position" do
       {_portfolio, position, order} = order_fixture()
 
-      assert Investment.list_orders(position)
-             |> Repo.preload(position: :portfolio) === [order]
+      assert Investment.list_orders(position) |> Repo.preload(position: :portfolio) === [order]
     end
 
     test "get_order/1 returns existing order" do
