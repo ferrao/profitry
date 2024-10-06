@@ -83,7 +83,7 @@ defmodule Profitry.InvestmentFixtures do
       inserted_at: ~N[2023-01-01 12:00:07],
       option: %Option{
         type: :call,
-        strike: 50,
+        strike: Decimal.new(50),
         expiration: ~D[2024-02-01]
       }
     }

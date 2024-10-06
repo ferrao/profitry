@@ -36,7 +36,8 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
     create index(:orders, [:position_id])
 
     create table(:options) do
-      add :strike, :integer, null: false
+      add :type, :citext, null: false
+      add :strike, :decimal, null: false
       add :expiration, :date, null: false
 
       # delete option if parent order is deleted
