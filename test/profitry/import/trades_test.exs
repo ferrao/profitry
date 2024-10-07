@@ -1,11 +1,8 @@
 defmodule Profitry.Import.TradesTest do
   use ExUnit.Case, async: true
 
-  import Profitry.ParsersFixtures
-
   alias Profitry.Import.Trades
   alias Profitry.Import.Parsers.Schema.Trade
-  alias Profitry.Investment.Schema.{Order, Option}
 
   @trade1 %Trade{
     asset: :stock,
@@ -35,28 +32,25 @@ defmodule Profitry.Import.TradesTest do
     test "convert trade with no option to order" do
       order = Trades.convert(@trade1)
 
-      assert %Order{} = order
-      assert order.type == :sell
-      assert order.quantity == Decimal.new("100")
-      assert order.instrument == @trade1.asset
-      assert order.price == @trade1.price
-      assert order.inserted_at == @trade1.ts
+      assert order.type == "sell"
+      assert order.quantity == "100"
+      assert order.instrument == "stock"
+      assert order.price == to_string(@trade1.price)
+      assert order.inserted_at == @trade1.ts |> NaiveDateTime.to_string()
     end
 
     test "convert trade with option to order" do
       order = Trades.convert(@trade2)
 
-      assert %Order{} = order
-      assert %Option{} = order.option
-      assert order.type == :buy
-      assert order.quantity == @trade2.quantity
-      assert order.instrument == @trade2.asset
-      assert order.price == @trade2.price
-      assert order.inserted_at == @trade2.ts
+      assert order.type == "buy"
+      assert order.quantity == "1"
+      assert order.instrument == "option"
+      assert order.price == to_string(@trade2.price)
+      assert order.inserted_at == @trade2.ts |> NaiveDateTime.to_string()
 
-      assert order.option.type == @trade2.option.contract
-      assert order.option.strike == @trade2.option.strike
-      assert order.option.expiration == @trade2.option.expiration
+      assert order.option.type == "call"
+      assert order.option.strike == @trade2.option.strike |> Decimal.to_string()
+      assert order.option.expiration == @trade2.option.expiration |> Date.to_string()
     end
   end
 end

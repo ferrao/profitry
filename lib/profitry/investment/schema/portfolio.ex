@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Schema.Portfolio do
   @moduledoc """
 
-  Ecto Schema representing a portfolio of positions  
+  Ecto Schema representing a portfolio of positions
 
   """
 
@@ -34,5 +34,6 @@ defmodule Profitry.Investment.Schema.Portfolio do
     |> validate_required([:broker, :description])
     |> capitalize(:broker)
     |> no_assoc_constraint(:positions, message: "Portfolio contains positions")
+    |> unique_constraint(:broker)
   end
 end

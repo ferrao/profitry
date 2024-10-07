@@ -1,7 +1,7 @@
-defmodule Profitry.Investment.Schema.Split do
+defmodule Profitry.Investment.Schema.SplitsTests do
   use Profitry.DataCase, async: true
 
-  alias Profitry.Investment.Schema.Split
+  alias Profitry.Investment.Schema.{Split, Option}
 
   describe "split" do
     test "ticker is required" do

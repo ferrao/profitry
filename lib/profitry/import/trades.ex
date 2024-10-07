@@ -1,32 +1,31 @@
 defmodule Profitry.Import.Trades do
   alias Profitry.Import.Parsers.Schema.Trade
-  alias Profitry.Investment.Schema.{Order, Option}
 
   def convert(trade = %Trade{option: nil}) do
-    %Order{
+    %{
+      ticker: trade.ticker,
       type: order_type(trade.quantity),
-      instrument: trade.asset,
-      quantity: Decimal.abs(trade.quantity),
-      price: trade.price,
-      inserted_at: trade.ts,
-      option: nil
+      instrument: to_string(trade.asset),
+      quantity: Decimal.abs(trade.quantity) |> Decimal.to_string(),
+      price: Decimal.to_string(trade.price),
+      inserted_at: NaiveDateTime.to_string(trade.ts)
     }
   end
 
   def convert(trade = %Trade{}) do
     order = convert(%Trade{trade | option: nil})
-    %Order{order | option: convert_option(trade.option)}
+    Map.put(order, :option, convert_option(trade.option))
   end
 
   defp convert_option(option) do
-    %Option{
-      type: option.contract,
-      strike: option.strike,
-      expiration: option.expiration
+    %{
+      type: to_string(option.contract),
+      strike: Decimal.to_string(option.strike),
+      expiration: Date.to_string(option.expiration)
     }
   end
 
   defp order_type(quantity) do
-    if Decimal.lt?(quantity, 0), do: :sell, else: :buy
+    if Decimal.lt?(quantity, 0), do: "sell", else: "buy"
   end
 end

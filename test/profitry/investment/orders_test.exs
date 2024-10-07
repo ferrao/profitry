@@ -38,7 +38,7 @@ defmodule Profitry.Investment.OrdersTest do
         quantity: "1.3",
         price: "132.3",
         inserted_at: "2024-01-01 12:00:07",
-        option: %{type: :call, strike: Decimal.new(50), expiration: "2024-02-01"}
+        option: %{type: "call", strike: "50", expiration: "2024-02-01"}
       }
 
       {:ok, %Order{} = order} = Investment.create_order(position, attrs)

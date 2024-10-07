@@ -12,6 +12,8 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
       timestamps()
     end
 
+    create unique_index(:portfolios, [:broker])
+
     create table(:positions) do
       add :ticker, :citext, null: false
       add :portfolio_id, references(:portfolios, on_delete: :nothing)

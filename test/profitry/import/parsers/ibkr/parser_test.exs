@@ -1,4 +1,4 @@
-defmodule Profitry.Parsers.Ibkr do
+defmodule Profitry.Import.Parsers.Ibkr.ParserTest do
   use ExUnit.Case, async: true
 
   import Profitry.ParsersFixtures
