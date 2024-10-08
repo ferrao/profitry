@@ -1,4 +1,10 @@
 defmodule Profitry.Investment.Orders do
+  @moduledoc """
+
+    Operations on Order structs
+
+  """
+
   import Ecto.Query
 
   alias Profitry.Repo
@@ -49,7 +55,7 @@ defmodule Profitry.Investment.Orders do
 
   ## Examples
 
-    iex> get_order(123) 
+    iex> get_order(123)
     %Order{}
 
     iex> get_order(456)

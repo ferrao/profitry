@@ -1,4 +1,10 @@
 defmodule Profitry.Investment.Portfolios do
+  @moduledoc """
+
+    Operations on Portfolio structs
+
+  """
+
   alias Profitry.Repo
   alias Profitry.Investment.Schema.Portfolio
 

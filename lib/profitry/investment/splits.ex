@@ -1,4 +1,10 @@
 defmodule Profitry.Investment.Splits do
+  @moduledoc """
+
+  Operations on Splits struct
+
+  """
+
   import Ecto.Query, warn: false
 
   alias Profitry.Repo

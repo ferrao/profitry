@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Reports do
   @moduledoc """
 
-  Generate a report on a portfolio position
+    Generate a report on a portfolio position
 
   """
 
@@ -35,7 +35,7 @@ defmodule Profitry.Investment.Reports do
     |> Map.put(:ticker, ticker)
   end
 
-  # buy stock 
+  # buy stock
   def calculate_order(report, %Order{
         type: :buy,
         instrument: :stock,
@@ -49,7 +49,7 @@ defmodule Profitry.Investment.Reports do
     }
   end
 
-  # sell stock 
+  # sell stock
   def calculate_order(report, %Order{
         type: :sell,
         instrument: :stock,

@@ -1,7 +1,7 @@
 defmodule Profitry.Import.Parsers.Ibkr.Parser do
   @moduledoc """
 
-  Parser for Interactive Brokers activity statement
+    Parser for Interactive Brokers activity statement
 
   """
 
@@ -19,7 +19,7 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
   ## Examples
 
     iex> parse("ibkr_activity_statement-2021.csv")
-
+    [%Trade{}, %Trade{}]
 
   """
   @spec parse(String.t()) :: list(Trade.t())

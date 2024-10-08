@@ -1,7 +1,7 @@
 defmodule Profitry.Utils.Date do
   @moduledoc """
 
-    Date related utilities 
+    Date related utilities
 
   """
 

@@ -1,6 +1,33 @@
 defmodule Profitry.Import.Trades do
+  @moduledoc """
+
+    Converts imported trades into attribute maps ready to be used with the Investment context
+
+  """
+
   alias Profitry.Import.Parsers.Schema.Trade
 
+  @type attrs :: %{
+          optional(:option) => %{type: String.t(), strike: String.t(), expiration: String.t()},
+          ticker: String.t(),
+          type: String.t(),
+          instrument: String.t(),
+          quantity: String.t(),
+          price: String.t(),
+          inserted_at: String.t()
+        }
+
+  @doc """
+
+  Converts a Trade map into an attributes map
+
+  ## Examples
+
+    iex> convert(%Trade{})
+    %{field: value}
+
+  """
+  @spec convert(Trade.t()) :: attrs()
   def convert(trade = %Trade{option: nil}) do
     %{
       ticker: trade.ticker,
@@ -12,6 +39,7 @@ defmodule Profitry.Import.Trades do
     }
   end
 
+  @spec convert(Trade.t()) :: attrs()
   def convert(trade = %Trade{}) do
     order = convert(%Trade{trade | option: nil})
     Map.put(order, :option, convert_option(trade.option))

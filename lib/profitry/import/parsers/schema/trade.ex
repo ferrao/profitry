@@ -1,7 +1,7 @@
 defmodule Profitry.Import.Parsers.Schema.Trade do
   @moduledoc """
 
-  Schema respresenting a trade on a broker activity report
+    Schema respresenting a trade on a broker activity report
 
   """
 

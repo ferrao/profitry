@@ -1,9 +1,21 @@
 defmodule Profitry.Import do
+  @moduledoc """
+
+    The Import Context, responsible for importing positions from broker statements
+
+  """
+
   alias Profitry.Investment.Schema.Portfolio
   alias Profitry.Import.Trades
   alias Profitry.Import.Parsers.Ibkr.Parser
   alias Profitry.Investment
 
+  @doc """
+
+  Processes a broker statement file, by importing all the positions and orders into a new portfolio
+
+  """
+  @spec process_file(String.t(), String.t(), String.t()) :: {atom(), Portfolio.t()}
   def process_file(file, name, description) do
     {:ok, portfolio} = Investment.create_portfolio(%{broker: name, description: description})
     trades = Parser.parse(file)
@@ -14,6 +26,8 @@ defmodule Profitry.Import do
     trades
     |> Enum.map(&Trades.convert/1)
     |> Enum.each(fn order -> insert_order(positions, order) end)
+
+    {:ok, portfolio}
   end
 
   defp create_positions(portfolio, trades) do
