@@ -6,5 +6,5 @@
   // Add files or globs of files that will be excluded by Zed entirely:
   // they will be skipped during FS scan(s), file tree and file search
   // will lack the corresponding file entries.
-  "file_scan_exclusions": ["**/.git", "_build", "deps"]
+  "file_scan_exclusions": ["**/.git", "_build", "deps", ".elixir_ls"]
 }
