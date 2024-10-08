@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Schema.SplitsTests do
   use Profitry.DataCase, async: true
 
-  alias Profitry.Investment.Schema.{Split, Option}
+  alias Profitry.Investment.Schema.Split
 
   describe "split" do
     test "ticker is required" do
@@ -27,8 +27,8 @@ defmodule Profitry.Investment.Schema.SplitsTests do
     test "multiplier has to be greater than zero" do
       error = "must be greater than 0"
 
-      changeset1 = Option.changeset(%Split{}, %{multiplier: "0"})
-      changeset2 = Option.changeset(%Split{}, %{multiplier: "-1"})
+      changeset1 = Split.changeset(%Split{}, %{multiplier: "0"})
+      changeset2 = Split.changeset(%Split{}, %{multiplier: "-1"})
 
       assert [^error] = errors_on(changeset1).multiplier
       assert [^error] = errors_on(changeset2).multiplier
