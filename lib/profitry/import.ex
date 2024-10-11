@@ -8,32 +8,47 @@ defmodule Profitry.Import do
   alias Profitry.Investment.Schema.Portfolio
   alias Profitry.Import.Trades
   alias Profitry.Import.Parsers.Ibkr.Parser
-  alias Profitry.Investment
+  alias Profitry.{Repo, Investment}
 
   @doc """
 
-  Processes a broker statement file, by importing all the positions and orders into a new portfolio
+  Processes a broker statement file, by importing all the positions and orders into a portfolio
 
   """
-  @spec process_file(String.t(), String.t(), String.t()) :: {atom(), Portfolio.t()}
-  def process_file(file, name, description) do
-    {:ok, portfolio} = Investment.create_portfolio(%{broker: name, description: description})
+  @spec process_file(integer(), String.t()) :: {atom(), list(Order.t())}
+  def process_file(portfolio_id, file) do
+    portfolio = portfolio_with_positions(portfolio_id)
     trades = Parser.parse(file)
+    tickers = trade_positions(trades)
 
-    create_positions(portfolio, trades)
-    %Portfolio{positions: positions} = Profitry.Repo.preload(portfolio, :positions)
+    create_positions(portfolio, tickers)
+    portfolio = portfolio_with_positions(portfolio_id)
 
     trades
     |> Enum.map(&Trades.convert/1)
-    |> Enum.each(fn order -> insert_order(positions, order) end)
-
-    {:ok, portfolio}
+    |> Enum.map(fn order -> insert_order(portfolio.positions, order) end)
+    |> Enum.map(fn {:ok, order} -> order end)
   end
 
-  defp create_positions(portfolio, trades) do
+  defp portfolio_with_positions(portfolio_id) do
+    Repo.get(Portfolio, portfolio_id)
+    |> Repo.preload(:positions)
+  end
+
+  defp trade_positions(trades) do
     Enum.map(trades, fn trade -> trade.ticker end)
     |> Enum.uniq()
-    |> Enum.each(fn ticker -> Investment.create_position(portfolio, %{ticker: ticker}) end)
+  end
+
+  defp create_positions(portfolio, tickers) do
+    portfolio_tickers =
+      portfolio.positions
+      |> Enum.map(fn position -> position.ticker end)
+
+    tickers
+    |> Enum.filter(fn ticker -> !Enum.member?(portfolio_tickers, ticker) end)
+    |> Enum.map(fn ticker -> Investment.create_position(portfolio, %{ticker: ticker}) end)
+    |> Enum.map(fn {:ok, position} -> position end)
   end
 
   defp insert_order(positions, attrs) do
