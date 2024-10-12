@@ -4,6 +4,7 @@ defmodule Profitry.Investment.Schema.Split do
   Schema representing a position sotck split or reverse split
 
   """
+  alias Ecto.Changeset
 
   use Ecto.Schema
 
@@ -26,6 +27,7 @@ defmodule Profitry.Investment.Schema.Split do
     timestamps()
   end
 
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(split, attrs) do
     split
     |> cast(attrs, [:ticker, :multiplier, :reverse, :inserted_at])

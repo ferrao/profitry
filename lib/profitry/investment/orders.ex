@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Orders do
   @moduledoc """
 
-    Operations on Order structs
+  Operations on Order structs
 
   """
 
@@ -23,8 +23,7 @@ defmodule Profitry.Investment.Orders do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_order(Position.t(), map()) ::
-          {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_order(Position.t(), map()) :: {:ok, Order.t()}
   def create_order(%Position{} = position, attrs \\ %{}) do
     %Order{}
     |> Order.changeset(attrs)
@@ -80,7 +79,7 @@ defmodule Profitry.Investment.Orders do
     {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_order(Order.t(), map()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  @spec update_order(Order.t(), map()) :: {:ok, Order.t()}
   def update_order(%Order{} = order, attrs) do
     order
     |> Order.changeset(attrs)
@@ -100,7 +99,7 @@ defmodule Profitry.Investment.Orders do
     {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_order(Order.t()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  @spec delete_order(Order.t()) :: {:ok, Order.t()}
   def delete_order(%Order{} = order) do
     order
     |> change_order()

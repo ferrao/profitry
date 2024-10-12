@@ -7,6 +7,7 @@ defmodule Profitry.Investment.Schema.Option do
 
   use Ecto.Schema
   import Ecto.Changeset
+  alias Ecto.Changeset
   alias Profitry.Investment.Schema.Order
 
   @type contract_type :: :call | :put
@@ -46,6 +47,7 @@ defmodule Profitry.Investment.Schema.Option do
   @spec option_value(Decimal.t()) :: Decimal.t()
   def option_value(price), do: Decimal.mult(@shares_per_contract, price)
 
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(option, attrs) do
     option
     |> cast(attrs, [:type, :strike, :expiration])

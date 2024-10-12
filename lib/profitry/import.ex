@@ -1,10 +1,11 @@
 defmodule Profitry.Import do
   @moduledoc """
 
-    The Import Context, responsible for importing positions from broker statements
+  The Import Context, responsible for importing positions from broker statements
 
   """
 
+  alias Profitry.Investment.Schema.Position
   alias Profitry.Investment.Schema.Portfolio
   alias Profitry.Import.Trades
   alias Profitry.Import.Parsers.Ibkr.Parser
@@ -30,16 +31,19 @@ defmodule Profitry.Import do
     |> Enum.map(fn {:ok, order} -> order end)
   end
 
+  @spec portfolio_with_positions(integer()) :: Portfolio.t()
   defp portfolio_with_positions(portfolio_id) do
     Repo.get(Portfolio, portfolio_id)
     |> Repo.preload(:positions)
   end
 
+  @spec trade_positions(list(Trades.t())) :: list(String.t())
   defp trade_positions(trades) do
     Enum.map(trades, fn trade -> trade.ticker end)
     |> Enum.uniq()
   end
 
+  @spec create_positions(Portfolio.t(), list(String.t())) :: list(Position.t())
   defp create_positions(portfolio, tickers) do
     portfolio_tickers =
       portfolio.positions
@@ -51,6 +55,7 @@ defmodule Profitry.Import do
     |> Enum.map(fn {:ok, position} -> position end)
   end
 
+  @spec insert_order(list(Position.t(), map())) :: Order.t()
   defp insert_order(positions, attrs) do
     position = Enum.find(positions, fn position -> position.ticker == attrs.ticker end)
 

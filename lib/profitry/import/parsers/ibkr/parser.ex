@@ -1,7 +1,7 @@
 defmodule Profitry.Import.Parsers.Ibkr.Parser do
   @moduledoc """
 
-    Parser for Interactive Brokers activity statement
+  Parser for Interactive Brokers activity statement
 
   """
 
@@ -35,6 +35,8 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     |> Enum.map(& &1)
   end
 
+  @spec parse_trade(String.t(), String.t(), String.t(), String.t(), String.t(), String.t()) ::
+          Trade.t()
   def parse_trade(_asset = @stock, currency, symbol, quantity, price, ts) do
     %Trade{
       asset: :stock,
@@ -47,6 +49,8 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     }
   end
 
+  @spec parse_trade(String.t(), String.t(), String.t(), String.t(), String.t(), String.t()) ::
+          Trade.t()
   def parse_trade(_asset = @option, currency, symbol, quantity, price, ts) do
     %Trade{
       asset: :option,
@@ -63,12 +67,14 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     }
   end
 
+  @spec symbol_to_ticker(String.t()) :: String.t()
   def symbol_to_ticker(symbol),
     do:
       symbol
       |> String.split()
       |> List.first()
 
+  @spec symbol_to_contract(String.t()) :: atom()
   def symbol_to_contract(symbol) do
     contract =
       String.split(symbol)
@@ -82,6 +88,7 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     end
   end
 
+  @spec symbol_to_strike(String.t()) :: Decimal.t()
   def symbol_to_strike(symbol),
     do:
       symbol
@@ -91,6 +98,7 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
       |> List.first()
       |> Decimal.new()
 
+  @spec symbol_to_expiration(String.t()) :: Date.t()
   def symbol_to_expiration(symbol) do
     symbol
     |> String.split()
@@ -100,5 +108,6 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     |> DateUtils.parse_expiration!()
   end
 
+  @spec parse_timestamp(String.t()) :: NaiveDateTime.t()
   defp parse_timestamp(ts), do: ts |> String.replace(",", "") |> NaiveDateTime.from_iso8601!()
 end

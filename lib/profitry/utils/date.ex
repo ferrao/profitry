@@ -1,7 +1,7 @@
 defmodule Profitry.Utils.Date do
   @moduledoc """
 
-    Date related utilities
+  Date related utilities
 
   """
 
@@ -16,7 +16,7 @@ defmodule Profitry.Utils.Date do
     {:error, "Expected `day of month` at line 1, column 1."}
 
   """
-  @spec parse_expiration!(String.t()) :: {:ok, Date.t()} | {:error, String.t()}
+  @spec parse_expiration!(String.t()) :: {:ok, Date.t()}
   def parse_expiration!(date_str) when is_binary(date_str) and byte_size(date_str) == 7 do
     day = date_str |> String.slice(0, 2)
     month = date_str |> String.slice(2, 3) |> String.downcase() |> String.capitalize()

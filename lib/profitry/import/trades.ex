@@ -1,14 +1,19 @@
 defmodule Profitry.Import.Trades do
   @moduledoc """
 
-    Converts imported trades into attribute maps ready to be used with the Investment context
+  Converts imported trades into attribute maps ready to be used with the Investment context
 
   """
 
   alias Profitry.Import.Parsers.Schema.Trade
 
+  @type option_attrs :: %{
+          type: String.t(),
+          strike: String.t(),
+          expiration: String.t()
+        }
   @type attrs :: %{
-          optional(:option) => %{type: String.t(), strike: String.t(), expiration: String.t()},
+          optional(:option) => option_attrs(),
           ticker: String.t(),
           type: String.t(),
           instrument: String.t(),
@@ -45,6 +50,7 @@ defmodule Profitry.Import.Trades do
     Map.put(order, :option, convert_option(trade.option))
   end
 
+  @spec convert_option(Trade.option_trade()) :: option_attrs()
   defp convert_option(option) do
     %{
       type: to_string(option.contract),
@@ -53,6 +59,7 @@ defmodule Profitry.Import.Trades do
     }
   end
 
+  @spec order_type(Decimal.t()) :: String.t()
   defp order_type(quantity) do
     if Decimal.lt?(quantity, 0), do: "sell", else: "buy"
   end

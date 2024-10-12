@@ -1,7 +1,7 @@
 defmodule Profitry.Investment.Portfolios do
   @moduledoc """
 
-    Operations on Portfolio structs
+  Operations on Portfolio structs
 
   """
 
@@ -21,7 +21,7 @@ defmodule Profitry.Investment.Portfolios do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_portfolio(map()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_portfolio(map()) :: {:ok, Portfolio.t()}
   def create_portfolio(attrs \\ %{}) do
     %Portfolio{}
     |> Portfolio.changeset(attrs)
@@ -80,8 +80,7 @@ defmodule Profitry.Investment.Portfolios do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_portfolio(Portfolio.t(), map()) ::
-          {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
+  @spec update_portfolio(Portfolio.t(), map()) :: {:ok, Portfolio.t()}
   def update_portfolio(portfolio, attrs) do
     portfolio
     |> Portfolio.changeset(attrs)
@@ -101,7 +100,7 @@ defmodule Profitry.Investment.Portfolios do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_portfolio(Portfolio.t()) :: {:ok, Portfolio.t()} | {:error, Ecto.Changeset.t()}
+  @spec delete_portfolio(Portfolio.t()) :: {:ok, Portfolio.t()}
   def delete_portfolio(portfolio) do
     portfolio
     |> change_portfolio()

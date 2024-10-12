@@ -36,6 +36,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # buy stock
+  @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :buy,
         instrument: :stock,
@@ -50,6 +51,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # sell stock
+  @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :sell,
         instrument: :stock,
@@ -64,6 +66,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # buy premium
+  @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :buy,
         instrument: :option,
@@ -88,6 +91,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # sell premium
+  @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :sell,
         instrument: :option,
@@ -111,6 +115,9 @@ defmodule Profitry.Investment.Reports do
     }
   end
 
+  @spec stock_investment(Decimal.t(), Decimal.t()) :: Decimal.t()
   defp stock_investment(quantity, price), do: Decimal.mult(quantity, price)
+
+  @spec stock_investment(Decimal.t(), Decimal.t()) :: Decimal.t()
   defp option_investment(quantity, price), do: Decimal.mult(quantity, option_value(price))
 end
