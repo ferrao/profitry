@@ -5,58 +5,7 @@ defmodule Profitry.Import do
 
   """
 
-  alias Profitry.{Repo, Investment}
-  alias Profitry.Investment.Schema.{Position, Portfolio, Order}
-  alias Profitry.Import.Trades
-  alias Profitry.Import.Parsers.Ibkr.Parser
-  alias Profitry.Import.Parsers.Schema.Trade
+  alias Profitry.Import.File
 
-  @doc """
-
-  Processes a broker statement file, by importing all the positions and orders into a portfolio
-
-  """
-  @spec process_file(integer(), String.t()) :: list(Order.t())
-  def process_file(portfolio_id, file) do
-    portfolio = portfolio_with_positions(portfolio_id)
-    trades = Parser.parse(file)
-    tickers = trade_tickers(trades)
-    create_positions(portfolio, tickers)
-    portfolio = portfolio_with_positions(portfolio_id)
-
-    trades
-    |> Enum.map(&Trades.convert/1)
-    |> Enum.map(fn order -> insert_order(portfolio.positions, order) end)
-    |> Enum.map(fn {:ok, order} -> order end)
-  end
-
-  @spec portfolio_with_positions(integer()) :: Portfolio.t()
-  def portfolio_with_positions(portfolio_id) do
-    Repo.get(Portfolio, portfolio_id)
-    |> Repo.preload(:positions)
-  end
-
-  @spec trade_tickers(list(Trade.t())) :: list(String.t())
-  def trade_tickers(trades) do
-    Enum.map(trades, fn trade -> trade.ticker end)
-    |> Enum.uniq()
-  end
-
-  @spec create_positions(Portfolio.t(), list(String.t())) :: list(Position.t())
-  def create_positions(portfolio, tickers) do
-    portfolio_tickers =
-      portfolio.positions
-      |> Enum.map(fn position -> position.ticker end)
-
-    tickers
-    |> Enum.filter(fn ticker -> !Enum.member?(portfolio_tickers, ticker) end)
-    |> Enum.map(fn ticker -> Investment.create_position(portfolio, %{ticker: ticker}) end)
-    |> Enum.map(fn {:ok, position} -> position end)
-  end
-
-  @spec insert_order(list(Position.t()), Trades.attrs()) :: {:ok, Order.t()}
-  def insert_order(positions, attrs) do
-    position = Enum.find(positions, fn position -> position.ticker == attrs.ticker end)
-    Investment.create_order(position, attrs)
-  end
+  defdelegate process(portfolio_id, file), to: File
 end

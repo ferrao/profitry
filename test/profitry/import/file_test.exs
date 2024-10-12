@@ -1,10 +1,10 @@
-defmodule Profitry.ImportTest do
+defmodule Profitry.FileTest do
   use Profitry.DataCase, async: true
 
   import Profitry.InvestmentFixtures
   import Profitry.ParsersFixtures
 
-  alias Profitry.Import
+  alias Profitry.Import.File
   alias Profitry.Investment.Schema.{Portfolio, Position, Order}
 
   @order %{
@@ -22,7 +22,7 @@ defmodule Profitry.ImportTest do
       portfolio = portfolio_fixture()
 
       orders =
-        Import.process_file(portfolio.id, "test/support/csv/ibkr.csv")
+        File.process(portfolio.id, "test/support/csv/ibkr.csv")
 
       assert is_list(orders)
 
@@ -41,7 +41,7 @@ defmodule Profitry.ImportTest do
       position_fixture(portfolio, %{ticker: "TSLA"})
       position_fixture(portfolio, %{ticker: "IBM"})
 
-      portfolio = Import.portfolio_with_positions(portfolio.id)
+      portfolio = File.portfolio_with_positions(portfolio.id)
       [position1 | [position2]] = portfolio.positions
 
       assert %Portfolio{} = portfolio
@@ -52,15 +52,15 @@ defmodule Profitry.ImportTest do
     end
 
     test "gets trade tickers" do
-      tickers = trades_fixture() |> Import.trade_tickers()
+      tickers = trades_fixture() |> File.trade_tickers()
 
       assert tickers === ["CLOV", "TSLA", "SOFI"]
-      assert [] === Import.trade_tickers([])
+      assert [] === File.trade_tickers([])
     end
 
     test "creates order" do
       {_portfolio, position} = position_fixture()
-      {:ok, order} = Import.insert_order([position, %{position | ticker: "CLOV"}], @order)
+      {:ok, order} = File.insert_order([position, %{position | ticker: "CLOV"}], @order)
 
       assert %Order{} = order
     end
@@ -69,7 +69,7 @@ defmodule Profitry.ImportTest do
       portfolio = portfolio_fixture()
       portfolio = Repo.preload(portfolio, :positions)
 
-      [position1 | [position2]] = Import.create_positions(portfolio, ["TSLA", "CLOV"])
+      [position1 | [position2]] = File.create_positions(portfolio, ["TSLA", "CLOV"])
 
       assert %Position{} = position1
       assert %Position{} = position2
@@ -83,7 +83,7 @@ defmodule Profitry.ImportTest do
       position_fixture(portfolio, %{ticker: "IBM"})
       portfolio = Repo.preload(portfolio, :positions)
 
-      [position] = Import.create_positions(portfolio, ["TSLA", "CLOV"])
+      [position] = File.create_positions(portfolio, ["TSLA", "CLOV"])
 
       assert %Position{} = position
       assert position.ticker === "CLOV"
