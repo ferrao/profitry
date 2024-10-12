@@ -8,7 +8,7 @@ defmodule Profitry.Investment.Schema.Order do
   use Ecto.Schema
 
   import Ecto.Changeset
-  alias Ecto.Changeset
+
   alias Profitry.Investment.Schema.{Option, Position}
 
   @type order :: :buy | :sell
@@ -34,7 +34,6 @@ defmodule Profitry.Investment.Schema.Order do
     timestamps()
   end
 
-  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:type, :instrument, :quantity, :price, :inserted_at])

@@ -10,7 +10,6 @@ defmodule Profitry.Investment.Schema.Portfolio do
   import Ecto.Changeset
   import Profitry.Utils.Ecto
 
-  alias Ecto.Changeset
   alias Profitry.Investment.Schema.Position
 
   @type t :: %__MODULE__{
@@ -29,7 +28,6 @@ defmodule Profitry.Investment.Schema.Portfolio do
     timestamps()
   end
 
-  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(portfolio, attrs) do
     portfolio
     |> cast(attrs, [:broker, :description])

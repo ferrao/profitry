@@ -7,6 +7,7 @@ defmodule Profitry.Investment.Splits do
 
   import Ecto.Query, warn: false
 
+  alias Ecto.Changeset
   alias Profitry.Repo
   alias Profitry.Investment.Schema.Split
 
@@ -23,7 +24,7 @@ defmodule Profitry.Investment.Splits do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_split(map()) :: {:ok, Split.t()}
+  @spec create_split(map()) :: {:ok, Split.t()} | {:error, Changeset.t()}
   def create_split(attrs \\ %{}) do
     %Split{}
     |> Split.changeset(attrs)
@@ -86,7 +87,7 @@ defmodule Profitry.Investment.Splits do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_split(Split.t(), map()) :: {:ok, Split.t()}
+  @spec update_split(Split.t(), map()) :: {:ok, Split.t()} | {:error, Changeset.t()}
   def update_split(%Split{} = split, attrs) do
     split
     |> Split.changeset(attrs)
@@ -107,7 +108,7 @@ defmodule Profitry.Investment.Splits do
 
 
   """
-  @spec delete_split(Split.t()) :: {:ok, Split.t()}
+  @spec delete_split(Split.t()) :: {:ok, Split.t()} | {:error, Changeset.t()}
   def delete_split(%Split{} = split) do
     split
     |> change_split()
@@ -124,7 +125,7 @@ defmodule Profitry.Investment.Splits do
       %Ecto.Changeset{data: %Split{}}
 
   """
-  @spec change_split(Split.t(), map()) :: Ecto.Changeset.t()
+  @spec change_split(Split.t(), map()) :: Changeset.t()
   def change_split(%Split{} = split, attrs \\ %{}) do
     Split.changeset(split, attrs)
   end

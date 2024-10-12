@@ -5,6 +5,7 @@ defmodule Profitry.Investment.Positions do
 
   """
 
+  alias Ecto.Changeset
   alias Profitry.Repo
   alias Profitry.Investment.Schema.{Portfolio, Position}
 
@@ -21,8 +22,8 @@ defmodule Profitry.Investment.Positions do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_position(Portfolio.t(), map()) :: {:ok, Position.t()}
-  def create_position(portfolio, attrs \\ %{}) do
+  @spec create_position(Portfolio.t(), map()) :: {:ok, Position.t()} | {:error, Changeset.t()}
+  def create_position(portfolio, attrs) do
     %Position{}
     |> Position.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:portfolio, portfolio)
@@ -42,7 +43,7 @@ defmodule Profitry.Investment.Positions do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec update_position(Position.t(), map()) :: {:ok, Position.t()}
+  @spec update_position(Position.t(), map()) :: {:ok, Position.t()} | {:error, Changeset.t()}
   def update_position(%Position{} = position, attrs) do
     position
     |> Position.changeset(attrs)
@@ -62,7 +63,7 @@ defmodule Profitry.Investment.Positions do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec delete_position(Position.t()) :: {:ok, Position.t()}
+  @spec delete_position(Position.t()) :: {:ok, Position.t()} | {:error, Changeset.t()}
   def delete_position(%Position{} = position) do
     position
     |> change_position()
@@ -79,7 +80,7 @@ defmodule Profitry.Investment.Positions do
       %Ecto.Changeset{data: %Position{}}
 
   """
-  @spec change_position(Position.t(), map()) :: Ecto.Changeset.t()
+  @spec change_position(Position.t(), map()) :: Changeset.t()
   def change_position(%Position{} = position, attrs \\ %{}) do
     Position.changeset(position, attrs)
   end

@@ -15,6 +15,11 @@ defmodule Profitry.Investment.Reports do
 
   Creates a report on a portfolio position
 
+  ## Examples
+
+      iex> make_report(position, quote)
+      %PositionReport{}
+
   """
   @spec make_report(Position.t(), Quote.t()) :: PositionReport.t()
   def make_report(%Position{ticker: ticker, orders: orders}, quote \\ %Quote{}) do

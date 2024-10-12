@@ -5,11 +5,11 @@ defmodule Profitry.Import do
 
   """
 
-  alias Profitry.Investment.Schema.Position
-  alias Profitry.Investment.Schema.Portfolio
+  alias Profitry.{Repo, Investment}
+  alias Profitry.Investment.Schema.{Position, Portfolio, Order}
   alias Profitry.Import.Trades
   alias Profitry.Import.Parsers.Ibkr.Parser
-  alias Profitry.{Repo, Investment}
+  alias Profitry.Import.Parsers.Schema.Trade
 
   @doc """
 
@@ -21,7 +21,6 @@ defmodule Profitry.Import do
     portfolio = portfolio_with_positions(portfolio_id)
     trades = Parser.parse(file)
     tickers = trade_positions(trades)
-
     create_positions(portfolio, tickers)
     portfolio = portfolio_with_positions(portfolio_id)
 
@@ -37,7 +36,7 @@ defmodule Profitry.Import do
     |> Repo.preload(:positions)
   end
 
-  @spec trade_positions(list(Trades.t())) :: list(String.t())
+  @spec trade_positions(list(Trade.t())) :: list(String.t())
   defp trade_positions(trades) do
     Enum.map(trades, fn trade -> trade.ticker end)
     |> Enum.uniq()
@@ -55,10 +54,9 @@ defmodule Profitry.Import do
     |> Enum.map(fn {:ok, position} -> position end)
   end
 
-  @spec insert_order(list(Position.t(), map())) :: Order.t()
+  @spec insert_order(list(Position.t()), map()) :: {:ok, Order.t()}
   defp insert_order(positions, attrs) do
     position = Enum.find(positions, fn position -> position.ticker == attrs.ticker end)
-
     Investment.create_order(position, attrs)
   end
 end
