@@ -20,6 +20,7 @@ defmodule Profitry.Investment.OrdersTest do
       }
 
       {:ok, %Order{} = order} = Investment.create_order(position, attrs)
+
       assert order.type === String.to_atom(attrs.type)
       assert order.instrument === String.to_atom(attrs.instrument)
       assert Decimal.compare(order.quantity, attrs.quantity) === :eq
@@ -42,6 +43,7 @@ defmodule Profitry.Investment.OrdersTest do
       }
 
       {:ok, %Order{} = order} = Investment.create_order(position, attrs)
+
       assert order.type === String.to_atom(attrs.type)
       assert order.instrument === String.to_atom(attrs.instrument)
       assert Decimal.compare(order.quantity, attrs.quantity) === :eq
@@ -56,6 +58,7 @@ defmodule Profitry.Investment.OrdersTest do
 
     test "create_order/2 with invalide data creates an error changeset" do
       {_portfolio, position} = position_fixture()
+
       assert {:error, %Ecto.Changeset{}} = Investment.create_order(position, %{})
     end
 

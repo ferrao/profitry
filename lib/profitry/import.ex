@@ -16,11 +16,11 @@ defmodule Profitry.Import do
   Processes a broker statement file, by importing all the positions and orders into a portfolio
 
   """
-  @spec process_file(integer(), String.t()) :: {atom(), list(Order.t())}
+  @spec process_file(integer(), String.t()) :: list(Order.t())
   def process_file(portfolio_id, file) do
     portfolio = portfolio_with_positions(portfolio_id)
     trades = Parser.parse(file)
-    tickers = trade_positions(trades)
+    tickers = trade_tickers(trades)
     create_positions(portfolio, tickers)
     portfolio = portfolio_with_positions(portfolio_id)
 
@@ -31,19 +31,19 @@ defmodule Profitry.Import do
   end
 
   @spec portfolio_with_positions(integer()) :: Portfolio.t()
-  defp portfolio_with_positions(portfolio_id) do
+  def portfolio_with_positions(portfolio_id) do
     Repo.get(Portfolio, portfolio_id)
     |> Repo.preload(:positions)
   end
 
-  @spec trade_positions(list(Trade.t())) :: list(String.t())
-  defp trade_positions(trades) do
+  @spec trade_tickers(list(Trade.t())) :: list(String.t())
+  def trade_tickers(trades) do
     Enum.map(trades, fn trade -> trade.ticker end)
     |> Enum.uniq()
   end
 
   @spec create_positions(Portfolio.t(), list(String.t())) :: list(Position.t())
-  defp create_positions(portfolio, tickers) do
+  def create_positions(portfolio, tickers) do
     portfolio_tickers =
       portfolio.positions
       |> Enum.map(fn position -> position.ticker end)
@@ -54,8 +54,8 @@ defmodule Profitry.Import do
     |> Enum.map(fn {:ok, position} -> position end)
   end
 
-  @spec insert_order(list(Position.t()), map()) :: {:ok, Order.t()}
-  defp insert_order(positions, attrs) do
+  @spec insert_order(list(Position.t()), Trades.attrs()) :: {:ok, Order.t()}
+  def insert_order(positions, attrs) do
     position = Enum.find(positions, fn position -> position.ticker == attrs.ticker end)
     Investment.create_order(position, attrs)
   end
