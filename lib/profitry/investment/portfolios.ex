@@ -38,10 +38,6 @@ defmodule Profitry.Investment.Portfolios do
       iex> list_portfolios()
       [%Portfolio{}, ...]
 
-
-      iex> list_portfolios(user)
-      [%Portfolio{}, ...]
-
   """
   @spec list_portfolios() :: list(Portfolio.t())
   def list_portfolios() do
@@ -52,20 +48,18 @@ defmodule Profitry.Investment.Portfolios do
 
   Gets a single portfolio.
 
-  Returns `nil` if the Portfolio does not exist.
-
   ## Examples
 
       iex> get_portfolio(123)
       %Portfolio{}
 
       iex> get_portfolio(456)
-      nil
+      ** (Ecto.NoResultsError)
 
   """
-  @spec get_portfolio(integer()) :: Portfolio.t() | nil
-  def get_portfolio(id) do
-    Repo.get(Portfolio, id)
+  @spec get_portfolio!(integer()) :: Portfolio.t()
+  def get_portfolio!(id) do
+    Repo.get!(Portfolio, id)
   end
 
   @doc """
