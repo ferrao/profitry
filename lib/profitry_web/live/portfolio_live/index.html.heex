@@ -1,0 +1,49 @@
+<.header>
+  <span class="text-2xl">
+    Portfolios
+  </span>
+  <:actions>
+    <.link patch={~p"/portfolios/new"}>
+      <.button>New Portfolio</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="portfolios"
+  rows={@streams.portfolios}
+  row_click={fn {_id, portfolio} -> JS.navigate(~p"/portfolios/#{portfolio}") end}
+>
+  <:col :let={{_id, portfolio}} label="Broker"><%= portfolio.broker %></:col>
+  <:col :let={{_id, portfolio}} label="Description"><%= portfolio.description %></:col>
+  <:action :let={{_id, portfolio}}>
+    <div class="sr-only">
+      <.link navigate={~p"/portfolios/#{portfolio}"}>Positions</.link>
+    </div>
+    <.link patch={~p"/portfolios/#{portfolio}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, portfolio}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: portfolio.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="portfolio-modal"
+  show
+  on_cancel={JS.patch(~p"/portfolios")}
+>
+  <.live_component
+    module={ProfitryWeb.PortfolioLive.FormComponent}
+    id={@portfolio.id || :new}
+    title={@page_title}
+    action={@live_action}
+    portfolio={@portfolio}
+    patch={~p"/portfolios"}
+  />
+</.modal>
