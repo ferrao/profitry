@@ -27,14 +27,14 @@ defmodule Profitry.Investment.PortfoliosTest do
       assert Investment.list_portfolios() === [portfolio]
     end
 
-    test "get_portfolio/1 returns existing portfolio" do
+    test "get_portfolio!/1 returns existing portfolio" do
       portfolio = portfolio_fixture()
 
-      assert Investment.get_portfolio(portfolio.id) === portfolio
+      assert Investment.get_portfolio!(portfolio.id) === portfolio
     end
 
     test "get_portfolio/1 returns nil for invalid portfolio id" do
-      assert Investment.get_portfolio(9999) === nil
+      assert_raise Ecto.NoResultsError, fn -> Investment.get_portfolio!(9999) end
     end
 
     test "update_portfolio/2 with valid data updates portfolio" do

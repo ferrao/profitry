@@ -50,10 +50,10 @@ defmodule Profitry.Investment.Portfolios do
 
   ## Examples
 
-      iex> get_portfolio(123)
+      iex> get_portfolio!(123)
       %Portfolio{}
 
-      iex> get_portfolio(456)
+      iex> get_portfolio!(456)
       ** (Ecto.NoResultsError)
 
   """
