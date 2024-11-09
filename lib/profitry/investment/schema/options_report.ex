@@ -49,7 +49,7 @@ defmodule Profitry.Investment.Schema.OptionsReport do
       %__MODULE__{
         h
         | investment: Decimal.add(investment, new_investment),
-          contracts: contracts + new_contracts
+          contracts: Decimal.add(contracts, new_contracts)
       }
       | t
     ]

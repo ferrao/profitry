@@ -6,7 +6,7 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
   @report1 %OptionsReport{
     type: :call,
     strike: 10,
-    contracts: 3,
+    contracts: Decimal.new("3"),
     expiration: ~D[2023-01-01],
     investment: Decimal.new("320.40")
   }
@@ -15,7 +15,7 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
     @report1
     | type: :put,
       strike: @report1.strike + 1,
-      contracts: 6,
+      contracts: Decimal.new("6"),
       expiration: Date.add(@report1.expiration, 10),
       investment: Decimal.new("203.20")
   }
@@ -30,7 +30,7 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
     test "updates a list with an options report for the same contract" do
       [report | rest] = OptionsReport.update_reports([@report1, @report2], @report1)
 
-      assert report.contracts === 2 * @report1.contracts
+      assert report.contracts === Decimal.mult(2, @report1.contracts)
       assert report.type === @report1.type
       assert report.expiration === @report1.expiration
       assert report.strike === @report1.strike
