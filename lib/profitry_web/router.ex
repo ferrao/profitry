@@ -21,10 +21,7 @@ defmodule ProfitryWeb.Router do
     live "/portfolios", PortfolioLive.Index, :index
     live "/portfolios/new", PortfolioLive.Index, :new
     live "/portfolios/:id/edit", PortfolioLive.Index, :edit
-
-    # TODO: Replace with PositionsLive.Index, :index
-    # live "/portfolios/:id", PortfolioLive.Show, :show
-    live "/portfolios/:id/show/edit", PortfolioLive.Show, :edit
+    live "/portfolios/:id", PositionsLive.Index, :list
   end
 
   # Other scopes may use custom stacks.

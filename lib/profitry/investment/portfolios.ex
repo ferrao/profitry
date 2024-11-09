@@ -5,6 +5,8 @@ defmodule Profitry.Investment.Portfolios do
 
   """
 
+  alias Profitry.Investment
+  alias Profitry.Investment.Schema.{PositionReport, Order}
   alias Ecto.Changeset
   alias Profitry.Repo
   alias Profitry.Investment.Schema.Portfolio
@@ -116,4 +118,53 @@ defmodule Profitry.Investment.Portfolios do
   def change_portfolio(%Portfolio{} = portfolio, attrs \\ %{}) do
     Portfolio.changeset(portfolio, attrs)
   end
+
+  @doc """
+
+  Lists reports for a portfolio
+
+  Raises `Ecto.NoResultsError` if the Portfolio does not exist.
+
+  ## Examples
+    iex> list_reports!(123)
+    %Report{}
+
+    iex> list_reports!(666)
+    %Report{}
+    ** (Ecto.NoResultsError)
+
+  """
+  @spec list_reports!(integer()) :: list(PositionReport.t())
+  def list_reports!(id) do
+    portfolio =
+      get_portfolio!(id)
+      |> Repo.preload(:positions)
+
+    for position <- portfolio.positions do
+      position
+      |> preload_position()
+      |> Investment.make_report()
+    end
+    |> Enum.sort_by(& &1.profit, {:desc, Decimal})
+  end
+
+  @spec preload_position(PositionReport.t()) :: PositionReport.t()
+  def preload_position(position) do
+    position = Repo.preload(position, :orders)
+
+    orders =
+      for order <- position.orders do
+        preload_order(order)
+      end
+
+    %{position | orders: orders}
+  end
+
+  @spec preload_order(Order.t()) :: Order.t()
+  def preload_order(%Order{instrument: :option} = order) do
+    Repo.preload(order, :option)
+  end
+
+  @spec preload_order(Order.t()) :: Order.t()
+  def preload_order(order), do: order
 end
