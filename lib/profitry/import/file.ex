@@ -30,18 +30,21 @@ defmodule Profitry.Import.File do
     |> Enum.map(fn {:ok, order} -> order end)
   end
 
+  @doc false
   @spec portfolio_with_positions(integer()) :: Portfolio.t()
   def portfolio_with_positions(portfolio_id) do
     Repo.get(Portfolio, portfolio_id)
     |> Repo.preload(:positions)
   end
 
+  @doc false
   @spec trade_tickers(list(Trade.t())) :: list(String.t())
   def trade_tickers(trades) do
     Enum.map(trades, fn trade -> trade.ticker end)
     |> Enum.uniq()
   end
 
+  @doc false
   @spec create_positions(Portfolio.t(), list(String.t())) :: list(Position.t())
   def create_positions(portfolio, tickers) do
     portfolio_tickers =
@@ -54,6 +57,7 @@ defmodule Profitry.Import.File do
     |> Enum.map(fn {:ok, position} -> position end)
   end
 
+  @doc false
   @spec insert_order(list(Position.t()), Trades.attrs()) :: {:ok, Order.t()}
   def insert_order(positions, attrs) do
     position = Enum.find(positions, fn position -> position.ticker == attrs.ticker end)

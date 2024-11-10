@@ -50,6 +50,7 @@ defmodule Profitry.Import.Trades do
     Map.put(order, :option, convert_option(trade.option))
   end
 
+  @doc false
   @spec convert_option(Trade.option_trade()) :: option_attrs()
   defp convert_option(option) do
     %{
@@ -59,6 +60,7 @@ defmodule Profitry.Import.Trades do
     }
   end
 
+  @doc false
   @spec order_type(Decimal.t()) :: String.t()
   defp order_type(quantity) do
     if Decimal.lt?(quantity, 0), do: "sell", else: "buy"

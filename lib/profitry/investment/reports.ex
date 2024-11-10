@@ -41,6 +41,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # buy stock
+  @doc false
   @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :buy,
@@ -56,6 +57,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # sell stock
+  @doc false
   @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :sell,
@@ -71,6 +73,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # buy premium
+  @doc false
   @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :buy,
@@ -96,6 +99,7 @@ defmodule Profitry.Investment.Reports do
   end
 
   # sell premium
+  @doc false
   @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
   def calculate_order(report, %Order{
         type: :sell,
