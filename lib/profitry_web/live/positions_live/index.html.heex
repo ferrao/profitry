@@ -1,0 +1,11 @@
+<.header>
+  <div class="text-2xl">
+    <%= @portfolio.broker %>
+  </div>
+  <div class="text-base">
+    <%= @portfolio.description %>
+  </div>
+</.header>
+<.table id="reports" rows={@reports}>
+  <:col :let={report} label="Ticker"><%= report.ticker %></:col>
+</.table>

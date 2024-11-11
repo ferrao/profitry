@@ -97,7 +97,7 @@ defmodule Profitry.Investment.PortfoliosTest do
     end
 
     test "list_reports!/1 lists reports for a portfolio" do
-      {portfolio, position, _order} = option_fixture()
+      {portfolio, _position, _order} = option_fixture()
 
       reports = Portfolios.list_reports!(portfolio.id)
 

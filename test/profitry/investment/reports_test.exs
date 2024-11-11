@@ -7,6 +7,7 @@ defmodule Profitry.Investment.ReportsTest do
   alias Profitry.Investment.Schema.{PositionReport, OptionsReport, Order, Option, Position}
 
   @report %PositionReport{
+    id: 666,
     ticker: "TSLA",
     investment: Decimal.new("23400"),
     shares: Decimal.new("100"),
@@ -35,6 +36,7 @@ defmodule Profitry.Investment.ReportsTest do
   }
 
   @position %Position{
+    id: 666,
     ticker: "TSLA",
     orders: [
       %Order{
@@ -78,6 +80,7 @@ defmodule Profitry.Investment.ReportsTest do
       [long_option | _t] = report.long_options
       [short_option | _t] = report.short_options
 
+      assert report.id == 666
       assert report.ticker == "TSLA"
       assert Decimal.compare(report.price, @quote.price) === :eq
       assert Decimal.compare(report.value |> Decimal.round(2), Decimal.new("1736.25")) === :eq

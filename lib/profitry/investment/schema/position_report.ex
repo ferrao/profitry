@@ -8,6 +8,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
   alias Profitry.Investment.Schema.OptionsReport
 
   @type t :: %__MODULE__{
+          id: integer(),
           ticker: String.t(),
           investment: Decimal.t(),
           shares: Decimal.t(),
@@ -20,6 +21,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
         }
 
   defstruct [
+    :id,
     :ticker,
     investment: Decimal.new(0),
     shares: Decimal.new(0),
