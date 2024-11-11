@@ -1,6 +1,8 @@
 defmodule ProfitryWeb.PositionsLive.Index do
   use ProfitryWeb, :live_view
 
+  import Number.Currency
+
   alias Profitry.Investment
 
   @impl true

@@ -61,7 +61,8 @@ defmodule Profitry.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
       {:nimble_csv, "~> 1.2"},
-      {:timex, "~> 3.7.11"}
+      {:timex, "~> 3.7.11"},
+      {:number, "~> 1.0.5"}
     ]
   end
 
