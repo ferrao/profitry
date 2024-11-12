@@ -1,11 +1,20 @@
 <.header>
-  <div class="text-2xl">
-    <%= @portfolio.broker %>
-  </div>
-  <div class="text-base">
+  <%= @portfolio.broker %>
+  <:subtitle>
     <%= @portfolio.description %>
-  </div>
+  </:subtitle>
+  <:actions>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/new"} }>
+      <.button>New Position</.button>
+    </.link>
+  </:actions>
 </.header>
+
+<%!-- <.table id="totals" rows={[@totals]}>
+  <:col :let={totals} label="Value"><%= currency(totals.value) %></:col>
+  <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
+</.table> --%>
+
 <.table id="reports" rows={@streams.reports}>
   <:col :let={{_id, report}} label="Ticker"><%= report.ticker %></:col>
 
@@ -20,3 +29,5 @@
     <%!-- <.profit profit={report.profit} total={@totals.value} /> --%>
   </:col>
 </.table>
+
+<.back navigate={~p"/portfolios"}>Back to portfolios</.back>
