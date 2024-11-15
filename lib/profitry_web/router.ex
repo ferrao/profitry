@@ -18,10 +18,12 @@ defmodule ProfitryWeb.Router do
     pipe_through :browser
     get "/", PageController, :home
 
-    live "/portfolios", PortfolioLive.Index, :index
+    live "/portfolios", PortfolioLive.Index, :list
     live "/portfolios/new", PortfolioLive.Index, :new
     live "/portfolios/:id/edit", PortfolioLive.Index, :edit
     live "/portfolios/:id", PositionsLive.Index, :list
+
+    live("/portfolios/:id/positions/new", PositionLive.Index, :new)
   end
 
   # Other scopes may use custom stacks.
