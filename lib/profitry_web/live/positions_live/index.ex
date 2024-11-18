@@ -5,6 +5,7 @@ defmodule ProfitryWeb.PositionsLive.Index do
   import Number.Currency
 
   alias Profitry.Investment
+  alias Profitry.Investment.Positions
 
   @impl true
   def mount(params, _session, socket) do
@@ -33,5 +34,16 @@ defmodule ProfitryWeb.PositionsLive.Index do
     socket
     |> assign(:page_title, "New Position")
     |> assign(:position, %Position{})
+  end
+
+  @impl true
+  def handle_info({ProfitryWeb.PositionsLive.FormComponent, {:saved, position}}, socket) do
+    report =
+      position
+      |> Positions.preload_orders()
+      |> Investment.make_report()
+
+    socket = stream_insert(socket, :reports, report)
+    {:noreply, socket}
   end
 end

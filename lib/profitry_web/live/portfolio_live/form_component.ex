@@ -4,32 +4,6 @@ defmodule ProfitryWeb.PortfolioLive.FormComponent do
   alias Profitry.Investment
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>Use this form to manage portfolios.</:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="portfolio-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
-        <.input field={@form[:broker]} label="Broker" />
-        <.input field={@form[:description]} label="Description" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Portfolio</.button>
-        </:actions>
-      </.simple_form>
-    </div>
-    """
-  end
-
-  @impl true
   def update(%{portfolio: portfolio} = assigns, socket) do
     {:ok,
      socket

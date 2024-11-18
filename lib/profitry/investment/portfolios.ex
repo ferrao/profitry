@@ -6,10 +6,9 @@ defmodule Profitry.Investment.Portfolios do
   """
 
   alias Profitry.Investment
-  alias Profitry.Investment.Schema.{PositionReport, Position, Order}
+  alias Profitry.Investment.Schema.{PositionReport, Portfolio}
   alias Ecto.Changeset
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.Portfolio
 
   @doc """
 
@@ -141,30 +140,9 @@ defmodule Profitry.Investment.Portfolios do
 
     for position <- portfolio.positions do
       position
-      |> preload_orders()
+      |> Investment.preload_orders()
       |> Investment.make_report()
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
   end
-
-  @doc false
-  @spec preload_orders(Position.t()) :: Position.t()
-  def preload_orders(position) do
-    position = Repo.preload(position, :orders)
-
-    orders =
-      for order <- position.orders do
-        preload_option(order)
-      end
-
-    %Position{position | orders: orders}
-  end
-
-  @spec preload_option(Order.t()) :: Order.t()
-  defp preload_option(%Order{instrument: :option} = order) do
-    Repo.preload(order, :option)
-  end
-
-  @spec preload_option(Order.t()) :: Order.t()
-  defp preload_option(order), do: order
 end

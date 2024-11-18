@@ -17,6 +17,7 @@ defmodule Profitry.Investment do
   defdelegate create_position(portfolio, attrs), to: Positions
   defdelegate update_position(position, attrs), to: Positions
   defdelegate delete_position(position), to: Positions
+  defdelegate change_position(position, attrs \\ %{}), to: Positions
 
   defdelegate create_order(position, attrs), to: Orders
   defdelegate list_orders(position), to: Orders
@@ -30,6 +31,7 @@ defmodule Profitry.Investment do
   defdelegate list_splits(), to: Splits
   defdelegate find_splits(ticker), to: Splits
 
+  defdelegate preload_orders(position), to: Positions
   defdelegate make_report(position, quote), to: Reports
   defdelegate make_report(position), to: Reports
 end
