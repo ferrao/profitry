@@ -22,6 +22,13 @@ defmodule ProfitryWeb.PortfolioLiveTest do
       assert html =~ "Listing Portfolios"
     end
 
+    test "shows positions for portfolio", %{conn: conn, portfolio: portfolio} do
+      {:ok, _index_live, html} = live(conn, ~p"/portfolios/#{portfolio.id}")
+
+      assert html =~ portfolio.broker
+      assert html =~ portfolio.description
+    end
+
     test "saves new portfolio", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, ~p"/portfolios")
 
