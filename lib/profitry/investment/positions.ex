@@ -87,7 +87,7 @@ defmodule Profitry.Investment.Positions do
 
   @doc """
 
-    Preloads the orders for a positoin
+    Preloads the orders for a position
 
   """
   @spec preload_orders(Position.t()) :: Position.t()

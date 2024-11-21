@@ -5,7 +5,7 @@ defmodule Profitry.Investment.PositionsTest do
 
   alias Profitry.Investment
   alias Profitry.Investment.Positions
-  alias Profitry.Investment.Schema.Position
+  alias Profitry.Investment.Schema.{Position, Order, Option}
 
   describe "position" do
     test "create_position/2 with valid data creates a position" do
@@ -59,6 +59,23 @@ defmodule Profitry.Investment.PositionsTest do
       assert {:error, %Ecto.Changeset{} = changeset} = Investment.delete_position(position)
       assert ["Position contains orders"] = errors_on(changeset).orders
       assert position === Repo.get!(Position, position.id) |> Repo.preload(:portfolio)
+    end
+
+    test "preload_orders/1 loads orders for a position" do
+      {_portfolio, position, _order} = option_fixture()
+
+      position = Positions.preload_orders(position)
+
+      assert is_list(position.orders)
+      assert [%Order{}] = position.orders
+    end
+
+    test "preload_orders/1 loads option for an order" do
+      {_portfolio, position, _order} = option_fixture()
+
+      position = Positions.preload_orders(position)
+
+      assert [%Order{option: %Option{}}] = position.orders
     end
   end
 end
