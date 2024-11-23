@@ -39,7 +39,7 @@
   on_cancel={JS.patch(~p"/portfolios/#{@portfolio}")}
 >
   <.live_component
-    module={ProfitryWeb.PositionsLive.FormComponent}
+    module={ProfitryWeb.PositionLive.FormComponent}
     id={@position.id || :new}
     title={@page_title}
     action={@live_action}

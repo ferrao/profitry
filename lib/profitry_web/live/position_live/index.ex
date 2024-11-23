@@ -1,4 +1,4 @@
-defmodule ProfitryWeb.PositionsLive.Index do
+defmodule ProfitryWeb.PositionLive.Index do
   alias Profitry.Investment.Schema.Position
   use ProfitryWeb, :live_view
 
@@ -37,7 +37,7 @@ defmodule ProfitryWeb.PositionsLive.Index do
   end
 
   @impl true
-  def handle_info({ProfitryWeb.PositionsLive.FormComponent, {:saved, position}}, socket) do
+  def handle_info({ProfitryWeb.PositionLive.FormComponent, {:saved, position}}, socket) do
     report =
       position
       |> Positions.preload_orders()

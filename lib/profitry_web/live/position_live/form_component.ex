@@ -1,4 +1,4 @@
-defmodule ProfitryWeb.PositionsLive.FormComponent do
+defmodule ProfitryWeb.PositionLive.FormComponent do
   use ProfitryWeb, :live_component
 
   alias Profitry.Investment
