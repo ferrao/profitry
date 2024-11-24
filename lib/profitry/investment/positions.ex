@@ -86,6 +86,26 @@ defmodule Profitry.Investment.Positions do
   end
 
   @doc """
+    Finds a portfolio position.
+
+    ## Examples
+
+        iex> find_position(portfolio, "tsla")
+        %Position{}
+
+        iex> find_position(portfolio, "xpto")
+        nil
+
+  """
+  @spec find_position(Portfolio.t(), String.t()) :: Position.t() | nil
+  def find_position(%Portfolio{} = portfolio, ticker) do
+    portfolio = portfolio |> Repo.preload(:positions)
+
+    portfolio.positions
+    |> Enum.find(&(&1.ticker === ticker))
+  end
+
+  @doc """
 
     Preloads the orders for a position
 
