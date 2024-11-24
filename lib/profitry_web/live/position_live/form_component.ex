@@ -25,6 +25,21 @@ defmodule ProfitryWeb.PositionLive.FormComponent do
     save_position(socket, socket.assigns.action, position_params)
   end
 
+  defp save_position(socket, :edit, position_params) do
+    case Investment.update_position(socket.assigns.position, position_params) do
+      {:ok, position} ->
+        notify_parent({:saved, position})
+
+        {:noreply,
+         socket
+         |> put_flash(:info, "Position updated successfully")
+         |> push_patch(to: socket.assigns.patch)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset))}
+    end
+  end
+
   defp save_position(socket, :new, position_params) do
     case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, position} ->

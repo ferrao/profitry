@@ -24,6 +24,8 @@ defmodule ProfitryWeb.Router do
     live "/portfolios/:id", PositionLive.Index, :list
 
     live("/portfolios/:id/positions/new", PositionLive.Index, :new)
+    live("/portfolios/:id/positions/:ticker/edit", PositionLive.Index, :edit)
+    live("/portfolios/:id/positions/delete", PositionLive.Index, :delete)
   end
 
   # Other scopes may use custom stacks.

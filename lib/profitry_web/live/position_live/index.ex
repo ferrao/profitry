@@ -36,6 +36,12 @@ defmodule ProfitryWeb.PositionLive.Index do
     |> assign(:position, %Position{})
   end
 
+  defp apply_action(socket, :edit, %{"ticker" => ticker}) do
+    socket
+    |> assign(:page_title, "Edit Position")
+    |> assign(:position, Investment.find_position(socket.assigns.portfolio, ticker))
+  end
+
   @impl true
   def handle_info({ProfitryWeb.PositionLive.FormComponent, {:saved, position}}, socket) do
     report =

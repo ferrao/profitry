@@ -27,8 +27,9 @@ defmodule ProfitryWeb.PortfolioLiveTest do
     test "saves new portfolio", %{conn: conn} do
       {:ok, portfolio_live, _html} = live(conn, ~p"/portfolios")
 
-      assert portfolio_live |> element("a", "New Portfolio") |> render_click() =~
-               "New Portfolio"
+      assert portfolio_live
+             |> element("a", "New Portfolio")
+             |> render_click() =~ "Save Portfolio"
 
       assert_patch(portfolio_live, ~p"/portfolios/new")
 
@@ -46,11 +47,12 @@ defmodule ProfitryWeb.PortfolioLiveTest do
       assert html =~ "Portfolio created successfully"
     end
 
-    test "updates portfolio in listing", %{conn: conn, portfolio: portfolio} do
+    test "updates existing portfolio", %{conn: conn, portfolio: portfolio} do
       {:ok, portfolio_live, _html} = live(conn, ~p"/portfolios")
 
-      assert portfolio_live |> element("#portfolios-#{portfolio.id} a", "Edit") |> render_click() =~
-               "Edit Portfolio"
+      assert portfolio_live
+             |> element("#portfolios-#{portfolio.id} a", "Edit")
+             |> render_click() =~ "Edit Portfolio"
 
       assert_patch(portfolio_live, ~p"/portfolios/#{portfolio}/edit")
 
@@ -68,7 +70,7 @@ defmodule ProfitryWeb.PortfolioLiveTest do
       assert html =~ "Portfolio updated successfully"
     end
 
-    test "deletes portfolio in listing", %{conn: conn, portfolio: portfolio} do
+    test "deletes existing portfolio", %{conn: conn, portfolio: portfolio} do
       {:ok, portfolio_live, _html} = live(conn, ~p"/portfolios")
 
       assert portfolio_live

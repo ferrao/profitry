@@ -28,6 +28,19 @@
   <:col :let={{_id, _report}} label="P/L">
     <%!-- <.profit profit={report.profit} total={@totals.value} /> --%>
   </:col>
+  <:action :let={{_id, report}}>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, report}}>
+    <.link
+      phx-click={
+        JS.push("delete", value: %{id: @portfolio.id, ticker: report.ticker}) |> hide("##{id}")
+      }
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
 </.table>
 
 <.back navigate={~p"/portfolios"}>Back to portfolios</.back>
