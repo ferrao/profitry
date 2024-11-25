@@ -22,11 +22,8 @@
     </div>
     <.link patch={~p"/portfolios/#{portfolio}/edit"}>Edit</.link>
   </:action>
-  <:action :let={{id, portfolio}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: portfolio.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
+  <:action :let={{_id, portfolio}}>
+    <.link phx-click={JS.push("delete", value: %{id: portfolio.id})} data-confirm="Are you sure?">
       Delete
     </.link>
   </:action>
