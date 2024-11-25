@@ -1,11 +1,12 @@
 defmodule ProfitryWeb.PositionLive.Index do
-  alias Profitry.Investment.Schema.Position
   use ProfitryWeb, :live_view
 
   import Number.Currency
 
+  alias Profitry.Utils.Errors
   alias Profitry.Investment
   alias Profitry.Investment.Positions
+  alias Profitry.Investment.Schema.Position
 
   @impl true
   def mount(params, _session, socket) do
@@ -51,5 +52,25 @@ defmodule ProfitryWeb.PositionLive.Index do
 
     socket = stream_insert(socket, :reports, report)
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id, "ticker" => ticker, "dom_id" => dom_id}, socket) do
+    position =
+      Investment.get_portfolio!(id)
+      |> Investment.find_position(ticker)
+
+    case Investment.delete_position(position) do
+      {:ok, _position} ->
+        {:noreply, stream_delete_by_dom_id(socket, :reports, dom_id)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply,
+         socket
+         |> put_flash(
+           :error,
+           Errors.get_message(changeset, :positions, "Error deleting position.") |> List.first()
+         )}
+    end
   end
 end

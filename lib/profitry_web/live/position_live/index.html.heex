@@ -34,7 +34,7 @@
   <:action :let={{id, report}}>
     <.link
       phx-click={
-        JS.push("delete", value: %{id: @portfolio.id, ticker: report.ticker}) |> hide("##{id}")
+        JS.push("delete", value: %{id: @portfolio.id, ticker: report.ticker, dom_id: id})
       }
       data-confirm="Are you sure?"
     >
