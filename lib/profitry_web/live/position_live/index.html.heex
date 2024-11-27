@@ -12,6 +12,7 @@
 
 <.table id="totals" rows={[@totals]}>
   <:col :let={totals} label="Value"><%= number_to_currency(totals.value) %></:col>
+  <:col :let={totals} label="Investment"><%= number_to_currency(totals.investment) %></:col>
   <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
 </.table>
 

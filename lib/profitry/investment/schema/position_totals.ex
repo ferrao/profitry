@@ -9,14 +9,15 @@ defmodule Profitry.Investment.Schema.PositionTotals do
 
   @type t :: %__MODULE__{
           value: Decimal.t(),
-          profit: Decimal.t()
+          profit: Decimal.t(),
+          investment: Decimal.t()
         }
 
-  defstruct value: Decimal.new(0), profit: Decimal.new(0)
+  defstruct value: Decimal.new(0), profit: Decimal.new(0), investment: Decimal.new(0)
 
   @doc """
 
-  Creates the total value and profit for a set of position reports
+  Creates the total investment, value and profit for a set of position reports
 
   """
   @spec make_totals(list(PositionReport.t())) :: t()
@@ -26,7 +27,8 @@ defmodule Profitry.Investment.Schema.PositionTotals do
     Enum.reduce(position_reports, initial_total, fn pr, acc ->
       %__MODULE__{
         value: Decimal.add(pr.value, acc.value),
-        profit: Decimal.add(pr.profit, acc.profit)
+        profit: Decimal.add(pr.profit, acc.profit),
+        investment: Decimal.add(pr.investment, acc.investment)
       }
     end)
   end
@@ -36,7 +38,8 @@ defmodule Profitry.Investment.Schema.PositionTotals do
     %{
       position_totals
       | value: Decimal.to_string(position_totals.value),
-        profit: Decimal.to_string(position_totals.profit)
+        profit: Decimal.to_string(position_totals.profit),
+        investment: Decimal.to_string(position_totals.investment)
     }
   end
 
