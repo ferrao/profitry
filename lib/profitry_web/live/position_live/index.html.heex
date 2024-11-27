@@ -10,10 +10,10 @@
   </:actions>
 </.header>
 
-<%!-- <.table id="totals" rows={[@totals]}>
-  <:col :let={totals} label="Value"><%= currency(totals.value) %></:col>
+<.table id="totals" rows={[@totals]}>
+  <:col :let={totals} label="Value"><%= number_to_currency(totals.value) %></:col>
   <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
-</.table> --%>
+</.table>
 
 <.table id="reports" rows={@streams.reports}>
   <:col :let={{_id, report}} label="Ticker"><%= report.ticker %></:col>
@@ -25,8 +25,8 @@
   <:col :let={{_id, report}} label="Investment">
     <%= number_to_currency(report.investment) %>
   </:col>
-  <:col :let={{_id, _report}} label="P/L">
-    <%!-- <.profit profit={report.profit} total={@totals.value} /> --%>
+  <:col :let={{_id, report}} label="P/L">
+    <.profit profit={report.profit} total={@totals.value} />
   </:col>
   <:action :let={{_id, report}}>
     <.link patch={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/edit"}>Edit</.link>

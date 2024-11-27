@@ -74,5 +74,22 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
       assert report2.investment === @report1.investment
       assert report2.expiration === @report2.expiration
     end
+
+    test "casts an options report" do
+      casted_options_report = OptionsReport.cast(@report1)
+
+      assert casted_options_report.type === "call"
+      assert casted_options_report.strike === "10"
+      assert casted_options_report.contracts === "3"
+      assert casted_options_report.expiration === "2023-01-01"
+      assert casted_options_report.investment === "320.40"
+    end
+
+    test "casts a list of options reports" do
+      assert OptionsReport.cast([@report1, @report2]) === [
+               OptionsReport.cast(@report1),
+               OptionsReport.cast(@report2)
+             ]
+    end
   end
 end

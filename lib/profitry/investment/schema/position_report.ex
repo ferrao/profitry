@@ -41,7 +41,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
   # with no shares
   @spec calculate_cost_basis(t(), boolean()) :: t()
   def calculate_cost_basis(report, _has_shares = false) do
-    Map.put(report, :cost_basis, "0.00")
+    Map.put(report, :cost_basis, Decimal.new(0))
   end
 
   # with shares
@@ -72,6 +72,11 @@ defmodule Profitry.Investment.Schema.PositionReport do
     |> Map.put(:profit, profit)
   end
 
+  @doc """
+
+  Calculates the value of a position report
+
+  """
   # with no quote
   @spec calculate_value(t(), nil) :: t()
   def calculate_value(report, nil) do
@@ -82,5 +87,31 @@ defmodule Profitry.Investment.Schema.PositionReport do
   @spec calculate_value(t(), Decimal.t()) :: t()
   def calculate_value(report, price) do
     Map.put(report, :value, Decimal.mult(report.shares, price))
+  end
+
+  @doc """
+
+  Casts position report fields to strings
+
+  """
+  @spec cast(t()) :: %{}
+  def cast(%__MODULE__{} = position_report) do
+    %{
+      position_report
+      | id: to_string(position_report.id),
+        investment: Decimal.to_string(position_report.investment),
+        shares: Decimal.to_string(position_report.shares),
+        cost_basis: Decimal.to_string(position_report.cost_basis),
+        price: Decimal.to_string(position_report.price),
+        value: Decimal.to_string(position_report.value),
+        profit: Decimal.to_string(position_report.profit),
+        long_options: OptionsReport.cast(position_report.long_options),
+        short_options: OptionsReport.cast(position_report.short_options)
+    }
+  end
+
+  @spec cast(list(t())) :: list(%{})
+  def cast(position_reports) when is_list(position_reports) do
+    Enum.map(position_reports, fn position_report -> cast(position_report) end)
   end
 end
