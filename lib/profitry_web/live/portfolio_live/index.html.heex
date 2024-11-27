@@ -2,6 +2,9 @@
   <span class="text-2xl">
     Portfolios
   </span>
+  <span id="count-portfolios" class="text-sm text-gray-300 pl-2">
+    (<%= @count %>)
+  </span>
   <:actions>
     <.link patch={~p"/portfolios/new"}>
       <.button>New Portfolio</.button>
@@ -41,6 +44,7 @@
     title={@page_title}
     action={@live_action}
     portfolio={@portfolio}
+    count={@count}
     patch={~p"/portfolios"}
   />
 </.modal>

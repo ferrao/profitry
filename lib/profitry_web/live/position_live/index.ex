@@ -20,6 +20,7 @@ defmodule ProfitryWeb.PositionLive.Index do
     socket =
       assign(socket, portfolio: portfolio)
       |> assign(totals: PositionTotals.cast(totals))
+      |> assign(count: Enum.count(reports))
       |> stream(:reports, PositionReport.cast(reports))
 
     {:ok, socket}
@@ -49,13 +50,16 @@ defmodule ProfitryWeb.PositionLive.Index do
   end
 
   @impl true
-  def handle_info({ProfitryWeb.PositionLive.FormComponent, {:saved, position}}, socket) do
+  def handle_info({ProfitryWeb.PositionLive.FormComponent, {:saved, position, count}}, socket) do
     report =
       position
       |> Positions.preload_orders()
       |> Investment.make_report()
 
-    socket = stream_insert(socket, :reports, PositionReport.cast(report))
+    socket =
+      assign(socket, :count, count)
+      |> stream_insert(:reports, PositionReport.cast(report))
+
     {:noreply, socket}
   end
 
@@ -67,7 +71,11 @@ defmodule ProfitryWeb.PositionLive.Index do
 
     case Investment.delete_position(position) do
       {:ok, _position} ->
-        {:noreply, stream_delete_by_dom_id(socket, :reports, dom_id)}
+        socket =
+          assign(socket, count: socket.assigns.count - 1)
+          |> stream_delete_by_dom_id(:reports, dom_id)
+
+        {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply,

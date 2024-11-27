@@ -26,7 +26,7 @@ defmodule ProfitryWeb.PortfolioLive.FormComponent do
   defp save_portfolio(socket, :edit, portfolio_params) do
     case Investment.update_portfolio(socket.assigns.portfolio, portfolio_params) do
       {:ok, portfolio} ->
-        notify_parent({:saved, portfolio})
+        notify_parent({:saved, portfolio, socket.assigns.count})
 
         {:noreply,
          socket
@@ -41,10 +41,11 @@ defmodule ProfitryWeb.PortfolioLive.FormComponent do
   defp save_portfolio(socket, :new, portfolio_params) do
     case Investment.create_portfolio(portfolio_params) do
       {:ok, portfolio} ->
-        notify_parent({:saved, portfolio})
+        notify_parent({:saved, portfolio, socket.assigns.count + 1})
 
         {:noreply,
          socket
+         |> assign(:count, socket.assigns.count + 1)
          |> put_flash(:info, "Portfolio created successfully")
          |> push_patch(to: socket.assigns.patch)}
 

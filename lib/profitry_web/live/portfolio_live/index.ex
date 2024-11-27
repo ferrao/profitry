@@ -7,7 +7,13 @@ defmodule ProfitryWeb.PortfolioLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :portfolios, Investment.list_portfolios())}
+    portfolios = Investment.list_portfolios()
+
+    socket =
+      assign(socket, count: Enum.count(portfolios))
+      |> stream(:portfolios, portfolios)
+
+    {:ok, socket}
   end
 
   @impl true
@@ -34,8 +40,15 @@ defmodule ProfitryWeb.PortfolioLive.Index do
   end
 
   @impl true
-  def handle_info({ProfitryWeb.PortfolioLive.FormComponent, {:saved, portfolio}}, socket) do
-    {:noreply, stream_insert(socket, :portfolios, portfolio)}
+  def handle_info(
+        {ProfitryWeb.PortfolioLive.FormComponent, {:saved, portfolio, count}},
+        socket
+      ) do
+    socket =
+      assign(socket, :count, count)
+      |> stream_insert(:portfolios, portfolio)
+
+    {:noreply, socket}
   end
 
   @impl true
@@ -44,7 +57,11 @@ defmodule ProfitryWeb.PortfolioLive.Index do
 
     case Investment.delete_portfolio(portfolio) do
       {:ok, _portfolio} ->
-        {:noreply, stream_delete(socket, :portfolios, portfolio)}
+        socket =
+          assign(socket, :count, socket.assigns.count - 1)
+          |> stream_delete(:portfolios, portfolio)
+
+        {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply,

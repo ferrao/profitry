@@ -29,6 +29,14 @@ defmodule ProfitryWeb.PositionLiveTest do
       assert html =~ position.ticker
     end
 
+    test "counts positions", %{conn: conn, portfolio: portfolio} do
+      {:ok, position_live, _html} = live(conn, ~p"/portfolios/#{portfolio.id}")
+
+      assert position_live
+             |> element("span#count-positions")
+             |> render() =~ "(1 positions)"
+    end
+
     test "saves new position", %{conn: conn, portfolio: portfolio} do
       {:ok, position_live, _html} = live(conn, ~p"/portfolios/#{portfolio.id}")
 
@@ -50,6 +58,10 @@ defmodule ProfitryWeb.PositionLiveTest do
 
       html = render(position_live)
       assert html =~ "Position created successfully"
+
+      assert position_live
+             |> element("span#count-positions")
+             |> render() =~ "(2 positions)"
     end
 
     test "updates existing position", %{conn: conn, portfolio: portfolio, position: position} do
@@ -76,6 +88,10 @@ defmodule ProfitryWeb.PositionLiveTest do
 
       html = render(position_live)
       assert html =~ "Position updated successfully"
+
+      assert position_live
+             |> element("span#count-positions")
+             |> render() =~ "(1 positions)"
     end
 
     test "deletes an existing position", %{conn: conn, portfolio: portfolio, position: position} do
@@ -86,6 +102,10 @@ defmodule ProfitryWeb.PositionLiveTest do
              |> render_click()
 
       refute has_element?(position_live, "#reports-#{position.id}")
+
+      assert position_live
+             |> element("span#count-positions")
+             |> render() =~ "(0 positions)"
     end
   end
 end

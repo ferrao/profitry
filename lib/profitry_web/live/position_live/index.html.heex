@@ -1,5 +1,8 @@
 <.header>
   <%= @portfolio.broker %>
+  <span id="count-positions" class="text-sm text-gray-300 pl-4">
+    (<%= @count %> positions)
+  </span>
   <:subtitle>
     <%= @portfolio.description %>
   </:subtitle>
@@ -59,6 +62,7 @@
     action={@live_action}
     position={@position}
     portfolio={@portfolio}
+    count={@count}
     patch={~p"/portfolios/#{@portfolio}"}
   />
 </.modal>

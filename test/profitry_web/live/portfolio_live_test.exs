@@ -24,6 +24,14 @@ defmodule ProfitryWeb.PortfolioLiveTest do
       assert html =~ portfolio.description
     end
 
+    test "counts portfolios", %{conn: conn} do
+      {:ok, portfolio_live, _html} = live(conn, ~p"/portfolios")
+
+      assert portfolio_live
+             |> element("span#count-portfolios")
+             |> render() =~ "(1)"
+    end
+
     test "saves new portfolio", %{conn: conn} do
       {:ok, portfolio_live, _html} = live(conn, ~p"/portfolios")
 
@@ -45,6 +53,10 @@ defmodule ProfitryWeb.PortfolioLiveTest do
 
       html = render(portfolio_live)
       assert html =~ "Portfolio created successfully"
+
+      assert portfolio_live
+             |> element("span#count-portfolios")
+             |> render() =~ "(2)"
     end
 
     test "updates existing portfolio", %{conn: conn, portfolio: portfolio} do
@@ -68,6 +80,10 @@ defmodule ProfitryWeb.PortfolioLiveTest do
 
       html = render(portfolio_live)
       assert html =~ "Portfolio updated successfully"
+
+      assert portfolio_live
+             |> element("span#count-portfolios")
+             |> render() =~ "(1)"
     end
 
     test "deletes existing portfolio", %{conn: conn, portfolio: portfolio} do
@@ -78,6 +94,10 @@ defmodule ProfitryWeb.PortfolioLiveTest do
              |> render_click()
 
       refute has_element?(portfolio_live, "#portfolios-#{portfolio.id}")
+
+      assert portfolio_live
+             |> element("span#count-portfolios")
+             |> render() =~ "(0)"
     end
   end
 end
