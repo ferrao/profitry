@@ -67,12 +67,6 @@ defmodule ProfitryWeb.PositionLive.Index do
 
     case Investment.delete_position(position) do
       {:ok, _position} ->
-        totals =
-          Investment.list_reports!(id)
-          |> PositionTotals.make_totals()
-
-        socket = assign(socket, totals: PositionTotals.cast(totals))
-
         {:noreply, stream_delete_by_dom_id(socket, :reports, dom_id)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

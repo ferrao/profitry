@@ -87,19 +87,5 @@ defmodule ProfitryWeb.PositionLiveTest do
 
       refute has_element?(position_live, "#reports-#{position.id}")
     end
-
-    test "deleting an existing position updates totals", %{
-      conn: conn,
-      portfolio: portfolio,
-      position: position
-    } do
-      {:ok, position_live, html} = live(conn, ~p"/portfolios/#{portfolio.id}")
-
-      assert position_live
-             |> element("#reports-#{position.id} a", "Delete")
-             |> render_click()
-
-      ## Assert updated totals
-    end
   end
 end
