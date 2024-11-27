@@ -31,7 +31,7 @@ defmodule Profitry.Investment.Schema.PositionTotals do
     end)
   end
 
-  @spec cast(t()) :: %{}
+  @spec cast(t()) :: map()
   def cast(%__MODULE__{} = position_totals) do
     %{
       position_totals
@@ -40,7 +40,7 @@ defmodule Profitry.Investment.Schema.PositionTotals do
     }
   end
 
-  @spec cast(list(t())) :: list(%{})
+  @spec cast(list(t())) :: list(map())
   def cast(positions_totals) when is_list(positions_totals) do
     Enum.map(positions_totals, fn position_total -> cast(position_total) end)
   end

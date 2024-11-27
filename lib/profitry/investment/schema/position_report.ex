@@ -94,7 +94,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
   Casts position report fields to strings
 
   """
-  @spec cast(t()) :: %{}
+  @spec cast(t()) :: map()
   def cast(%__MODULE__{} = position_report) do
     %{
       position_report
@@ -110,7 +110,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
     }
   end
 
-  @spec cast(list(t())) :: list(%{})
+  @spec cast(list(t())) :: list(map())
   def cast(position_reports) when is_list(position_reports) do
     Enum.map(position_reports, fn position_report -> cast(position_report) end)
   end
