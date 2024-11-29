@@ -15,9 +15,9 @@ defmodule ProfitryWeb.CoreComponents do
   Icons are provided by [heroicons](https://heroicons.com). See `icon/1` for usage.
   """
   use Phoenix.Component
+  use Gettext, backend: ProfitryWeb.Gettext
 
   alias Phoenix.LiveView.JS
-  import ProfitryWeb.Gettext
 
   @doc """
   Renders a modal.
