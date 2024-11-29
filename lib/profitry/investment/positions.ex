@@ -7,7 +7,9 @@ defmodule Profitry.Investment.Positions do
 
   alias Ecto.Changeset
   alias Profitry.Repo
+  alias Profitry.Investment.Reports
   alias Profitry.Investment.Schema.{Portfolio, Position, Order}
+  alias Profitry.Exchanges.Schema.Quote
 
   @doc """
 
@@ -103,6 +105,11 @@ defmodule Profitry.Investment.Positions do
 
     portfolio.positions
     |> Enum.find(&(&1.ticker === ticker))
+  end
+
+  def make_report(position, quote \\ %Quote{}) do
+    preload_orders(position)
+    |> Reports.make_report(quote)
   end
 
   @doc """

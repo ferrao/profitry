@@ -19,7 +19,15 @@
   <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
 </.table>
 
-<.table id="reports" rows={@streams.reports}>
+<.table
+  id="reports"
+  rows={@streams.reports}
+  row_click={
+    fn {_id, report} ->
+      JS.navigate(~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders")
+    end
+  }
+>
   <:col :let={{_id, report}} label="Ticker"><%= report.ticker %></:col>
 
   <:col :let={{_id, report}} label="Shares"><%= report.shares %></:col>

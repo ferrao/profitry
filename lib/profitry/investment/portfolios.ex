@@ -139,9 +139,7 @@ defmodule Profitry.Investment.Portfolios do
       |> Repo.preload(:positions)
 
     for position <- portfolio.positions do
-      position
-      |> Investment.preload_orders()
-      |> Investment.make_report()
+      Investment.make_report(position)
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
   end

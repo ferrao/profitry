@@ -1,0 +1,43 @@
+<.header>
+  <%= @position.ticker %>
+  <span id="count-positions" class="text-sm text-gray-300 pl-4">
+    (<%= @count %> orders)
+  </span>
+  <:subtitle>
+    <%= @portfolio.broker %>
+  </:subtitle>
+  <:actions>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders/new"}>
+      <.button>New Order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="report" rows={[@report]}>
+  <:col :let={report} label="Investment"><%= number_to_currency(report.investment) %></:col>
+  <:col :let={report} label="Shares"><%= report.shares %></:col>
+  <:col :let={report} label="Cost Basis"><%= number_to_currency(report.cost_basis) %></:col>
+  <:col :let={report} label="Price"><%= number_to_currency(report.price) %></:col>
+  <:col :let={report} label="P/L"><.profit profit={report.profit} total={@report.value} /></:col>
+</.table>
+
+<.table id="orders" rows={@orders}>
+  <:col :let={order} label="Type"><%= order.type %></:col>
+  <:col :let={order} label="Instrument"><%= order.instrument %></:col>
+  <:col :let={order} label="Quantity"><%= order.quantity %></:col>
+  <:col :let={order} label="Price"><%= number_to_currency(order.price) %></:col>
+  <:col :let={order} label="Opened"><%= date(order.inserted_at) %></:col>
+
+  <:action :let={{_id, order}}>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@ticker}/orders/#{order}/edit"}>
+      Edit
+    </.link>
+  </:action>
+  <:action :let={{_id, order}}>
+    <.link phx-click={JS.push("delete", value: %{id: order.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>

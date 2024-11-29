@@ -1,5 +1,4 @@
 defmodule ProfitryWeb.PositionLive.Index do
-  alias Profitry.Investment.Schema.PositionReport
   use ProfitryWeb, :live_view
 
   import ProfitryWeb.CustomComponents

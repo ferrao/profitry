@@ -1,0 +1,28 @@
+defmodule ProfitryWeb.OrderLive.Index do
+  use ProfitryWeb, :live_view
+
+  import Number.Currency
+  import ProfitryWeb.CustomComponents
+
+  alias Profitry.Investment
+  alias Profitry.Investment.Schema.PositionReport
+
+  def mount(params, _session, socket) do
+    portfolio_id = Map.get(params, "portfolio_id")
+    ticker = Map.get(params, "ticker")
+
+    portfolio = Investment.get_portfolio!(portfolio_id)
+    position = Investment.find_position(portfolio, ticker)
+    orders = Investment.list_orders(position)
+    report = Investment.make_report(position)
+
+    socket =
+      assign(socket, position: position)
+      |> assign(portfolio: portfolio)
+      |> assign(orders: orders)
+      |> assign(report: PositionReport.cast(report))
+      |> assign(count: Enum.count(orders))
+
+    {:ok, socket}
+  end
+end
