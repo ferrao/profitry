@@ -19,9 +19,9 @@ defmodule ProfitryWeb.OrderLive.Index do
     socket =
       assign(socket, position: position)
       |> assign(portfolio: portfolio)
-      |> assign(orders: orders)
       |> assign(report: PositionReport.cast(report))
       |> assign(count: Enum.count(orders))
+      |> stream(:orders, orders)
 
     {:ok, socket}
   end
