@@ -1,0 +1,31 @@
+<div>
+  <.header>
+    <%= @title %>
+    <:subtitle>
+      <%= @subtitle %>
+    </:subtitle>
+  </.header>
+
+  <.simple_form
+    for={@form}
+    id="order-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save"
+  >
+    <.input field={@form[:type]} type="select" options={["buy", "sell"]} label="Order Type" />
+    <.input
+      field={@form[:instrument]}
+      type="select"
+      options={["stock", "option"]}
+      label="Instrument"
+    />
+    <.input field={@form[:quantity]} type="number" step="any" label="Quantity" />
+    <.input field={@form[:price]} type="number" step="any" label="Price (USD)" />
+    <.input field={@form[:inserted_at]} type="datetime-local" label="Order Date" />
+
+    <:actions>
+      <.button phx-disable-with="Saving...">Save Order</.button>
+    </:actions>
+  </.simple_form>
+</div>

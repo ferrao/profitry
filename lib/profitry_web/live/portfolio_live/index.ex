@@ -40,10 +40,7 @@ defmodule ProfitryWeb.PortfolioLive.Index do
   end
 
   @impl true
-  def handle_info(
-        {ProfitryWeb.PortfolioLive.FormComponent, {:saved, portfolio, count}},
-        socket
-      ) do
+  def handle_info({ProfitryWeb.PortfolioLive.FormComponent, {:saved, portfolio, count}}, socket) do
     socket =
       assign(socket, :count, count)
       |> stream_insert(:portfolios, portfolio)

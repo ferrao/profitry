@@ -1,6 +1,6 @@
 <.header>
   <%= @position.ticker %>
-  <span id="count-positions" class="text-sm text-gray-300 pl-4">
+  <span id="count-orders" class="text-sm text-gray-300 pl-4">
     (<%= @count %> orders)
   </span>
   <:subtitle>
@@ -43,3 +43,22 @@
 </.table>
 
 <.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="order-modal"
+  show
+  on_cancel={JS.patch(~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders")}
+>
+  <.live_component
+    module={ProfitryWeb.OrderLive.FormComponent}
+    id={@order || :new}
+    title={@page_title}
+    subtitle={@page_subtitle}
+    action={@live_action}
+    position={@position}
+    order={@order}
+    count={@count}
+    patch={~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders"}
+  />
+</.modal>

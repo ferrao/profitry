@@ -28,6 +28,7 @@ defmodule Profitry.Investment do
   defdelegate get_order(id), to: Orders
   defdelegate update_order(order, attrs), to: Orders
   defdelegate delete_order(order), to: Orders
+  defdelegate change_order(order, attrs \\ %{}), to: Orders
 
   defdelegate create_split(attrs), to: Splits
   defdelegate update_split(split, attr), to: Splits

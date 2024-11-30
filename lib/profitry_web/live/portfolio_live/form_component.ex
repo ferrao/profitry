@@ -45,7 +45,6 @@ defmodule ProfitryWeb.PortfolioLive.FormComponent do
 
         {:noreply,
          socket
-         |> assign(:count, socket.assigns.count + 1)
          |> put_flash(:info, "Portfolio created successfully")
          |> push_patch(to: socket.assigns.patch)}
 

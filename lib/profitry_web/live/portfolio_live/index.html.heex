@@ -40,7 +40,7 @@
 >
   <.live_component
     module={ProfitryWeb.PortfolioLive.FormComponent}
-    id={@portfolio.id || :new}
+    id={@portfolio || :new}
     title={@page_title}
     action={@live_action}
     portfolio={@portfolio}
