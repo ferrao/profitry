@@ -40,36 +40,41 @@ defmodule Profitry.Investment.ReportsTest do
     ticker: "TSLA",
     orders: [
       %Order{
+        id: 1,
         type: :buy,
         instrument: :stock,
         quantity: Decimal.new("10"),
         price: Decimal.new("100")
       },
       %Order{
+        id: 2,
         type: :sell,
         instrument: :option,
         quantity: Decimal.new("2"),
         price: Decimal.new("0.75"),
-        option: %Option{strike: 110, expiration: ~D[2023-01-01]}
+        option: %Option{strike: 110, expiration: ~D[2023-01-01], order_id: 2}
       },
       %Order{
+        id: 3,
         type: :sell,
         instrument: :stock,
         quantity: Decimal.new("5"),
         price: Decimal.new("110")
       },
       %Order{
+        id: 4,
         type: :buy,
         instrument: :stock,
         quantity: Decimal.new("2.5"),
         price: Decimal.new("120")
       },
       %Order{
+        id: 5,
         type: :buy,
         instrument: :option,
         quantity: Decimal.new("2"),
         price: Decimal.new("0.25"),
-        option: %Option{strike: 120, expiration: ~D[2023-01-01]}
+        option: %Option{strike: 120, expiration: ~D[2023-01-01], order_id: 5}
       }
     ]
   }
