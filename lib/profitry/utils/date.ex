@@ -7,6 +7,8 @@ defmodule Profitry.Utils.Date do
 
   @doc """
 
+  Parses an option expiration date string into a Date struct
+
   ## Examples
 
     iex> parse_expiration("17DEC21")
@@ -28,4 +30,17 @@ defmodule Profitry.Utils.Date do
       {:error, reason} -> raise reason
     end
   end
+
+  @doc """
+
+  Timestamps as properly formatted strings
+
+  ## Examples
+
+    iex> date(~N[2019-10-31 23:00:07])
+    "31/10/2019 23:00:07"
+
+  """
+  @spec format_timestamp(NaiveDateTime.t()) :: String.t()
+  def format_timestamp(date), do: Calendar.strftime(date, "%d/%m/%Y %H:%M:%S")
 end

@@ -10,14 +10,6 @@ defmodule ProfitryWeb.CustomComponents do
   import Number.Currency
 
   @doc """
-
-    Timestamps as properly formatted strings
-
-  """
-  @spec date(NaiveDateTime.t()) :: String.t()
-  def date(date), do: Calendar.strftime(date, "%d/%m/%Y %H:%M:%S")
-
-  @doc """
   Renders a profit or loss value.
 
   ## Examples
