@@ -37,7 +37,23 @@ defmodule ProfitryWeb.CustomComponentsTest do
 
       assert render_component(&option_icon/1,
                option: %{expiration: Date.add(Date.utc_today(), -1)}
-             ) =~ "text-red-300"
+             ) =~ "text-red-600"
+    end
+
+    test "renders option data" do
+      order = %{
+        type: :buy,
+        quantity: Decimal.new("1.3"),
+        price: Decimal.new("132.3"),
+        option: %{type: :call, strike: 50, expiration: ~D[2024-02-01]}
+      }
+
+      assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "TSLA"
+      assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "Buy"
+      assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "Call"
+      assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "$50.00"
+      assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "$132.30"
+      assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "2024-02-01"
     end
   end
 end

@@ -71,7 +71,7 @@ defmodule ProfitryWeb.CustomComponents do
     color =
       cond do
         option === nil -> "text-slate-300"
-        Date.after?(Date.utc_today(), option.expiration) -> "text-red-300"
+        Date.after?(Date.utc_today(), option.expiration) -> "text-red-600"
         true -> "text-emerald-600"
       end
 
@@ -80,6 +80,45 @@ defmodule ProfitryWeb.CustomComponents do
     ~H"""
     <div class="flex justify-center">
       <.icon name="hero-document-currency-dollar" class={Enum.join(["h-4 w-4 ", @color])} />
+    </div>
+    """
+  end
+
+  attr :ticker, :string, doc: "the position ticker"
+  attr :order, Order, doc: "the order schema"
+
+  def option_data(assigns) do
+    ~H"""
+    <div>
+      <.header>
+        <%= @ticker %>
+        <:subtitle>
+          Options Contract
+        </:subtitle>
+      </.header>
+      <div class="mt-4">
+        <span>
+          <%= String.capitalize(to_string(@order.type)) %>
+        </span>
+        <span>
+          <%= @order.quantity %>
+        </span>
+        <span>
+          <%= String.capitalize(to_string(@order.option.type)) %> @ <%= number_to_currency(
+            @order.price
+          ) %>
+        </span>
+        <div class="mt-4">
+          <span>
+            Strike price <%= number_to_currency(@order.option.strike) %>
+          </span>
+        </div>
+        <div class="mt-4">
+          <span>
+            Expiry date <%= @order.option.expiration %>
+          </span>
+        </div>
+      </div>
     </div>
     """
   end
