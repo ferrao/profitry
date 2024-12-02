@@ -4,12 +4,13 @@ defmodule ProfitryWeb.CustomComponents do
     Provides custom UI components
 
   """
-  require Decimal
   use Phoenix.Component
 
   import Number.Currency
+  import ProfitryWeb.CoreComponents
 
   @doc """
+
   Renders a profit or loss value.
 
   ## Examples
@@ -52,6 +53,34 @@ defmodule ProfitryWeb.CustomComponents do
     <% else %>
       <span class="font-semibold">--</span>
     <% end %>
+    """
+  end
+
+  @doc """
+
+  Renders an option contract icon
+
+      ## Examples
+
+      <.option_idcon option=%Option{} />
+
+  """
+  attr :option, Option, doc: "the option schema"
+
+  def option_icon(%{option: option} = assigns) do
+    color =
+      cond do
+        option === nil -> "text-slate-300"
+        Date.after?(Date.utc_today(), option.expiration) -> "text-red-300"
+        true -> "text-emerald-600"
+      end
+
+    assigns = assign(assigns, :color, color)
+
+    ~H"""
+    <div class="flex justify-center">
+      <.icon name="hero-document-currency-dollar" class={Enum.join(["h-4 w-4", @color])} />
+    </div>
     """
   end
 end

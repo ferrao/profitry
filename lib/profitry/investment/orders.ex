@@ -45,6 +45,7 @@ defmodule Profitry.Investment.Orders do
   @spec list_orders(Position.t()) :: list(Order.t())
   def list_orders(%Position{} = position) do
     Ecto.assoc(position, :orders)
+    |> preload(:option)
     |> order_by(desc: :inserted_at)
     |> Repo.all()
   end
