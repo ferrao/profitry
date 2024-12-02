@@ -66,6 +66,7 @@ defmodule Profitry.Investment.Orders do
   @spec get_order(integer()) :: Order.t() | nil
   def get_order(id) do
     Repo.get(Order, id)
+    |> Repo.preload(:option)
   end
 
   @doc """

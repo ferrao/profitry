@@ -79,7 +79,7 @@ defmodule ProfitryWeb.CustomComponents do
 
     ~H"""
     <div class="flex justify-center">
-      <.icon name="hero-document-currency-dollar" class={Enum.join(["h-4 w-4", @color])} />
+      <.icon name="hero-document-currency-dollar" class={Enum.join(["h-4 w-4 ", @color])} />
     </div>
     """
   end

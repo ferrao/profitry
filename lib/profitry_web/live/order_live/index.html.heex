@@ -28,7 +28,13 @@
   <:col :let={{_id, order}} label="Price"><%= number_to_currency(order.price) %></:col>
 
   <:col :let={{_id, order}} label="Contracts">
-    <.option_icon option={order.option} />
+    <%= if order.option do %>
+      <.link phx-click={JS.push("open-option-modal", value: %{id: order.id})}>
+        <.option_icon option={order.option} />
+      </.link>
+    <% else %>
+      <.option_icon option={order.option} />
+    <% end %>
   </:col>
 
   <:col :let={{_id, order}} label="Opened"><%= format_timestamp(order.inserted_at) %></:col>
@@ -48,6 +54,40 @@
 </.table>
 
 <.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>
+
+<.modal :if={@option_modal?} id="option-modal" show on_cancel={JS.push("close-option-modal")}>
+  <div>
+    <.header>
+      <%= @position.ticker %>
+      <:subtitle>
+        Options Contract
+      </:subtitle>
+    </.header>
+    <div class="mt-4">
+      <span>
+        <%= String.capitalize(to_string(@order.type)) %>
+      </span>
+      <span>
+        <%= @order.quantity %>
+      </span>
+      <span>
+        <%= String.capitalize(to_string(@order.option.type)) %> @ <%= number_to_currency(
+          @order.price
+        ) %>
+      </span>
+      <div class="mt-4">
+        <span>
+          Strike price <%= number_to_currency(@order.option.strike) %>
+        </span>
+      </div>
+      <div class="mt-4">
+        <span>
+          Expiry date <%= @order.option.expiration %>
+        </span>
+      </div>
+    </div>
+  </div>
+</.modal>
 
 <.modal
   :if={@live_action in [:new, :edit]}

@@ -25,6 +25,7 @@ defmodule ProfitryWeb.OrderLive.Index do
       |> assign(position: position)
       |> assign(report: PositionReport.cast(report))
       |> assign(count: Enum.count(orders))
+      |> assign(:option_modal?, false)
       |> stream(:orders, orders)
 
     {:ok, socket}
@@ -89,5 +90,25 @@ defmodule ProfitryWeb.OrderLive.Index do
            |> List.first()
          )}
     end
+  end
+
+  @impl true
+  def handle_event("open-option-modal", %{"id" => id}, socket) do
+    order = Investment.get_order(id)
+
+    socket =
+      if order.option do
+        assign(socket, :order, order)
+        |> assign(:option_modal?, true)
+      else
+        socket
+      end
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("close-option-modal", _params, socket) do
+    {:noreply, assign(socket, :option_modal?, false)}
   end
 end
