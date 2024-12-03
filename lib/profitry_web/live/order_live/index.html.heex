@@ -29,7 +29,10 @@
 
   <:col :let={{_id, order}} label="Contract">
     <%= if order.option do %>
-      <.link phx-click={JS.push("open-option-modal", value: %{id: order.id})}>
+      <.link
+        class="option-contract"
+        phx-click={JS.push("open-option-modal", value: %{id: order.id})}
+      >
         <.option_icon option={order.option} />
       </.link>
     <% else %>
