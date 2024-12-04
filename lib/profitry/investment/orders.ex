@@ -30,6 +30,10 @@ defmodule Profitry.Investment.Orders do
     |> Order.changeset(attrs)
     |> Changeset.put_assoc(:position, position)
     |> Repo.insert()
+    |> case do
+      {:ok, order} -> {:ok, Repo.preload(order, :option)}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 
   @doc """

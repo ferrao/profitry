@@ -24,6 +24,12 @@
     <.input field={@form[:price]} type="number" step="any" label="Price (USD)" />
     <.input field={@form[:inserted_at]} type="datetime-local" label="Order Date" />
 
+    <.inputs_for :let={option} :if={@instrument === "option"} field={@form[:option]}>
+      <.input field={option[:type]} type="select" options={["call", "put"]} label="Contract" />
+      <.input field={option[:strike]} type="number" step="any" label="Strike" />
+      <.input field={option[:expiration]} type="date" label="Expiration Date" />
+    </.inputs_for>
+
     <:actions>
       <.button phx-disable-with="Saving...">Save Order</.button>
     </:actions>

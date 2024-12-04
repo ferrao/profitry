@@ -49,15 +49,18 @@ defmodule ProfitryWeb.OrderLive.Index do
     |> assign(:page_title, ticker)
     |> assign(:page_subtitle, "Add Order")
     |> assign(:order, %Order{})
+    |> assign(:instrument, "stock")
   end
 
   defp apply_action(socket, :edit, params) do
     ticker = Map.get(params, "ticker")
+    order = Investment.get_order(Map.get(params, "id"))
 
     socket
     |> assign(:page_title, ticker)
     |> assign(:page_subtitle, "Edit Order")
-    |> assign(:order, Investment.get_order(Map.get(params, "id")))
+    |> assign(:order, order)
+    |> assign(:instrument, to_string(order.instrument))
   end
 
   @impl true

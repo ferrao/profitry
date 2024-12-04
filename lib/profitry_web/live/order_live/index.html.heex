@@ -75,8 +75,9 @@
     subtitle={@page_subtitle}
     action={@live_action}
     position={@position}
-    order={@order}
     count={@count}
+    order={@order}
+    instrument={@instrument}
     patch={~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders"}
   />
 </.modal>

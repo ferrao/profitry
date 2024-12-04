@@ -8,15 +8,19 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_new(:form, fn ->
-       to_form(Investment.change_order(order))
-     end)}
+     |> assign_new(:form, fn -> to_form(Investment.change_order(order)) end)}
   end
 
   @impl true
   def handle_event("validate", %{"order" => order_params}, socket) do
     changeset = Investment.change_order(socket.assigns.order, order_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+    instrument = order_params["instrument"] || socket.assigns.instrument
+
+    socket =
+      assign(socket, form: to_form(changeset, action: :validate))
+      |> assign(:instrument, instrument)
+
+    {:noreply, socket}
   end
 
   def handle_event("save", %{"order" => order_params}, socket) do
@@ -41,6 +45,7 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
   defp save_portfolio(socket, :new, order_params) do
     case Investment.create_order(socket.assigns.position, order_params) do
       {:ok, order} ->
+        IO.inspect(order)
         notify_parent({:saved, order, socket.assigns.count + 1})
 
         {:noreply,
