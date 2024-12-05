@@ -45,7 +45,6 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
   defp save_portfolio(socket, :new, order_params) do
     case Investment.create_order(socket.assigns.position, order_params) do
       {:ok, order} ->
-        IO.inspect(order)
         notify_parent({:saved, order, socket.assigns.count + 1})
 
         {:noreply,

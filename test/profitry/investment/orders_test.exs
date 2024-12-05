@@ -27,7 +27,10 @@ defmodule Profitry.Investment.OrdersTest do
       assert Decimal.compare(order.price, attrs.price) === :eq
       assert order.inserted_at === NaiveDateTime.from_iso8601!(attrs.inserted_at)
 
-      assert order === Repo.get(Order, order.id) |> Repo.preload(position: :portfolio)
+      assert order ===
+               Repo.get(Order, order.id)
+               |> Repo.preload(:option)
+               |> Repo.preload(position: :portfolio)
     end
 
     test "create_order/2 with valid data and option creates an order" do
