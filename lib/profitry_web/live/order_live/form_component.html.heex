@@ -13,22 +13,24 @@
     phx-change="validate"
     phx-submit="save"
   >
-    <.input field={@form[:type]} type="select" options={["buy", "sell"]} label="Order Type" />
-    <.input
-      field={@form[:instrument]}
-      type="select"
-      options={["stock", "option"]}
-      label="Instrument"
-    />
-    <.input field={@form[:quantity]} type="number" step="any" label="Quantity" />
-    <.input field={@form[:price]} type="number" step="any" label="Price (USD)" />
-    <.input field={@form[:inserted_at]} type="datetime-local" label="Order Date" />
+    <div class={["grid gap-6 grid-cols-1", @instrument === "option" && "grid-cols-2"]}>
+      <.input field={@form[:type]} type="select" options={["buy", "sell"]} label="Order Type" />
+      <.input
+        field={@form[:instrument]}
+        type="select"
+        options={["stock", "option"]}
+        label="Instrument"
+      />
+      <.input field={@form[:quantity]} type="number" step="any" label="Quantity" />
+      <.input field={@form[:price]} type="number" step="any" label="Price (USD)" />
+      <.input field={@form[:inserted_at]} type="datetime-local" label="Order Date" />
 
-    <.inputs_for :let={option} :if={@instrument === "option"} field={@form[:option]}>
-      <.input field={option[:type]} type="select" options={["call", "put"]} label="Contract" />
-      <.input field={option[:strike]} type="number" step="any" label="Strike" />
-      <.input field={option[:expiration]} type="date" label="Expiration Date" />
-    </.inputs_for>
+      <.inputs_for :let={option} :if={@instrument === "option"} field={@form[:option]}>
+        <.input field={option[:type]} type="select" options={["call", "put"]} label="Contract" />
+        <.input field={option[:strike]} type="number" step="any" label="Strike" />
+        <.input field={option[:expiration]} type="date" label="Expiration Date" />
+      </.inputs_for>
+    </div>
 
     <:actions>
       <.button phx-disable-with="Saving...">Save Order</.button>
