@@ -96,29 +96,14 @@ defmodule ProfitryWeb.CustomComponents do
           Options Contract
         </:subtitle>
       </.header>
-      <div class="mt-4">
-        <span>
-          <%= String.capitalize(to_string(@order.type)) %>
-        </span>
-        <span>
-          <%= @order.quantity %>
-        </span>
-        <span>
-          <%= String.capitalize(to_string(@order.option.type)) %> @ <%= number_to_currency(
-            @order.price
-          ) %>
-        </span>
-        <div class="mt-4">
-          <span>
-            Strike price <%= number_to_currency(@order.option.strike) %>
-          </span>
-        </div>
-        <div class="mt-4">
-          <span>
-            Expiry date <%= @order.option.expiration %>
-          </span>
-        </div>
-      </div>
+      <.list text_size="text-lg">
+        <:item title="Order Type"><%= String.capitalize(to_string(@order.type)) %></:item>
+        <:item title="Quantity"><%= @order.quantity %></:item>
+        <:item title="Option Type"><%= String.capitalize(to_string(@order.option.type)) %></:item>
+        <:item title="Price"><%= number_to_currency(@order.price) %></:item>
+        <:item title="Strike Price"><%= number_to_currency(@order.option.strike) %></:item>
+        <:item title="Expiry Date"><%= @order.option.expiration %></:item>
+      </.list>
     </div>
     """
   end

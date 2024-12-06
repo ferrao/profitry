@@ -28,6 +28,12 @@ defmodule ProfitryWeb.CoreComponents do
         This is a modal.
       </.modal>
 
+  Modal can have a customizable max width and padding.
+
+      <.modal id="confirm-modal" max_width="max-w-lg" padding="p-4">
+        This is a smaller modal with less padding.
+      </.modal>
+
   JS commands may be passed to the `:on_cancel` to configure
   the closing/cancel event, for example:
 
@@ -39,6 +45,8 @@ defmodule ProfitryWeb.CoreComponents do
   attr :id, :string, required: true
   attr :show, :boolean, default: false
   attr :on_cancel, JS, default: %JS{}
+  attr :max_width, :string, default: "max-w-3xl"
+  attr :padding, :string, default: "p-14"
   slot :inner_block, required: true
 
   def modal(assigns) do
@@ -60,13 +68,13 @@ defmodule ProfitryWeb.CoreComponents do
         tabindex="0"
       >
         <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+          <div class={"w-full #{@max_width} p-4 sm:p-6 lg:py-8"}>
             <.focus_wrap
               id={"#{@id}-container"}
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class={"shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white #{@padding} shadow-lg ring-1 transition"}
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -531,6 +539,8 @@ defmodule ProfitryWeb.CoreComponents do
         <:item title="Views"><%= @post.views %></:item>
       </.list>
   """
+  attr :text_size, :string, default: "text-sm"
+
   slot :item, required: true do
     attr :title, :string, required: true
   end
@@ -539,7 +549,7 @@ defmodule ProfitryWeb.CoreComponents do
     ~H"""
     <div class="mt-14">
       <dl class="-my-4 divide-y divide-zinc-100">
-        <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
+        <div :for={item <- @item} class={"flex gap-4 py-4 leading-6 sm:gap-8 #{@text_size}"}>
           <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
           <dd class="text-zinc-700"><%= render_slot(item) %></dd>
         </div>

@@ -58,7 +58,14 @@
 
 <.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>
 
-<.modal :if={@option_modal?} id="option-modal" show on_cancel={JS.push("close-option-modal")}>
+<.modal
+  :if={@option_modal?}
+  id="option-modal"
+  show
+  max_width="max-w-lg"
+  padding="p-8"
+  on_cancel={JS.push("close-option-modal")}
+>
   <.option_data ticker={@position.ticker} order={@order} />
 </.modal>
 
