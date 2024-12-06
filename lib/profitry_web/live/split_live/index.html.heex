@@ -1,0 +1,46 @@
+<.header>
+  <span class="text-2xl">
+    Stock Splits
+  </span>
+  <span id="count-splits" class="text-sm text-gray-300 pl-2">
+    (<%= @count %>)
+  </span>
+  <:actions>
+    <.link patch={~p"/splits/new"}>
+      <.button>New Stock Split</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="splits" rows={@streams.splits}>
+  <:col :let={{_id, split}} label="Ticker"><%= split.ticker %></:col>
+  <:col :let={{_id, split}} label="Multiple"><%= split.multiple %></:col>
+  <:col :let={{_id, split}} label="Reverse"><%= split.reverse %></:col>
+  <:col :let={{_id, split}} label="Date"><%= split.date %></:col>
+
+  <:action :let={{_id, split}}>
+    <.link patch={~p"/splits/#{split}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{_id, split}}>
+    <.link phx-click={JS.push("delete", value: %{id: split.id})} data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="split-modal"
+  show
+  on_cancel={JS.patch(~p"/splits")}
+>
+  <.live_component
+    module={ProfitryWeb.SplitLive.FormComponent}
+    id={@split || :new}
+    title={@page_title}
+    action={@live_action}
+    split={@split}
+    count={@count}
+    patch={~p"/splits"}
+  />
+</.modal>

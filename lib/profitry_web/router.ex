@@ -22,6 +22,10 @@ defmodule ProfitryWeb.Router do
     live "/portfolios/new", PortfolioLive.Index, :new
     live "/portfolios/:id/edit", PortfolioLive.Index, :edit
 
+    live "/splits", SplitLive.Index, :list
+    live "/splits/new", SplitLive.Index, :new
+    live "/splits/:id/edit", SplitLive.Index, :edit
+
     live "/portfolios/:id", PositionLive.Index, :list
     live("/portfolios/:id/positions/new", PositionLive.Index, :new)
     live("/portfolios/:id/positions/:ticker/edit", PositionLive.Index, :edit)
