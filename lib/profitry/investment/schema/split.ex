@@ -12,26 +12,28 @@ defmodule Profitry.Investment.Schema.Split do
 
   @type t :: %__MODULE__{
           ticker: String.t(),
-          multiplier: integer(),
+          multiple: integer(),
           reverse: boolean(),
+          date: Date.t(),
           inserted_at: NaiveDateTime.t(),
           updated_at: NaiveDateTime.t()
         }
 
   schema "splits" do
     field :ticker, :string
-    field :multiplier, :integer
+    field :multiple, :integer
     field :reverse, :boolean
+    field :date, :date
 
     timestamps()
   end
 
   def changeset(split, attrs) do
     split
-    |> cast(attrs, [:ticker, :multiplier, :reverse, :inserted_at])
-    |> validate_required([:ticker, :multiplier, :reverse, :inserted_at])
-    |> validate_number(:multiplier, greater_than: 0)
+    |> cast(attrs, [:ticker, :multiple, :reverse, :date])
+    |> validate_required([:ticker, :multiple, :reverse, :date])
+    |> validate_number(:multiple, greater_than: 0)
     |> capitalize(:ticker)
-    |> unique_constraint(:ticker)
+    |> unique_constraint(:ticker_date, name: :ticker_date_split_index)
   end
 end

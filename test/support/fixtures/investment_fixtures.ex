@@ -100,9 +100,9 @@ defmodule Profitry.InvestmentFixtures do
   def split_fixture(attrs \\ %{}) do
     %Split{
       ticker: "TSLA",
-      multiplier: 3,
+      multiple: 3,
       reverse: false,
-      inserted_at: ~N[2023-01-01 12:00:07]
+      date: ~D[2023-01-01]
     }
     |> Split.changeset(attrs)
     |> Repo.insert!()

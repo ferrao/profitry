@@ -52,10 +52,13 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
 
     create table(:splits) do
       add :ticker, :citext, null: false
-      add :multiplier, :integer, null: false
+      add :multiple, :integer, null: false
       add :reverse, :boolean, null: false
+      add :date, :date, null: false
 
       timestamps()
     end
+
+    create unique_index(:splits, [:ticker, :date], name: :ticker_date_split_index)
   end
 end

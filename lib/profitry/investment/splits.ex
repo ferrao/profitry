@@ -48,7 +48,7 @@ defmodule Profitry.Investment.Splits do
 
   @doc """
 
-  Finds all sotck splits for a ticker
+  Finds all stock splits for a ticker
 
   """
   @spec find_splits(String.t()) :: list(Split.t())
@@ -70,8 +70,26 @@ defmodule Profitry.Investment.Splits do
   @spec list_splits(Split.t()) :: list(Split.t())
   def list_splits(%Split{} = split) do
     split
-    |> order_by(desc: :inserted_at)
+    |> order_by(desc: :date)
     |> Repo.all()
+  end
+
+  @doc """
+
+  Gets a single stock split.
+
+  ## Examples
+
+      iex> get_split!(123)
+      %Split{}
+
+      iex> get_split!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_split!(integer()) :: Split.t()
+  def get_split!(id) do
+    Repo.get!(Split, id)
   end
 
   @doc """

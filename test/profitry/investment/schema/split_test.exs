@@ -9,9 +9,9 @@ defmodule Profitry.Investment.Schema.SplitsTests do
       assert ["can't be blank"] = errors_on(changeset).ticker
     end
 
-    test "multiplier is required" do
+    test "multiple is required" do
       changeset = Split.changeset(%Split{}, %{})
-      assert ["can't be blank"] = errors_on(changeset).multiplier
+      assert ["can't be blank"] = errors_on(changeset).multiple
     end
 
     test "reverse is required" do
@@ -19,19 +19,19 @@ defmodule Profitry.Investment.Schema.SplitsTests do
       assert ["can't be blank"] = errors_on(changeset).reverse
     end
 
-    test "inserted_at is required" do
+    test "date is required" do
       changeset = Split.changeset(%Split{}, %{})
-      assert ["can't be blank"] = errors_on(changeset).inserted_at
+      assert ["can't be blank"] = errors_on(changeset).date
     end
 
-    test "multiplier has to be greater than zero" do
+    test "multiple has to be greater than zero" do
       error = "must be greater than 0"
 
-      changeset1 = Split.changeset(%Split{}, %{multiplier: "0"})
-      changeset2 = Split.changeset(%Split{}, %{multiplier: "-1"})
+      changeset1 = Split.changeset(%Split{}, %{multiple: "0"})
+      changeset2 = Split.changeset(%Split{}, %{multiple: "-1"})
 
-      assert [^error] = errors_on(changeset1).multiplier
-      assert [^error] = errors_on(changeset2).multiplier
+      assert [^error] = errors_on(changeset1).multiple
+      assert [^error] = errors_on(changeset2).multiple
     end
   end
 end

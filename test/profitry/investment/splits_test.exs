@@ -4,23 +4,22 @@ defmodule Profitry.Investment.SplitsTest do
   import Profitry.InvestmentFixtures
 
   alias Profitry.Investment
-  alias Profitry.Investment.Splits
   alias Profitry.Investment.Schema.Split
 
   describe "split" do
     test "create_split/1 with valid data creates a stock split" do
       attrs = %{
         ticker: "aapl",
-        multiplier: "2",
+        multiple: "2",
         reverse: false,
-        inserted_at: "2024-01-01 12:00:07"
+        date: "2024-01-01"
       }
 
       assert {:ok, %Split{} = split} = Investment.create_split(attrs)
       assert split.ticker === String.upcase(attrs.ticker)
-      assert split.multiplier === String.to_integer(attrs.multiplier)
+      assert split.multiple === String.to_integer(attrs.multiple)
       assert split.reverse === attrs.reverse
-      assert split.inserted_at === NaiveDateTime.from_iso8601!(attrs.inserted_at)
+      assert split.date === Date.from_iso8601!(attrs.date)
       assert split === Repo.get!(Split, split.id)
     end
 
@@ -32,6 +31,16 @@ defmodule Profitry.Investment.SplitsTest do
       split = split_fixture()
 
       assert Investment.list_splits() === [split]
+    end
+
+    test "get_split!/1 returns existing stock split" do
+      split = split_fixture()
+
+      assert Investment.get_split!(split.id) === split
+    end
+
+    test "get_split/1 returns nil for invalid stock split id" do
+      assert_raise Ecto.NoResultsError, fn -> Investment.get_split!(9999) end
     end
 
     test "find_splits/1 resturns stock splits for a ticker" do
@@ -46,7 +55,7 @@ defmodule Profitry.Investment.SplitsTest do
       assert Investment.find_splits("invalid") === []
     end
 
-    test "update_splt/2 with valid data updates a stock split" do
+    test "update_split/2 with valid data updates a stock split" do
       split = split_fixture()
       attrs = %{ticker: "appl", reverse: true}
 
@@ -55,20 +64,20 @@ defmodule Profitry.Investment.SplitsTest do
       assert updated_split.reverse === attrs.reverse
     end
 
-    test "update_splt/2 with invalid data updates a stock split" do
+    test "update_split/2 with invalid data updates a stock split" do
       split = split_fixture()
-      attrs = %{multiplier: -2}
+      attrs = %{multiple: -2}
 
       assert {:error, %Ecto.Changeset{}} = Investment.update_split(split, attrs)
     end
 
-    test "change_split/1 returns a position changeset" do
+    test "change_split/1 returns a split changeset" do
       split = split_fixture()
 
-      assert %Ecto.Changeset{} = Splits.change_split(split)
+      assert %Ecto.Changeset{} = Investment.change_split(split)
     end
 
-    test "delete_split/1 deletes position" do
+    test "delete_split/1 deletes split" do
       split = split_fixture()
 
       assert {:ok, %Split{}} = Investment.delete_split(split)
