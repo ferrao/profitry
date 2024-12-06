@@ -14,7 +14,7 @@
 </.header>
 
 <.table id="totals" rows={[@totals]}>
-  <:col :let={totals} label="Value"><%= number_to_currency(totals.value) %></:col>
+  <:col :let={totals} label="Portfolio Value"><%= number_to_currency(totals.value) %></:col>
   <:col :let={totals} label="Investment"><%= number_to_currency(totals.investment) %></:col>
   <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
 </.table>
@@ -31,9 +31,11 @@
   <:col :let={{_id, report}} label="Ticker"><%= report.ticker %></:col>
 
   <:col :let={{_id, report}} label="Shares"><%= report.shares %></:col>
-  <:col :let={{_id, report}} label="Price"><%= number_to_currency(report.price) %></:col>
-  <:col :let={{_id, report}} label="CostBasis"><%= number_to_currency(report.cost_basis) %></:col>
-  <:col :let={{_id, report}} label="Value"><%= number_to_currency(report.value) %></:col>
+  <:col :let={{_id, report}} label="Current Price"><%= number_to_currency(report.price) %></:col>
+  <:col :let={{_id, report}} label="Cost Basis">
+    <%= number_to_currency(report.cost_basis) %>
+  </:col>
+  <:col :let={{_id, report}} label="Position Value"><%= number_to_currency(report.value) %></:col>
   <:col :let={{_id, report}} label="Investment">
     <%= number_to_currency(report.investment) %>
   </:col>
