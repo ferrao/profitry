@@ -1,5 +1,5 @@
 defmodule Profitry.Investment.ReportsTest do
-  use ExUnit.Case
+  use Profitry.DataCase, async: true
 
   alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Investment

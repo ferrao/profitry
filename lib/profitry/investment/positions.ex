@@ -7,6 +7,7 @@ defmodule Profitry.Investment.Positions do
 
   import Ecto.Query
 
+  alias Profitry.Investment
   alias Ecto.Changeset
   alias Profitry.Repo
   alias Profitry.Investment.Reports
@@ -110,8 +111,10 @@ defmodule Profitry.Investment.Positions do
   end
 
   def make_report(position, quote \\ %Quote{}) do
+    splits = Investment.find_splits(position.ticker)
+
     preload_orders(position)
-    |> Reports.make_report(quote)
+    |> Reports.make_report(quote, splits)
   end
 
   @doc """
