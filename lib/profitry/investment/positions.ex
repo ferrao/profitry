@@ -5,6 +5,8 @@ defmodule Profitry.Investment.Positions do
 
   """
 
+  import Ecto.Query
+
   alias Ecto.Changeset
   alias Profitry.Repo
   alias Profitry.Investment.Reports
@@ -119,7 +121,7 @@ defmodule Profitry.Investment.Positions do
   """
   @spec preload_orders(Position.t()) :: Position.t()
   def preload_orders(position) do
-    position = Repo.preload(position, :orders)
+    position = Repo.preload(position, orders: from(o in Order, order_by: [asc: o.inserted_at]))
 
     orders =
       for order <- position.orders do

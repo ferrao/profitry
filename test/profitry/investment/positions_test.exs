@@ -87,5 +87,17 @@ defmodule Profitry.Investment.PositionsTest do
 
       assert [%Order{option: %Option{}}] = position.orders
     end
+
+    test "preload_orders/1 loads orders sorted by insertion date" do
+      {_portfolio, position, order} = order_fixture()
+      order_fixture(position, %{inserted_at: NaiveDateTime.add(order.inserted_at, -2, :day)})
+
+      position = Positions.preload_orders(position)
+
+      assert Date.before?(
+               Enum.at(position.orders, 0).inserted_at,
+               Enum.at(position.orders, 1).inserted_at
+             )
+    end
   end
 end
