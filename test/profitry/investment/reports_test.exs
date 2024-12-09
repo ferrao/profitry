@@ -1,6 +1,8 @@
 defmodule Profitry.Investment.ReportsTest do
   use Profitry.DataCase, async: true
 
+  import Profitry.InvestmentFixtures
+
   alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Investment
   alias Profitry.Investment.Reports
@@ -113,6 +115,56 @@ defmodule Profitry.Investment.ReportsTest do
       assert Decimal.compare(report.price, Decimal.new(0)) === :eq
       assert Decimal.compare(report.value, Decimal.new(0)) === :eq
       assert Decimal.compare(report.profit, Decimal.new(0)) === :eq
+    end
+
+    test "position report adjusts number of stocks when applicable split is found" do
+      split_fixture()
+      split_fixture(%{date: ~D[2022-12-01]})
+
+      position = %Position{
+        id: 666,
+        ticker: "TSLA",
+        orders: [
+          %Order{
+            id: 1,
+            type: :buy,
+            instrument: :stock,
+            quantity: Decimal.new("25"),
+            price: Decimal.new("229.50"),
+            inserted_at: ~N[2022-12-24 16:30:00]
+          }
+        ]
+      }
+
+      report = Investment.make_report(position)
+
+      assert Decimal.compare(report.shares, Decimal.new("75")) === :eq
+      assert Decimal.compare(report.cost_basis, Decimal.new("76.50")) === :eq
+    end
+
+    test "position report adjusts number of stocks when applicable reverse split is found" do
+      split_fixture(%{reverse: true})
+      split_fixture(%{date: ~D[2022-12-01]})
+
+      position = %Position{
+        id: 666,
+        ticker: "TSLA",
+        orders: [
+          %Order{
+            id: 1,
+            type: :buy,
+            instrument: :stock,
+            quantity: Decimal.new("75"),
+            price: Decimal.new("76.50"),
+            inserted_at: ~N[2022-12-24 16:30:00]
+          }
+        ]
+      }
+
+      report = Investment.make_report(position)
+
+      assert Decimal.compare(report.shares, Decimal.new("25")) === :eq
+      assert Decimal.compare(report.cost_basis, Decimal.new("229.50")) === :eq
     end
 
     test "buying shares" do

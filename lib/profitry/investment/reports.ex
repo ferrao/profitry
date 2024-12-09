@@ -23,21 +23,49 @@ defmodule Profitry.Investment.Reports do
 
   """
   @spec make_report(Position.t(), Quote.t(), list(Split.t())) :: PositionReport.t()
+
   def make_report(
         %Position{id: id, ticker: ticker, orders: orders},
         quote \\ %Quote{},
         splits \\ []
       ) do
-    report = %PositionReport{id: id, ticker: ticker}
+    %PositionReport{id: id, ticker: ticker}
+    |> consolidate_orders(orders, splits)
+    |> calculate_report(quote)
+  end
 
-    {_last_order, report} =
-      Enum.reduce(orders, {nil, report}, fn order, {last_order, report} ->
-        split = find_relevant_split(splits, last_order, order)
-        report = apply_split(report, split)
+  @doc false
+  @spec consolidate_orders(PositionReport.t(), list(Order.t()), list(Split.t())) ::
+          PositionReport.t()
+  def consolidate_orders(report, [], _splits), do: report
 
-        {order, calculate_order(report, order)}
+  def consolidate_orders(report, orders, splits) do
+    {first_orders, rest_orders} = Enum.split(orders, 1)
+
+    order = first_orders |> List.first()
+    rest_orders = Enum.concat(rest_orders, [nil])
+
+    # Iterate through orders, acc contains a tupple with the order to consolidate
+    # and a consolidated report of previous processed orders {order, report}
+    #
+    # On each iteration, we need the next order to check if a stock split is applicable
+    {nil, report} =
+      Enum.reduce(rest_orders, {order, report}, fn next_order, {order, report} ->
+        report = calculate_order(report, order)
+
+        report =
+          find_relevant_split(splits, order, next_order)
+          |> apply_split(report)
+
+        {next_order, report}
       end)
 
+    report
+  end
+
+  @doc false
+  @spec calculate_report(PositionReport.t(), Quote.t()) :: PositionReport.t()
+  def calculate_report(report, quote) do
     has_shares = Decimal.gt?(report.shares, 0)
 
     report
@@ -45,7 +73,7 @@ defmodule Profitry.Investment.Reports do
     |> PositionReport.calculate_profit(quote.price)
     |> PositionReport.calculate_value(quote.price)
     |> Map.put(:price, quote.price || Decimal.new(0))
-    |> Map.put(:ticker, ticker)
+    |> Map.put(:ticker, report.ticker)
   end
 
   # buy stock
@@ -133,25 +161,39 @@ defmodule Profitry.Investment.Reports do
   end
 
   @doc false
-  @spec apply_split(PositionReport.t(), Split.t()) :: PositionReport.t()
+  @spec apply_split(Split.t(), PositionReport.t()) :: PositionReport.t()
 
-  def apply_split(report, nil), do: report
+  def apply_split(nil, report), do: report
 
-  def apply_split(report, _split) do
-    # TODO: Apply the split to the report stock and options positions
-    report
+  def apply_split(split, report) when split.reverse === false do
+    %PositionReport{report | shares: Decimal.mult(report.shares, split.multiple)}
+  end
+
+  def apply_split(split, report) when split.reverse === true do
+    %PositionReport{report | shares: Decimal.div(report.shares, split.multiple)}
   end
 
   @doc false
   @spec find_relevant_split(list(Split.t()), Order.t(), Order.t()) :: Split.t() | nil
-  def find_relevant_split(splits, last_order, order) do
+
+  def find_relevant_split(splits, order, next_order) do
     Enum.filter(splits, fn split ->
       {:ok, split_ts} = NaiveDateTime.new(split.date, ~T[00:00:00])
-
-      NaiveDateTime.after?(split_ts, last_order.inserted_at) &&
-        NaiveDateTime.before?(split_ts, order.inserted_at)
+      ts_after_order?(split_ts, order) && ts_before_order?(split_ts, next_order)
     end)
     |> List.first()
+  end
+
+  @spec ts_after_order?(NaiveDateTime.t(), Order.t() | nil) :: boolean()
+  defp ts_after_order?(ts, order) do
+    NaiveDateTime.after?(ts, order.inserted_at)
+  end
+
+  @spec ts_before_order?(NaiveDateTime.t(), Order.t() | nil) :: boolean()
+  defp ts_before_order?(_ts, nil), do: true
+
+  defp ts_before_order?(ts, order) do
+    NaiveDateTime.before?(ts, order.inserted_at)
   end
 
   @spec stock_investment(Decimal.t(), Decimal.t()) :: Decimal.t()
