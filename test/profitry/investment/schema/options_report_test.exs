@@ -5,16 +5,16 @@ defmodule Profitry.Investment.Schema.OptionsReportTest do
 
   @report1 %OptionsReport{
     type: :call,
-    strike: 10,
+    strike: Decimal.new("10"),
     contracts: Decimal.new("3"),
-    expiration: ~D[2023-01-01],
-    investment: Decimal.new("320.40")
+    investment: Decimal.new("320.40"),
+    expiration: ~D[2023-01-01]
   }
 
   @report2 %OptionsReport{
     @report1
     | type: :put,
-      strike: @report1.strike + 1,
+      strike: Decimal.add(@report1.strike, 1),
       contracts: Decimal.new("6"),
       expiration: Date.add(@report1.expiration, 10),
       investment: Decimal.new("203.20")

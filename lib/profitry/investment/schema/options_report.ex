@@ -10,12 +10,18 @@ defmodule Profitry.Investment.Schema.OptionsReport do
   @type t :: %__MODULE__{
           investment: Decimal.t(),
           type: Option.contract_type(),
-          strike: integer(),
+          strike: Decimal.t(),
           expiration: Date.t(),
-          contracts: integer()
+          contracts: Decimal.t()
         }
 
-  defstruct [:strike, :expiration, investment: Decimal.new(0), type: :call, contracts: 1]
+  defstruct [
+    :expiration,
+    strike: Decimal.new(0),
+    investment: Decimal.new(0),
+    contracts: Decimal.new(0),
+    type: :call
+  ]
 
   @doc """
 
@@ -69,9 +75,9 @@ defmodule Profitry.Investment.Schema.OptionsReport do
       options_report
       | investment: Decimal.to_string(options_report.investment),
         type: to_string(options_report.type),
-        strike: to_string(options_report.strike),
+        strike: Decimal.to_string(options_report.strike),
         expiration: Date.to_string(options_report.expiration),
-        contracts: to_string(options_report.contracts)
+        contracts: Decimal.to_string(options_report.contracts)
     }
   end
 

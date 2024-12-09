@@ -12,7 +12,7 @@ defmodule Profitry.Investment.Schema.Option do
 
   @type contract_type :: :call | :put
   @type t :: %__MODULE__{
-          strike: integer(),
+          strike: Decimal.t(),
           expiration: Date.t(),
           type: contract_type,
           order: Order.t(),
