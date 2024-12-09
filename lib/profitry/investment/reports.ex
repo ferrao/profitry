@@ -165,17 +165,56 @@ defmodule Profitry.Investment.Reports do
 
   def apply_split(nil, report), do: report
 
+  @doc false
   def apply_split(split, report) when split.reverse === false do
-    %PositionReport{report | shares: Decimal.mult(report.shares, split.multiple)}
+    %PositionReport{
+      report
+      | shares: Decimal.mult(report.shares, split.multiple),
+        long_options: apply_split_options(split, report.long_options),
+        short_options: apply_split_options(split, report.long_options)
+    }
   end
 
+  @doc false
   def apply_split(split, report) when split.reverse === true do
-    %PositionReport{report | shares: Decimal.div(report.shares, split.multiple)}
+    %PositionReport{
+      report
+      | shares: Decimal.div(report.shares, split.multiple),
+        long_options: apply_split_options(split, report.long_options),
+        short_options: apply_split_options(split, report.long_options)
+    }
+  end
+
+  @doc false
+  @spec apply_split_options(Split.t(), list(OptionsReport.t())) :: list(OptionsReport.t())
+  def apply_split_options(split, option_reports) when split.reverse === false do
+    Enum.map(option_reports, fn option_report ->
+      if Date.before?(split.date, option_report.expiration),
+        do: %OptionsReport{
+          option_report
+          | contracts: Decimal.mult(option_report.contracts, split.multiple),
+            strike: Decimal.div(option_report.strike, split.multiple)
+        },
+        else: option_report
+    end)
+  end
+
+  @doc false
+  @spec apply_split_options(Split.t(), list(OptionsReport.t())) :: list(OptionsReport.t())
+  def apply_split_options(split, option_reports) when split.reverse === true do
+    Enum.map(option_reports, fn option_report ->
+      if Date.before?(split.date, option_report.expiration),
+        do: %OptionsReport{
+          option_report
+          | contracts: Decimal.div(option_report.contracts, split.multiple),
+            strike: Decimal.mult(option_report.strike, split.multiple)
+        },
+        else: option_report
+    end)
   end
 
   @doc false
   @spec find_relevant_split(list(Split.t()), Order.t(), Order.t()) :: Split.t() | nil
-
   def find_relevant_split(splits, order, next_order) do
     Enum.filter(splits, fn split ->
       {:ok, split_ts} = NaiveDateTime.new(split.date, ~T[00:00:00])

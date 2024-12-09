@@ -117,7 +117,7 @@ defmodule Profitry.Investment.ReportsTest do
       assert Decimal.compare(report.profit, Decimal.new(0)) === :eq
     end
 
-    test "position report adjusts number of stocks when applicable split is found" do
+    test "adjusts position report when applicable split is found" do
       split_fixture()
       split_fixture(%{date: ~D[2022-12-01]})
 
@@ -142,7 +142,7 @@ defmodule Profitry.Investment.ReportsTest do
       assert Decimal.compare(report.cost_basis, Decimal.new("76.50")) === :eq
     end
 
-    test "position report adjusts number of stocks when applicable reverse split is found" do
+    test "adjusts position report when applicable reverse split is found" do
       split_fixture(%{reverse: true})
       split_fixture(%{date: ~D[2022-12-01]})
 
