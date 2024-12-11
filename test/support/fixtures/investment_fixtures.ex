@@ -102,7 +102,7 @@ defmodule Profitry.InvestmentFixtures do
       ticker: "TSLA",
       multiple: 3,
       reverse: false,
-      date: ~D[2023-01-01]
+      date: ~D[2023-01-02]
     }
     |> Split.changeset(attrs)
     |> Repo.insert!()

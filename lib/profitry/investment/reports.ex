@@ -15,6 +15,7 @@ defmodule Profitry.Investment.Reports do
   @doc """
 
   Creates a report on a portfolio position, adjusting for stock splits
+  NOTE: Requires orders to be properly sorted by date or report will be incorrect
 
   ## Examples
 
@@ -117,6 +118,7 @@ defmodule Profitry.Investment.Reports do
         quantity: quantity,
         price: price,
         option: %Option{
+          type: type,
           strike: strike,
           expiration: expiration
         }
@@ -126,6 +128,7 @@ defmodule Profitry.Investment.Reports do
       | investment: Decimal.add(report.investment, option_investment(quantity, price)),
         long_options:
           OptionsReport.update_reports(report.long_options, %OptionsReport{
+            type: type,
             strike: strike,
             expiration: expiration,
             contracts: quantity,
@@ -137,21 +140,26 @@ defmodule Profitry.Investment.Reports do
   # sell premium
   @doc false
   @spec calculate_order(PositionReport.t(), Order.t()) :: PositionReport.t()
-  def calculate_order(report, %Order{
-        type: :sell,
-        instrument: :option,
-        quantity: quantity,
-        price: price,
-        option: %Option{
-          strike: strike,
-          expiration: expiration
+  def calculate_order(
+        report,
+        %Order{
+          type: :sell,
+          instrument: :option,
+          quantity: quantity,
+          price: price,
+          option: %Option{
+            type: type,
+            strike: strike,
+            expiration: expiration
+          }
         }
-      }) do
+      ) do
     %PositionReport{
       report
       | investment: Decimal.sub(report.investment, option_investment(quantity, price)),
         short_options:
           OptionsReport.update_reports(report.short_options, %OptionsReport{
+            type: type,
             strike: strike,
             expiration: expiration,
             contracts: quantity,
@@ -171,7 +179,7 @@ defmodule Profitry.Investment.Reports do
       report
       | shares: Decimal.mult(report.shares, split.multiple),
         long_options: apply_split_options(split, report.long_options),
-        short_options: apply_split_options(split, report.long_options)
+        short_options: apply_split_options(split, report.short_options)
     }
   end
 
@@ -181,7 +189,7 @@ defmodule Profitry.Investment.Reports do
       report
       | shares: Decimal.div(report.shares, split.multiple),
         long_options: apply_split_options(split, report.long_options),
-        short_options: apply_split_options(split, report.long_options)
+        short_options: apply_split_options(split, report.short_options)
     }
   end
 
@@ -189,7 +197,7 @@ defmodule Profitry.Investment.Reports do
   @spec apply_split_options(Split.t(), list(OptionsReport.t())) :: list(OptionsReport.t())
   def apply_split_options(split, option_reports) when split.reverse === false do
     Enum.map(option_reports, fn option_report ->
-      if Date.before?(split.date, option_report.expiration),
+      if Date.before?(Date.add(split.date, -1), option_report.expiration),
         do: %OptionsReport{
           option_report
           | contracts: Decimal.mult(option_report.contracts, split.multiple),
@@ -203,7 +211,7 @@ defmodule Profitry.Investment.Reports do
   @spec apply_split_options(Split.t(), list(OptionsReport.t())) :: list(OptionsReport.t())
   def apply_split_options(split, option_reports) when split.reverse === true do
     Enum.map(option_reports, fn option_report ->
-      if Date.before?(split.date, option_report.expiration),
+      if Date.before?(Date.add(split.date, -1), option_report.expiration),
         do: %OptionsReport{
           option_report
           | contracts: Decimal.div(option_report.contracts, split.multiple),
