@@ -2,7 +2,7 @@ defmodule ProfitryWeb.PositionLive.Index do
   use ProfitryWeb, :live_view
 
   import ProfitryWeb.CustomComponents
-  import Number.Currency
+  import Profitry.Utils.Number
 
   alias Profitry.Utils.Errors
   alias Profitry.Investment

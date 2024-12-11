@@ -1,8 +1,7 @@
 defmodule ProfitryWeb.OrderLive.Index do
   use ProfitryWeb, :live_view
 
-  import Number.Currency
-  import Profitry.Utils.Date
+  import Profitry.Utils.{Date, Number}
   import ProfitryWeb.CustomComponents
 
   alias Profitry.Utils.Errors

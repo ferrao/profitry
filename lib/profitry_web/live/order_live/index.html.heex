@@ -14,10 +14,10 @@
 </.header>
 
 <.table id="report" rows={[@report]}>
-  <:col :let={report} label="Investment"><%= number_to_currency(report.investment) %></:col>
+  <:col :let={report} label="Investment"><%= format_currency(report.investment) %></:col>
   <:col :let={report} label="Shares"><%= report.shares %></:col>
-  <:col :let={report} label="Cost Basis"><%= number_to_currency(report.cost_basis) %></:col>
-  <:col :let={report} label="Price"><%= number_to_currency(report.price) %></:col>
+  <:col :let={report} label="Cost Basis"><%= format_currency(report.cost_basis) %></:col>
+  <:col :let={report} label="Price"><%= format_currency(report.price) %></:col>
   <:col :let={report} label="P/L"><.profit profit={report.profit} total={@report.value} /></:col>
 </.table>
 
@@ -25,7 +25,7 @@
   <:col :let={{_id, order}} label="Type"><%= order.type %></:col>
   <:col :let={{_id, order}} label="Instrument"><%= order.instrument %></:col>
   <:col :let={{_id, order}} label="Quantity"><%= order.quantity %></:col>
-  <:col :let={{_id, order}} label="Price"><%= number_to_currency(order.price) %></:col>
+  <:col :let={{_id, order}} label="Price"><%= format_currency(order.price) %></:col>
 
   <:col :let={{_id, order}} label="Contract">
     <%= if order.option do %>
