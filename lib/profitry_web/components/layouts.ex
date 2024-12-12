@@ -10,5 +10,7 @@ defmodule ProfitryWeb.Layouts do
   """
   use ProfitryWeb, :html
 
+  import ProfitryWeb.IconComponents
+
   embed_templates "layouts/*"
 end

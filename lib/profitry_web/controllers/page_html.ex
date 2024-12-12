@@ -6,5 +6,7 @@ defmodule ProfitryWeb.PageHTML do
   """
   use ProfitryWeb, :html
 
+  import ProfitryWeb.IconComponents
+
   embed_templates "page_html/*"
 end
