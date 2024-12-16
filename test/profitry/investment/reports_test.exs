@@ -35,8 +35,10 @@ defmodule Profitry.Investment.ReportsTest do
   }
 
   @quote %Quote{
+    exchange: "IBKR",
     ticker: "TSLA",
-    price: Decimal.new("231.5")
+    price: Decimal.new("231.5"),
+    timestamp: ~N[2023-01-01 16:30:00]
   }
 
   @position %Position{

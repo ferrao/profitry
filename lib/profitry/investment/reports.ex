@@ -23,11 +23,11 @@ defmodule Profitry.Investment.Reports do
       %PositionReport{}
 
   """
-  @spec make_report(Position.t(), Quote.t(), list(Split.t())) :: PositionReport.t()
+  @spec make_report(Position.t(), Quote.t() | nil, list(Split.t())) :: PositionReport.t()
 
   def make_report(
         %Position{id: id, ticker: ticker, orders: orders},
-        quote \\ %Quote{},
+        quote \\ nil,
         splits \\ []
       ) do
     %PositionReport{id: id, ticker: ticker}
@@ -65,15 +65,16 @@ defmodule Profitry.Investment.Reports do
   end
 
   @doc false
-  @spec calculate_report(PositionReport.t(), Quote.t()) :: PositionReport.t()
+  @spec calculate_report(PositionReport.t(), Quote.t() | nil) :: PositionReport.t()
   def calculate_report(report, quote) do
     has_shares = Decimal.gt?(report.shares, 0)
+    quote_price = if quote, do: quote.price, else: nil
 
     report
     |> PositionReport.calculate_cost_basis(has_shares)
-    |> PositionReport.calculate_profit(quote.price)
-    |> PositionReport.calculate_value(quote.price)
-    |> Map.put(:price, quote.price || Decimal.new(0))
+    |> PositionReport.calculate_profit(quote_price)
+    |> PositionReport.calculate_value(quote_price)
+    |> Map.put(:price, quote_price || Decimal.new(0))
     |> Map.put(:ticker, report.ticker)
   end
 
