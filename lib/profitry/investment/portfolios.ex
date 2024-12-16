@@ -5,6 +5,9 @@ defmodule Profitry.Investment.Portfolios do
 
   """
 
+  import Ecto.Query
+
+  alias Profitry.Investment.Schema.Position
   alias Profitry.Investment
   alias Profitry.Investment.Schema.{PositionReport, Portfolio}
   alias Ecto.Changeset
@@ -142,5 +145,24 @@ defmodule Profitry.Investment.Portfolios do
       Investment.make_report(position)
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
+  end
+
+  @doc """
+
+  Lists all tickers across all portfolios
+
+  ## Examples
+
+    iex> list_tickers()
+    ["TSLA", "AAPL", "GOOG", "UBER"]
+
+  """
+  @spec list_tickers() :: list(String.t())
+  def list_tickers() do
+    Position
+    |> select([p], p.ticker)
+    |> distinct(true)
+    |> order_by([p], p.ticker)
+    |> Repo.all()
   end
 end

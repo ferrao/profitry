@@ -86,5 +86,13 @@ defmodule Profitry.Investment.PortfoliosTest do
 
       assert [%PositionReport{}] = reports
     end
+
+    test "list_tickers/0 lists tickers for all portfolios" do
+      position_fixture()
+      portfolio = portfolio_fixture(%{broker: "HOOD", description: "RobinHood"})
+      position_fixture(portfolio, %{ticker: "SOFI"})
+
+      assert Investment.list_tickers() === ["SOFI", "TSLA"]
+    end
   end
 end
