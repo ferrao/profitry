@@ -3,7 +3,7 @@
     Portfolios
   </span>
   <span id="count-portfolios" class="text-sm text-gray-300 pl-2">
-    (<%= @count %>)
+    ({@count})
   </span>
   <:actions>
     <.link patch={~p"/portfolios/new"}>
@@ -17,8 +17,8 @@
   rows={@streams.portfolios}
   row_click={fn {_id, portfolio} -> JS.navigate(~p"/portfolios/#{portfolio}") end}
 >
-  <:col :let={{_id, portfolio}} label="Broker"><%= portfolio.broker %></:col>
-  <:col :let={{_id, portfolio}} label="Description"><%= portfolio.description %></:col>
+  <:col :let={{_id, portfolio}} label="Broker">{portfolio.broker}</:col>
+  <:col :let={{_id, portfolio}} label="Description">{portfolio.description}</:col>
   <:action :let={{_id, portfolio}}>
     <div class="sr-only">
       <.link navigate={~p"/portfolios/#{portfolio}"}>Positions</.link>

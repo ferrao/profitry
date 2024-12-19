@@ -48,7 +48,7 @@ defmodule ProfitryWeb.CustomComponents do
     ~H"""
     <%= if @profit != 0 do %>
       <span class={["font-semibold", @color]}>
-        <%= format_currency(@profit) %>
+        {format_currency(@profit)}
       </span>
     <% else %>
       <span class="font-semibold">--</span>
@@ -91,18 +91,18 @@ defmodule ProfitryWeb.CustomComponents do
     ~H"""
     <div>
       <.header>
-        <%= @ticker %>
+        {@ticker}
         <:subtitle>
           Options Contract
         </:subtitle>
       </.header>
       <.list text_size="text-lg">
-        <:item title="Order Type"><%= String.capitalize(to_string(@order.type)) %></:item>
-        <:item title="Quantity"><%= format_number(@order.quantity) %></:item>
-        <:item title="Option Type"><%= String.capitalize(to_string(@order.option.type)) %></:item>
-        <:item title="Price"><%= format_currency(@order.price) %></:item>
-        <:item title="Strike Price"><%= format_currency(@order.option.strike) %></:item>
-        <:item title="Expiry Date"><%= @order.option.expiration %></:item>
+        <:item title="Order Type">{String.capitalize(to_string(@order.type))}</:item>
+        <:item title="Quantity">{format_number(@order.quantity)}</:item>
+        <:item title="Option Type">{String.capitalize(to_string(@order.option.type))}</:item>
+        <:item title="Price">{format_currency(@order.price)}</:item>
+        <:item title="Strike Price">{format_currency(@order.option.strike)}</:item>
+        <:item title="Expiry Date">{@order.option.expiration}</:item>
       </.list>
     </div>
     """

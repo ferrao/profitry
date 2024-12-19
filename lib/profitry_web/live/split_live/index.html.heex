@@ -3,7 +3,7 @@
     Stock Splits
   </span>
   <span id="count-splits" class="text-sm text-gray-300 pl-2">
-    (<%= @count %>)
+    ({@count})
   </span>
   <:actions>
     <.link patch={~p"/splits/new"}>
@@ -13,10 +13,10 @@
 </.header>
 
 <.table id="splits" rows={@streams.splits}>
-  <:col :let={{_id, split}} label="Ticker"><%= split.ticker %></:col>
-  <:col :let={{_id, split}} label="Multiple"><%= split.multiple %></:col>
-  <:col :let={{_id, split}} label="Reverse"><%= split.reverse %></:col>
-  <:col :let={{_id, split}} label="Date"><%= split.date %></:col>
+  <:col :let={{_id, split}} label="Ticker">{split.ticker}</:col>
+  <:col :let={{_id, split}} label="Multiple">{split.multiple}</:col>
+  <:col :let={{_id, split}} label="Reverse">{split.reverse}</:col>
+  <:col :let={{_id, split}} label="Date">{split.date}</:col>
 
   <:action :let={{_id, split}}>
     <.link patch={~p"/splits/#{split}/edit"}>Edit</.link>
