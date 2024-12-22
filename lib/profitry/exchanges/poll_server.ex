@@ -10,16 +10,19 @@ defmodule Profitry.Exchanges.PollServer do
 
   alias Profitry.Exchanges.Schema.Quote
 
-  defstruct [:tickers, :index, :client]
+  defstruct [:tickers, :interval, :index, :client]
 
   @doc """
 
     Starts the poll server process for the given exchange module
 
   """
-  @spec start(module(), list(String.t())) :: GenServer.on_start()
-  def start(exchange_client, tickers \\ []) do
-    GenServer.start_link(__MODULE__, {exchange_client, tickers}, name: exchange_client)
+  @spec start_link(module(), list(String.t())) :: GenServer.on_start()
+  def start_link(exchange_client, opts \\ []) do
+    tickers = Keyword.get(opts, :tickers, [])
+    interval = Keyword.get(opts, :interval, interval(exchange_client))
+
+    GenServer.start_link(__MODULE__, {exchange_client, tickers, interval}, name: exchange_client)
   end
 
   @doc """
@@ -28,13 +31,18 @@ defmodule Profitry.Exchanges.PollServer do
 
   """
   @spec child_spec({module(), list(String.t())}) :: Supervisor.child_spec()
-  def child_spec({exchange_client, tickers}),
-    do: %{id: exchange_client, start: {__MODULE__, :start, {exchange_client, tickers}}}
+  def child_spec({exchange_client, tickers}) do
+    %{
+      id: exchange_client,
+      start: {__MODULE__, :start_link, [exchange_client, tickers]}
+    }
+  end
 
   @impl true
-  def init({exchange_client, tickers}) do
+  def init({exchange_client, tickers, interval}) do
     state = %__MODULE__{
       tickers: tickers,
+      interval: interval,
       index: 0,
       client: exchange_client
     }
@@ -49,17 +57,17 @@ defmodule Profitry.Exchanges.PollServer do
   end
 
   @impl true
-  def handle_info(:tick, %{tickers: []} = state) do
-    Process.send_after(self(), :tick, interval(state.client))
+  def handle_info(:tick, %{tickers: [], interval: interval} = state) do
+    Process.send_after(self(), :tick, interval)
     {:noreply, state}
   end
 
   @impl true
-  def handle_info(:tick, %{index: index, tickers: tickers} = state) do
+  def handle_info(:tick, %{index: index, tickers: tickers, interval: interval} = state) do
     fetch_quote(state.client, Enum.at(tickers, index))
     |> handle_quote
 
-    Process.send_after(self(), :tick, interval(state.client))
+    Process.send_after(self(), :tick, interval)
     {:noreply, %{state | index: rem(index + 1, length(tickers))}}
   end
 
@@ -72,8 +80,8 @@ defmodule Profitry.Exchanges.PollServer do
   end
 
   @spec interval(module()) :: integer()
-  defp interval(client), do: client.interval()
+  defp interval(exchange_client), do: exchange_client.interval()
 
   @spec fetch_quote(module(), String.t()) :: {:ok, Quote.t()} | {:error, any()}
-  defp fetch_quote(client, ticker), do: client.quote(ticker)
+  defp fetch_quote(exchange_client, ticker), do: exchange_client.quote(ticker)
 end
