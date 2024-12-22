@@ -1,10 +1,12 @@
-defmodule Profitry.Exchanges.Dummy.DummyClient do
+defmodule Profitry.Exchanges.Clients.DummyClient do
   @behaviour Profitry.Exchanges.PollBehaviour
 
   alias Profitry.Exchanges.Schema.Quote
 
+  @interval :timer.seconds(2)
+
   @impl true
-  def interval(), do: 1000
+  def interval(), do: @interval
 
   @impl true
   def quote("TIMEOUT"), do: {:error, "Timeout"}

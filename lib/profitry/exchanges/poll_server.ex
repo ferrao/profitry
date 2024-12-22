@@ -17,9 +17,9 @@ defmodule Profitry.Exchanges.PollServer do
     Starts the poll server process for the given exchange module
 
   """
-  @spec start(module()) :: GenServer.on_start()
-  def start(module) do
-    GenServer.start_link(__MODULE__, module, name: module)
+  @spec start(module(), list(String.t())) :: GenServer.on_start()
+  def start(exchange_client, tickers \\ []) do
+    GenServer.start_link(__MODULE__, {exchange_client, tickers}, name: exchange_client)
   end
 
   @doc """
@@ -27,23 +27,19 @@ defmodule Profitry.Exchanges.PollServer do
   Allows a supervisor to retreive this server child spec
 
   """
-  @spec child_spec(module()) :: Supervisor.child_spec()
-  def child_spec(module), do: %{id: module, start: {__MODULE__, :start, [module]}}
+  @spec child_spec({module(), list(String.t())}) :: Supervisor.child_spec()
+  def child_spec({exchange_client, tickers}),
+    do: %{id: exchange_client, start: {__MODULE__, :start, {exchange_client, tickers}}}
 
   @impl true
-  def init(exchange) do
+  def init({exchange_client, tickers}) do
     state = %__MODULE__{
-      tickers: [],
+      tickers: tickers,
       index: 0,
-      client: exchange
+      client: exchange_client
     }
 
-    {:ok, state, {:continue, :load}}
-  end
-
-  @impl true
-  def handle_continue(:load, state) do
-    {:noreply, %{state | tickers: Profitry.list_tickers()}, {:continue, :start}}
+    {:ok, state, {:continue, :start}}
   end
 
   @impl true
@@ -67,13 +63,13 @@ defmodule Profitry.Exchanges.PollServer do
     {:noreply, %{state | index: rem(index + 1, length(tickers))}}
   end
 
+  @spec handle_quote({atom(), any()}) :: :ok
+  defp handle_quote({:error, reason}), do: Logger.warning("Unable to fetch quote: #{reason}")
+
   @spec handle_quote({atom(), Quote.t()}) :: :ok | {:error, any()}
   defp handle_quote({:ok, %Quote{} = quote}) do
     Profitry.broadcast_quote(quote)
   end
-
-  @spec handle_quote({atom(), any()}) :: :ok
-  defp handle_quote({:error, reason}), do: Logger.warning("Unable to fetch quote: #{reason}")
 
   @spec interval(module()) :: integer()
   defp interval(client), do: client.interval()
