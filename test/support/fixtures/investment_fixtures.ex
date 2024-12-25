@@ -80,14 +80,17 @@ defmodule Profitry.InvestmentFixtures do
       instrument: :option,
       quantity: Decimal.new("1"),
       price: Decimal.new("123.7"),
-      inserted_at: ~N[2023-01-01 12:00:07],
-      option: %Option{
+      inserted_at: ~N[2023-01-01 12:00:07]
+    }
+    |> Order.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(
+      :option,
+      %Option{
         type: :call,
         strike: Decimal.new(50),
         expiration: ~D[2024-02-01]
       }
-    }
-    |> Order.changeset(attrs)
+    )
     |> Ecto.Changeset.put_assoc(:position, position)
     |> Repo.insert!()
   end

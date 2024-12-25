@@ -14,13 +14,14 @@ defmodule Profitry.Investment.Schema.Order do
   @type order :: :buy | :sell
   @type instrument :: :stock | :option
   @type t :: %__MODULE__{
-          type: order,
-          instrument: instrument,
-          quantity: Decimal.t(),
-          price: Decimal.t(),
-          option: nil | Option.t(),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          type: order | nil,
+          instrument: instrument | nil,
+          quantity: Decimal.t() | nil,
+          price: Decimal.t() | nil,
+          option: Option.t() | Ecto.Association.NotLoaded.t() | nil,
+          position: Position.t() | Ecto.Association.NotLoaded.t() | nil,
+          inserted_at: NaiveDateTime.t() | nil,
+          updated_at: NaiveDateTime.t() | nil
         }
 
   schema "orders" do
@@ -39,7 +40,7 @@ defmodule Profitry.Investment.Schema.Order do
   Creates an Ecto Changeset for the order schema
 
   """
-  @spec changeset(t(), map()) :: Changeset.t()
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:type, :instrument, :quantity, :price, :inserted_at])

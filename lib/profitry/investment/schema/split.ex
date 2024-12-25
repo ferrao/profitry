@@ -11,12 +11,12 @@ defmodule Profitry.Investment.Schema.Split do
   import Profitry.Utils.Ecto
 
   @type t :: %__MODULE__{
-          ticker: String.t(),
-          multiple: integer(),
-          reverse: boolean(),
-          date: Date.t(),
-          inserted_at: NaiveDateTime.t(),
-          updated_at: NaiveDateTime.t()
+          ticker: String.t() | nil,
+          multiple: integer() | nil,
+          reverse: boolean() | nil,
+          date: Date.t() | nil,
+          inserted_at: NaiveDateTime.t() | nil,
+          updated_at: NaiveDateTime.t() | nil
         }
 
   schema "splits" do
@@ -33,7 +33,7 @@ defmodule Profitry.Investment.Schema.Split do
   Creates an Ecto Changeset for the Split schema
 
   """
-  @spec changeset(t(), map()) :: Changeset.t()
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(split, attrs) do
     split
     |> cast(attrs, [:ticker, :multiple, :reverse, :date])
