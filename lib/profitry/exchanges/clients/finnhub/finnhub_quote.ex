@@ -9,8 +9,8 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubQuote do
   import Ecto.Changeset
 
   alias Ecto.Changeset
-  alias Profitry.Utils.UnixTime
   alias Profitry.Exchanges.Schema.Quote
+  alias Profitry.Utils.{UnixTime, Errors}
 
   @exchange "FINNHUB"
 
@@ -22,7 +22,7 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubQuote do
           l: Decimal.t(),
           o: Decimal.t(),
           pc: Decimal.t(),
-          t: Integer.t()
+          t: integer()
         }
 
   @primary_key false
@@ -42,7 +42,7 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubQuote do
   Creates an Ecto Changeset for the Finnhub schema
 
   """
-  @spec chnageset(map()) :: Changeset.t()
+  @spec changeset(map()) :: Changeset.t()
   def changeset(data \\ %{}) do
     %__MODULE__{}
     |> cast(data, [:c, :d, :dp, :h, :l, :o, :pc, :t])
