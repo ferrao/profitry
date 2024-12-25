@@ -34,6 +34,12 @@ defmodule Profitry.Investment.Schema.Order do
     timestamps()
   end
 
+  @doc """
+
+  Creates an Ecto Changeset for the order schema
+
+  """
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:type, :instrument, :quantity, :price, :inserted_at])

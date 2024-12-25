@@ -1,7 +1,7 @@
 defmodule Profitry.Utils.Errors do
   @doc """
 
-  Gets the error message for a field of an error map
+  Gets the error message for a field of an Ecto Changeset error map
 
   """
   @spec get_message(Ecto.Changeset.t(), atom(), String.t() | nil) :: [String.t() | nil]

@@ -28,6 +28,12 @@ defmodule Profitry.Investment.Schema.Split do
     timestamps()
   end
 
+  @doc """
+
+  Creates an Ecto Changeset for the Split schema
+
+  """
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(split, attrs) do
     split
     |> cast(attrs, [:ticker, :multiple, :reverse, :date])

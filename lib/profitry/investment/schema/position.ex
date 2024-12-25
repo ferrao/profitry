@@ -27,6 +27,12 @@ defmodule Profitry.Investment.Schema.Position do
     timestamps()
   end
 
+  @doc """
+
+  Creates an Ecto Changeset for the Position schema
+
+  """
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(position, attrs) do
     position
     |> cast(attrs, [:ticker])

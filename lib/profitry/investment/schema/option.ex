@@ -47,6 +47,12 @@ defmodule Profitry.Investment.Schema.Option do
   @spec option_value(Decimal.t()) :: Decimal.t()
   def option_value(price), do: Decimal.mult(@shares_per_contract, price)
 
+  @doc """
+
+  Creates an Ecto Changeset for the Option schema
+
+  """
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(option, attrs) do
     option
     |> cast(attrs, [:type, :strike, :expiration])

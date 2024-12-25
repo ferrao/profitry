@@ -28,6 +28,12 @@ defmodule Profitry.Investment.Schema.Portfolio do
     timestamps()
   end
 
+  @doc """
+
+  Creates an Ecto Changeset for the Portfolio schema
+
+  """
+  @spec changeset(t(), map()) :: Changeset.t()
   def changeset(portfolio, attrs) do
     portfolio
     |> cast(attrs, [:broker, :description])
