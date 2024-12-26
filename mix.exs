@@ -39,12 +39,9 @@ defmodule Profitry.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1.1"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_view, "~> 1.0.1"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.8.0"},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.5",
@@ -62,7 +59,13 @@ defmodule Profitry.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:nimble_csv, "~> 1.2"},
       {:timex, "~> 3.7.11"},
-      {:number, "~> 1.0.5"}
+      {:number, "~> 1.0.5"},
+      {:req, "~> 0.5.8"},
+
+      # Dev deps
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev}
     ]
   end
 

@@ -7,6 +7,16 @@ defmodule Profitry.Exchanges.PollServerTest do
   @message_timeout 2000
 
   describe "poll server" do
+    test "client options are initialized and preserved" do
+      client_opts = DummyClient.init()
+      {:ok, server} = PollServer.start_link(DummyClient, tickers: ["TSLA"], interval: 1000)
+      state = :sys.get_state(server)
+
+      {:noreply, new_state} = PollServer.handle_info(:tick, state)
+
+      assert new_state.client_opts === client_opts
+    end
+
     test "quotes arrive within configured interval" do
       interval = 1000
       :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "quotes")

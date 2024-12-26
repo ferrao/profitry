@@ -10,7 +10,7 @@ defmodule Profitry.Exchanges.PollServer do
 
   alias Profitry.Exchanges.Schema.Quote
 
-  defstruct [:tickers, :interval, :index, :client]
+  defstruct [:tickers, :interval, :index, :client, :client_opts]
 
   @doc """
 
@@ -44,7 +44,8 @@ defmodule Profitry.Exchanges.PollServer do
       tickers: tickers,
       interval: interval,
       index: 0,
-      client: exchange_client
+      client: exchange_client,
+      client_opts: exchange_client.init()
     }
 
     {:ok, state, {:continue, :start}}
@@ -63,18 +64,21 @@ defmodule Profitry.Exchanges.PollServer do
   end
 
   @impl true
-  def handle_info(:tick, %{index: index, tickers: tickers, interval: interval} = state) do
-    fetch_quote(state.client, Enum.at(tickers, index))
+  def handle_info(
+        :tick,
+        %{index: index, tickers: tickers, interval: interval, client_opts: options} = state
+      ) do
+    fetch_quote(state.client, Enum.at(tickers, index), options)
     |> handle_quote
 
     Process.send_after(self(), :tick, interval)
     {:noreply, %{state | index: rem(index + 1, length(tickers))}}
   end
 
-  @spec handle_quote({atom(), any()}) :: :ok
+  @spec handle_quote({:error, any()}) :: :ok
   defp handle_quote({:error, reason}), do: Logger.warning("Unable to fetch quote: #{reason}")
 
-  @spec handle_quote({atom(), Quote.t()}) :: :ok | {:error, any()}
+  @spec handle_quote({:ok, Quote.t()}) :: :ok | {:error, any()}
   defp handle_quote({:ok, %Quote{} = quote}) do
     Profitry.broadcast_quote(quote)
   end
@@ -82,6 +86,6 @@ defmodule Profitry.Exchanges.PollServer do
   @spec interval(module()) :: integer()
   defp interval(exchange_client), do: exchange_client.interval()
 
-  @spec fetch_quote(module(), String.t()) :: {:ok, Quote.t()} | {:error, any()}
-  defp fetch_quote(exchange_client, ticker), do: exchange_client.quote(ticker)
+  @spec fetch_quote(module(), String.t(), keyword()) :: {:ok, Quote.t()} | {:error, any()}
+  defp fetch_quote(exchange_client, ticker, options), do: exchange_client.quote(ticker, options)
 end

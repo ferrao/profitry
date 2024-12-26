@@ -78,7 +78,7 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
       |> List.first()
 
   @doc false
-  @spec symbol_to_contract(String.t()) :: atom()
+  @spec symbol_to_contract(String.t()) :: :call | :put
   def symbol_to_contract(symbol) do
     contract =
       String.split(symbol)

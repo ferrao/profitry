@@ -6,13 +6,16 @@ defmodule Profitry.Exchanges.Clients.DummyClient do
   @interval :timer.seconds(2)
 
   @impl true
+  def init(), do: [dummy: true, real: false]
+
+  @impl true
   def interval(), do: @interval
 
   @impl true
-  def quote("TIMEOUT"), do: {:error, "Timeout"}
+  def quote("TIMEOUT", _opts), do: {:error, "Timeout"}
 
   @impl true
-  def quote(ticker) do
+  def quote(ticker, _opts) do
     {:ok,
      %Quote{
        ticker: ticker,

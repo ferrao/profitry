@@ -55,7 +55,7 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubQuote do
   Creates a new Quote from Finnhub data
 
   """
-  @spec new(String.t(), map()) :: Quote.t()
+  @spec new(String.t(), map()) :: Quote.t() | {:error, String.t()}
   def new(ticker, data) do
     quote_from_data(ticker, changeset(data))
   end
@@ -72,6 +72,6 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubQuote do
     }
   end
 
-  @spec quote_from_data(String.t(), Changeset.t()) :: {atom(), String.t()}
+  @spec quote_from_data(String.t(), Changeset.t()) :: {:error, String.t()}
   defp quote_from_data(_ticker, changeset), do: {:error, Enum.at(Errors.get_errors(changeset), 0)}
 end

@@ -5,6 +5,7 @@ defmodule Profitry.Exchanges.PollBehaviour do
 
   alias Profitry.Exchanges.Schema.Quote
 
+  @callback init() :: keyword()
   @callback interval() :: integer()
-  @callback quote(String.t()) :: {:ok, Quote.t()} | {:error, any()}
+  @callback quote(String.t(), keyword()) :: {:ok, Quote.t()} | {:error, any()}
 end
