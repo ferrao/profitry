@@ -20,19 +20,19 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubClient do
   def interval(), do: 5000
 
   @impl true
-  def quote(ticker, opts) do
-    case Req.get(opts[:req], params: [symbol: ticker]) do
+  def quote(symbol, opts) do
+    case Req.get(opts[:req], params: [symbol: symbol]) do
       {:ok, %Req.Response{status: 200, body: body}} ->
-        body_to_quote(ticker, body)
+        body_to_quote(symbol, body)
 
       {:ok, %Req.Response{status: 404}} ->
         {:error, "Not found"}
 
-      {:ok, %Req.Response{status: status}} ->
-        {:error, "#{status}"}
+      {:ok, %Req.Response{status: status, body: body}} ->
+        {:error, "#{status} #{body}"}
 
-      {:error, exception} ->
-        {:error, exception.message()}
+      {:error, error} ->
+        {:error, Exception.message(error)}
     end
   end
 
