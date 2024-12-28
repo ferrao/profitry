@@ -17,7 +17,7 @@ defmodule Profitry.Exchanges.PollServer do
     Starts the poll server process for the given exchange module
 
   """
-  @spec start_link(module(), list(String.t())) :: GenServer.on_start()
+  @spec start_link(module(), keyword()) :: GenServer.on_start()
   def start_link(exchange_client, opts \\ []) do
     tickers = Keyword.get(opts, :tickers, [])
     interval = Keyword.get(opts, :interval, interval(exchange_client))

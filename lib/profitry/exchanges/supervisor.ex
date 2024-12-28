@@ -23,12 +23,13 @@ defmodule Profitry.Exchanges.Supervisor do
   def init(:ok) do
     children =
       [
-        Subscribers.DummySubscriber,
+        Subscribers.LogSubscriber,
+        Subscribers.HistorySubscriber,
         {PollServer, {Clients.Finnhub.FinnhubClient, tickers: Profitry.Investment.list_tickers()}}
         # {PollServer, {Clients.DummyClient, tickers: ["TSLA"], interval: 1000}}
       ]
 
-    children = if Mix.env() != :test, do: children, else: []
+    children = if Application.get_env(:profitry, :start_exchanges, true), do: children, else: []
     Supervisor.init(children, strategy: :one_for_one)
   end
 end

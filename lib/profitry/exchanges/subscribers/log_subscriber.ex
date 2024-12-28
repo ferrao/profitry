@@ -1,7 +1,7 @@
-defmodule Profitry.Exchanges.Subscribers.DummySubscriber do
+defmodule Profitry.Exchanges.Subscribers.LogSubscriber do
   @moduledoc """
 
-  Dummy Subscriber, usefull for logging or inspecting exchange data
+  Log Subscriber, usefull for logging or inspecting exchange data
 
   """
   use Task
