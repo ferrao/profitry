@@ -18,9 +18,10 @@ defmodule Profitry.Application do
       # Start Finch
       {Finch, name: Profitry.Finch},
       # Start the Endpoint (http/https)
-      ProfitryWeb.Endpoint
+      ProfitryWeb.Endpoint,
       # Start a worker by calling: Profitry.Worker.start_link(arg)
       # {Profitry.Worker, arg}
+      Profitry.Exchanges.Supervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

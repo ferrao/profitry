@@ -1,4 +1,9 @@
 defmodule Profitry.Exchanges.Clients.DummyClient do
+  @moduledoc """
+
+  Dummy Client for mocking an exchange
+
+  """
   @behaviour Profitry.Exchanges.PollBehaviour
 
   alias Profitry.Exchanges.Schema.Quote
