@@ -1,5 +1,6 @@
 defmodule Profitry.ExchangesTest do
-  use ExUnit.Case, async: true
+  # Not running async due to genserver name and pubsub topic being shared between tests
+  use ExUnit.Case
 
   alias Profitry.Exchanges
   alias Profitry.Exchanges.Schema.Quote

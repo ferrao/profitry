@@ -15,9 +15,14 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
         }
   defstruct [:backlog_size, :quotes]
 
+  @doc """
+
+  Starts the history subscriber
+
+  """
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
-    backlog_size = Keyword.get(opts, :tickers, 1)
+    backlog_size = Keyword.get(opts, :backlog_size, 1)
 
     GenServer.start_link(__MODULE__, backlog_size, name: __MODULE__)
   end
@@ -39,13 +44,28 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
 
   @impl true
   def handle_info({:new_quote, quote}, history) do
-    new_history = Map.put(history, quote.ticker, [quote | quote.ticker])
+    ticker_quotes = Map.get(history.quotes, quote.ticker) || []
+    new_ticker_quotes = [quote | ticker_quotes] |> Enum.take(history.backlog_size)
+
+    new_quotes = Map.put(history.quotes, quote.ticker, new_ticker_quotes)
+    new_history = Map.put(history, :quotes, new_quotes )
+
     {:noreply, new_history}
   end
 
   @impl true
-  def handle_call({:get_quote, ticker}, _from, history) do
-    {:reply, Map.get(history, ticker) |> List.first(), history}
+  def handle_call({:list_quotes, ticker}, _from, history) do
+    {:reply, Map.get(history.quotes, ticker), history}
+  end
+
+  @doc """
+
+  Lists the quotes for a ticker
+
+  """
+  @spec list_quotes(GenServer.server(), String.t()) :: list(Quote.t())
+  def list_quotes(pid \\ __MODULE__, ticker) do
+    GenServer.call(pid, {:list_quotes, ticker})
   end
 
   @doc """
@@ -55,6 +75,6 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   """
   @spec get_quote(GenServer.server(), String.t()) :: Quote.t()
   def get_quote(pid \\ __MODULE__, ticker) do
-    GenServer.call(pid, {:get_quote, ticker})
+    list_quotes(pid, ticker) |> List.first()
   end
 end
