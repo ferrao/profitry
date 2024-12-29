@@ -97,5 +97,12 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
 
       assert Profitry.get_quote("TSLA") === @quote5
     end
+
+    test "does not find quotes for non existing ticker" do
+      {:ok, _server} = HistorySubscriber.start_link()
+
+      assert Profitry.list_quotes("TSLA") === []
+      assert Profitry.get_quote("TSLA") === nil
+    end
   end
 end

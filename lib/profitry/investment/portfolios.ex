@@ -142,7 +142,8 @@ defmodule Profitry.Investment.Portfolios do
       |> Repo.preload(:positions)
 
     for position <- portfolio.positions do
-      Investment.make_report(position)
+      quote = Profitry.get_quote(position.ticker)
+      Investment.make_report(position, quote)
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
   end

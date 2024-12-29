@@ -48,7 +48,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
     new_ticker_quotes = [quote | ticker_quotes] |> Enum.take(history.backlog_size)
 
     new_quotes = Map.put(history.quotes, quote.ticker, new_ticker_quotes)
-    new_history = Map.put(history, :quotes, new_quotes )
+    new_history = Map.put(history, :quotes, new_quotes)
 
     {:noreply, new_history}
   end
@@ -65,7 +65,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   """
   @spec list_quotes(GenServer.server(), String.t()) :: list(Quote.t())
   def list_quotes(pid \\ __MODULE__, ticker) do
-    GenServer.call(pid, {:list_quotes, ticker})
+    GenServer.call(pid, {:list_quotes, ticker}) || []
   end
 
   @doc """
@@ -73,7 +73,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   Gets the last quote for a ticker
 
   """
-  @spec get_quote(GenServer.server(), String.t()) :: Quote.t()
+  @spec get_quote(GenServer.server(), String.t()) :: Quote.t() | nil
   def get_quote(pid \\ __MODULE__, ticker) do
     list_quotes(pid, ticker) |> List.first()
   end

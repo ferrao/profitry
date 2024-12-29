@@ -26,7 +26,7 @@ defmodule Profitry.Exchanges.Supervisor do
         Subscribers.LogSubscriber,
         Subscribers.HistorySubscriber,
         {PollServer, {Clients.Finnhub.FinnhubClient, tickers: Profitry.Investment.list_tickers()}}
-        # {PollServer, {Clients.DummyClient, tickers: ["TSLA"], interval: 1000}}
+        # {PollServer, {Clients.DummyClient, tickers: ["TSLA"], interval: 2000}}
       ]
 
     children = if Application.get_env(:profitry, :start_exchanges, true), do: children, else: []
