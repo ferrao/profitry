@@ -17,7 +17,7 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubClient do
   end
 
   @impl true
-  def interval(), do: 5000
+  def interval(), do: 20_000
 
   @impl true
   def quote(symbol, opts) do

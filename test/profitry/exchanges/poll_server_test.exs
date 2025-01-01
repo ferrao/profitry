@@ -19,13 +19,13 @@ defmodule Profitry.Exchanges.PollServerTest do
     end
 
     test "quotes arrive within configured interval" do
-      interval = 1000
+      interval = 200
       :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "quotes")
 
       {:ok, server} = PollServer.start_link(DummyClient, tickers: ["TSLA"], interval: interval)
 
-      refute_receive {:neq_qoote}, interval - 100
-      assert_receive {:new_quote, _received_quote}, interval + 100
+      refute_receive {:neq_qoote}, interval - 50
+      assert_receive {:new_quote, _received_quote}, interval + 50
 
       Process.exit(server, :normal)
     end
@@ -50,7 +50,7 @@ defmodule Profitry.Exchanges.PollServerTest do
       {:ok, server} =
         Supervisor.start_link(
           [
-            {PollServer, {DummyClient, tickers: ["TSLA"], interval: 1}}
+            {PollServer, {DummyClient, tickers: ["TSLA"], interval: 0}}
           ],
           strategy: :one_for_one
         )

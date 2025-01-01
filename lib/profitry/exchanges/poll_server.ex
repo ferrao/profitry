@@ -10,7 +10,9 @@ defmodule Profitry.Exchanges.PollServer do
 
   alias Profitry.Exchanges.Schema.Quote
 
-  defstruct [:tickers, :interval, :index, :client, :client_opts]
+  defstruct [:tickers, :interval, :index, :warm, :client, :client_opts]
+
+  @fast_start 1000
 
   @doc """
 
@@ -44,6 +46,7 @@ defmodule Profitry.Exchanges.PollServer do
       tickers: tickers,
       interval: interval,
       index: 0,
+      warm: false,
       client: exchange_client,
       client_opts: exchange_client.init()
     }
@@ -66,13 +69,22 @@ defmodule Profitry.Exchanges.PollServer do
   @impl true
   def handle_info(
         :tick,
-        %{index: index, tickers: tickers, interval: interval, client_opts: options} = state
+        %{index: index, tickers: tickers, interval: interval, client_opts: options, warm: warm} =
+          state
       ) do
     fetch_quote(state.client, Enum.at(tickers, index), options)
     |> handle_quote
 
+    interval = if warm, do: interval, else: @fast_start
+
     Process.send_after(self(), :tick, interval)
-    {:noreply, %{state | index: rem(index + 1, length(tickers))}}
+
+    {:noreply,
+     %{
+       state
+       | warm: is_warm?(warm, index, length(tickers)),
+         index: rem(index + 1, length(tickers))
+     }}
   end
 
   @spec handle_quote({:error, any()}) :: :ok
@@ -88,4 +100,13 @@ defmodule Profitry.Exchanges.PollServer do
 
   @spec fetch_quote(module(), String.t(), keyword()) :: {:ok, Quote.t()} | {:error, any()}
   defp fetch_quote(exchange_client, ticker, options), do: exchange_client.quote(ticker, options)
+
+  @spec is_warm?(boolean(), integer(), integer()) :: integer()
+  defp is_warm?(warm, index, length) do
+    if !warm && index === length - 1 do
+      true
+    else
+      warm
+    end
+  end
 end

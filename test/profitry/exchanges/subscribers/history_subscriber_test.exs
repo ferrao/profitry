@@ -46,7 +46,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
   describe "history subscriber" do
     test "state is initialized and preserved" do
       backlog_size = 3
-      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size)
+      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size, name: __MODULE__)
 
       state = :sys.get_state(server)
 
@@ -56,7 +56,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
 
     test "keeps a history of recent quotes for each ticker" do
       backlog_size = 2
-      {:ok, _server} = HistorySubscriber.start_link(backlog_size: backlog_size)
+      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size, name: __MODULE__)
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
@@ -71,8 +71,8 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
       # Give HistorySubscriber time to receive the messages
       Process.sleep(100)
 
-      tsla_quotes = Profitry.list_quotes("TSLA")
-      sofi_quotes = Profitry.list_quotes("SOFI")
+      tsla_quotes = HistorySubscriber.list_quotes(server, "TSLA")
+      sofi_quotes = HistorySubscriber.list_quotes(server, "SOFI")
 
       assert Enum.count(tsla_quotes) === backlog_size
       assert Enum.count(sofi_quotes) === backlog_size
@@ -83,7 +83,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
 
     test "gets the most recent quote for a ticker" do
       backlog_size = 2
-      {:ok, _server} = HistorySubscriber.start_link(backlog_size: backlog_size)
+      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size, name: __MODULE__)
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
@@ -95,14 +95,14 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
       # Give HistorySubscriber time to receive the messages
       Process.sleep(100)
 
-      assert Profitry.get_quote("TSLA") === @quote5
+      assert HistorySubscriber.get_quote(server, "TSLA") === @quote5
     end
 
     test "does not find quotes for non existing ticker" do
-      {:ok, _server} = HistorySubscriber.start_link()
+      {:ok, server} = HistorySubscriber.start_link(name: __MODULE__)
 
-      assert Profitry.list_quotes("TSLA") === []
-      assert Profitry.get_quote("TSLA") === nil
+      assert HistorySubscriber.list_quotes(server, "TSLA") === []
+      assert HistorySubscriber.get_quote(server, "TSLA") === nil
     end
   end
 end

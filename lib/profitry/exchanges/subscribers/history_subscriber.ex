@@ -23,8 +23,9 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     backlog_size = Keyword.get(opts, :backlog_size, 1)
+    name = Keyword.get(opts, :name, __MODULE__)
 
-    GenServer.start_link(__MODULE__, backlog_size, name: __MODULE__)
+    GenServer.start_link(__MODULE__, backlog_size, name: name)
   end
 
   @impl true
