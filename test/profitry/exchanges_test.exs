@@ -8,7 +8,7 @@ defmodule Profitry.ExchangesTest do
   @quote %Quote{
     exchange: "IBKR",
     ticker: "TSLA",
-    price: 666,
+    price: Decimal.new("666"),
     timestamp: NaiveDateTime.utc_now()
   }
 
