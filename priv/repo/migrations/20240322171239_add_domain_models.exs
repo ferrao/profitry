@@ -2,7 +2,8 @@ defmodule Profitry.Repo.Migrations.AddDomainModels do
   use Ecto.Migration
 
   def change do
-    # Postgres docker image needs case insensitive text extension to be explicitely enabled
+    # Postgres docker image needs case insensitive text extension (citext)
+    # to be explicitely enabled
     execute "CREATE EXTENSION IF NOT EXISTS citext"
 
     create table(:portfolios) do

@@ -11,6 +11,8 @@
 # and so on) as they will fail if something goes wrong.
 alias Profitry.Investment.Schema.Split
 
+Profitry.Repo.delete_all(Split)
+
 Profitry.Repo.insert!(%Split{
   ticker: "TSLA",
   multiple: 5,
@@ -37,4 +39,11 @@ Profitry.Repo.insert!(%Split{
   multiple: 20,
   reverse: true,
   date: ~D[2023-06-26]
+})
+
+Profitry.Repo.insert!(%Split{
+  ticker: "VLDX",
+  multiple: 35,
+  reverse: true,
+  date: ~D[2024-06-12]
 })
