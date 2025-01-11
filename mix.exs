@@ -33,6 +33,7 @@ defmodule Profitry.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.7.12"},
       {:phoenix_ecto, "~> 4.4"},
@@ -40,7 +41,7 @@ defmodule Profitry.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1.1"},
       {:phoenix_live_view, "~> 1.0.1"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:floki, ">= 0.30.0"},
       {:phoenix_live_dashboard, "~> 0.8.0"},
       {:heroicons,
        github: "tailwindlabs/heroicons",
