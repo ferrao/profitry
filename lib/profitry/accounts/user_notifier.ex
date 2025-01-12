@@ -3,7 +3,9 @@ defmodule Profitry.Accounts.UserNotifier do
   import Phoenix.Component
 
   alias Profitry.Mailer
+  alias Profitry.Accounts.User
 
+  @spec deliver(keyword()) :: {:ok, Swoosh.Email.t()}
   def deliver(opts) do
     email =
       new(
@@ -19,6 +21,7 @@ defmodule Profitry.Accounts.UserNotifier do
     end
   end
 
+  @spec deliver_update_email_instructions(User.t(), String.t()) :: {:ok, Swoosh.Email.t()}
   def deliver_update_email_instructions(user, url) do
     {html, text} = render_content(&email_update_content/1, %{url: url})
 
@@ -30,6 +33,7 @@ defmodule Profitry.Accounts.UserNotifier do
     )
   end
 
+  @spec deliver_login_link(User.t(), String.t()) :: {:ok, Swoosh.Email.t()}
   def deliver_login_link(user, url) do
     {html, text} = render_content(&login_content/1, %{url: url})
 
@@ -41,6 +45,7 @@ defmodule Profitry.Accounts.UserNotifier do
     )
   end
 
+  @spec deliver_register_link(User.t(), String.t()) :: {:ok, Swoosh.Email.t()}
   def deliver_register_link(user, url) do
     {html, text} = render_content(&register_content/1, %{url: url})
 

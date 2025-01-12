@@ -2,6 +2,11 @@ defmodule Profitry.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+          email: String.t() | nil,
+          confirmed_at: NaiveDateTime.t() | nil
+        }
+
   schema "users" do
     field :email, :string
     field :confirmed_at, :naive_datetime
@@ -23,12 +28,14 @@ defmodule Profitry.Accounts.User do
       submitting the form), this option can be set to `false`.
       Defaults to `true`.
   """
+  @spec registration_changeset(t(), map(), keyword()) :: Ecto.Changeset.t()
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
     |> validate_email(opts)
   end
 
+  @spec validate_email(Ecto.Changeset.t(), keyword()) :: Ecto.Changeset.t()
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])
@@ -37,6 +44,7 @@ defmodule Profitry.Accounts.User do
     |> maybe_validate_unique_email(opts)
   end
 
+  @spec maybe_validate_unique_email(Ecto.Changeset.t(), keyword()) :: Ecto.Changeset.t()
   defp maybe_validate_unique_email(changeset, opts) do
     if Keyword.get(opts, :validate_email, true) do
       changeset
@@ -52,6 +60,7 @@ defmodule Profitry.Accounts.User do
 
   It requires the email to change otherwise an error is added.
   """
+  @spec email_changeset(t(), map(), keyword()) :: Ecto.Changeset.t()
   def email_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
@@ -65,6 +74,7 @@ defmodule Profitry.Accounts.User do
   @doc """
   Confirms the account by setting `confirmed_at`.
   """
+  @spec confirm_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def confirm_changeset(user) do
     now = NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     change(user, confirmed_at: now)

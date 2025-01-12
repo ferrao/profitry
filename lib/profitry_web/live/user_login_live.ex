@@ -3,6 +3,7 @@ defmodule ProfitryWeb.UserLoginLive do
 
   alias Profitry.Accounts
 
+  @impl true
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
@@ -15,6 +16,7 @@ defmodule ProfitryWeb.UserLoginLive do
     {:ok, socket, temporary_assigns: [form: form]}
   end
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div :if={@status == :not_sent} class="mx-auto max-w-md">
@@ -54,6 +56,7 @@ defmodule ProfitryWeb.UserLoginLive do
     """
   end
 
+  @impl true
   def handle_event("send-magic-link", params, socket) do
     %{"user" => %{"email" => email}} = params
 

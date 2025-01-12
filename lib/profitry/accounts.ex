@@ -9,6 +9,7 @@ defmodule Profitry.Accounts do
   alias Profitry.Accounts.{User, UserToken, UserNotifier}
 
   ## Database getters
+  @spec get_user_by_email_token(binary(), String.t()) :: User.t() | nil
   def get_user_by_email_token(token, context) do
     with {:ok, query} <- UserToken.verify_email_token_query(token, context),
          %User{} = user <- Repo.one(query) do
@@ -30,6 +31,7 @@ defmodule Profitry.Accounts do
       nil
 
   """
+  @spec get_user_by_email(String.t()) :: User.t() | nil
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
   end
@@ -48,6 +50,7 @@ defmodule Profitry.Accounts do
       ** (Ecto.NoResultsError)
 
   """
+  @spec get_user!(number()) :: User.t()
   def get_user!(id), do: Repo.get!(User, id)
 
   ## User registration
@@ -64,6 +67,7 @@ defmodule Profitry.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec register_user(map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)
@@ -81,6 +85,7 @@ defmodule Profitry.Accounts do
       %Ecto.Changeset{data: %User{}}
 
   """
+  @spec change_user_email(User.t(), map()) :: Ecto.Changeset.t()
   def change_user_email(user, attrs \\ %{}) do
     User.email_changeset(user, attrs, validate_email: false)
   end
@@ -98,6 +103,7 @@ defmodule Profitry.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec apply_user_email(User.t(), map()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def apply_user_email(user, attrs) do
     user
     |> User.email_changeset(attrs)
@@ -110,6 +116,7 @@ defmodule Profitry.Accounts do
   If the token matches, the user email is updated and the token is deleted.
   The confirmed_at date is also updated to the current time.
   """
+  @spec update_user_email(User.t(), binary()) :: :ok | :error
   def update_user_email(user, token) do
     context = "change:#{user.email}"
 
@@ -122,6 +129,7 @@ defmodule Profitry.Accounts do
     end
   end
 
+  @spec user_email_multi(User.t(), String.t(), String.t()) :: Ecto.Multi.t()
   defp user_email_multi(user, email, context) do
     changeset =
       user
@@ -142,6 +150,8 @@ defmodule Profitry.Accounts do
       {:ok, %{to: ..., body: ...}}
 
   """
+  @spec deliver_user_update_email_instructions(User.t(), String.t(), fun()) ::
+          {:ok, Swoosh.Email.t()}
   def deliver_user_update_email_instructions(%User{} = user, current_email, update_email_url_fun)
       when is_function(update_email_url_fun, 1) do
     {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
@@ -155,6 +165,7 @@ defmodule Profitry.Accounts do
   @doc """
   Generates a session token.
   """
+  @spec generate_user_session_token(User.t()) :: binary()
   def generate_user_session_token(user) do
     {token, user_token} = UserToken.build_session_token(user)
     Repo.insert!(user_token)
@@ -164,6 +175,7 @@ defmodule Profitry.Accounts do
   @doc """
   Gets the user with the given signed token.
   """
+  @spec get_user_by_session_token(binary()) :: User.t() | nil
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
     Repo.one(query)
@@ -172,6 +184,7 @@ defmodule Profitry.Accounts do
   @doc """
   Deletes the signed token with the given context.
   """
+  @spec delete_user_session_token(binary()) :: :ok
   def delete_user_session_token(token) do
     Repo.delete_all(UserToken.by_token_and_context_query(token, "session"))
     :ok
@@ -183,18 +196,21 @@ defmodule Profitry.Accounts do
   Confirms a user. Does nothing if they're already confirmed.
   """
   # NOTE: You could add a last_seen_at timestamp update here.
+  @spec confirm_user(User.t()) :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
   def confirm_user(%User{confirmed_at: confirmed_at} = user) when is_nil(confirmed_at) do
     user
     |> User.confirm_changeset()
     |> Repo.update()
   end
 
+  @spec confirm_user(User.t()) :: {:ok, User.t()}
   def confirm_user(%User{confirmed_at: confirmed_at} = user) when not is_nil(confirmed_at) do
     {:ok, user}
   end
 
   ## Authentication
 
+  @spec login_or_register_user(String.t()) :: {:ok, Swoosh.Email.t()}
   def login_or_register_user(email) do
     case get_user_by_email(email) do
       # Found existing user.
