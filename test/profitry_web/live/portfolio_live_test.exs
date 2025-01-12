@@ -1,8 +1,9 @@
 defmodule ProfitryWeb.PortfolioLiveTest do
-  use ProfitryWeb.ConnCase
+  use ProfitryWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
   import Profitry.InvestmentFixtures
+  import Profitry.AccountsFixtures
 
   @create_attrs %{broker: "BROKER", description: "desc"}
   @update_attrs %{broker: "BROKER", description: "new desc"}
@@ -13,8 +14,12 @@ defmodule ProfitryWeb.PortfolioLiveTest do
     %{portfolio: portfolio}
   end
 
+  defp login(%{conn: conn}) do
+    %{conn: login_user(conn, user_fixture())}
+  end
+
   describe "Portfolios" do
-    setup [:create_portfolio]
+    setup [:create_portfolio, :login]
 
     test "lists all portfolios", %{conn: conn, portfolio: portfolio} do
       {:ok, _portfolio_live, html} = live(conn, ~p"/portfolios")

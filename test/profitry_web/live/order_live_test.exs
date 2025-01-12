@@ -1,8 +1,9 @@
 defmodule ProfitryWeb.OrderLiveTest do
-  use ProfitryWeb.ConnCase
+  use ProfitryWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
   import Profitry.InvestmentFixtures
+  import Profitry.AccountsFixtures
 
   @create_attrs %{
     type: :buy,
@@ -36,8 +37,12 @@ defmodule ProfitryWeb.OrderLiveTest do
     %{portfolio: portfolio, position: position, order: order, order_option: order_option}
   end
 
+  defp login(%{conn: conn}) do
+    %{conn: login_user(conn, user_fixture())}
+  end
+
   describe "Orders" do
-    setup [:create_order]
+    setup [:create_order, :login]
 
     test "lists all orders for a position", %{
       conn: conn,

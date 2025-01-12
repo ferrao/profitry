@@ -1,8 +1,9 @@
 defmodule ProfitryWeb.PositionLiveTest do
-  use ProfitryWeb.ConnCase
+  use ProfitryWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
   import Profitry.InvestmentFixtures
+  import Profitry.AccountsFixtures
 
   @create_attrs %{ticker: "SOFI"}
   @update_attrs %{ticker: "CLOV"}
@@ -13,8 +14,12 @@ defmodule ProfitryWeb.PositionLiveTest do
     %{portfolio: portfolio, position: position}
   end
 
+  defp login(%{conn: conn}) do
+    %{conn: login_user(conn, user_fixture())}
+  end
+
   describe "Positions" do
-    setup [:create_position]
+    setup [:create_position, :login]
 
     test "lists all positions for a portfolio", %{
       conn: conn,

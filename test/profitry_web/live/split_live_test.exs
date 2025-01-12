@@ -1,8 +1,9 @@
 defmodule ProfitryWeb.SplitLiveTest do
-  use ProfitryWeb.ConnCase
+  use ProfitryWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
   import Profitry.InvestmentFixtures
+  import Profitry.AccountsFixtures
 
   @create_attrs %{ticker: "TSLA", multiple: 3, reverse: false, date: ~D[2020-01-01]}
   @update_attrs %{ticker: "TSLA", multiple: 2, reverse: true}
@@ -13,8 +14,12 @@ defmodule ProfitryWeb.SplitLiveTest do
     %{split: split}
   end
 
+  defp login(%{conn: conn}) do
+    %{conn: login_user(conn, user_fixture())}
+  end
+
   describe "Stock Splits" do
-    setup [:create_split]
+    setup [:create_split, :login]
 
     test "lists all stock splits", %{conn: conn, split: split} do
       {:ok, _split_live, html} = live(conn, ~p"/splits")
