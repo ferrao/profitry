@@ -135,11 +135,23 @@ defmodule Profitry.Investment.ReportsTest do
              ) === :eq
     end
 
-    test "position report without quote contains no price, value or profit" do
+    test "position report with shares and no quote" do
       report = Investment.make_report(@position)
       assert Decimal.compare(report.price, Decimal.new(0)) === :eq
       assert Decimal.compare(report.value, Decimal.new(0)) === :eq
       assert Decimal.compare(report.profit, Decimal.new(0)) === :eq
+    end
+
+    test "position report without shares and no quote " do
+      {_portfolio, position, _order} = order_fixture()
+      order_fixture(position, %{type: :sell, price: Decimal.new("0")})
+      option_fixture(position)
+
+      report = Investment.make_report(position)
+
+      assert Decimal.compare(report.price, Decimal.new(0)) === :eq
+      assert Decimal.compare(report.value, Decimal.new(0)) === :eq
+      assert Decimal.compare(report.profit, Decimal.new("-12530.81")) === :eq
     end
 
     test "adjusts position report when applicable split is found" do

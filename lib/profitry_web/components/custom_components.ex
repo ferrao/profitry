@@ -52,7 +52,7 @@ defmodule ProfitryWeb.CustomComponents do
       </span>
     <% else %>
       <span class="font-semibold">
-        {format_currency(@profit)}
+        --
       </span>
     <% end %>
     """

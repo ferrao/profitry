@@ -58,7 +58,12 @@ defmodule Profitry.Investment.Schema.PositionReport do
   # with no quote
   @spec calculate_profit(t(), nil) :: t()
   def calculate_profit(report, nil) do
-    Map.put(report, :profit, Decimal.new(0))
+    if Decimal.eq?(report.shares, 0) do
+      # Without shares, p/l is -investment
+      Map.put(report, :profit, Decimal.negate(report.investment))
+    else
+      Map.put(report, :profit, Decimal.new(0))
+    end
   end
 
   # with a quote
