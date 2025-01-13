@@ -60,16 +60,17 @@ defmodule ProfitryWeb.UserLoginLive do
   def handle_event("send-magic-link", params, socket) do
     %{"user" => %{"email" => email}} = params
 
-    Accounts.login_or_register_user(email)
+    case Accounts.login_or_register_user(email) do
+      {:ok, _} ->
+        socket =
+          socket
+          |> put_flash(:info, "We've sent an email to #{email}, with a one-time sign-in link.")
+          |> assign(:status, :sent)
 
-    socket =
-      socket
-      |> Phoenix.LiveView.put_flash(
-        :info,
-        "We've sent an email to #{email}, with a one-time sign-in link."
-      )
-      |> assign(:status, :sent)
+        {:noreply, socket}
 
-    {:noreply, socket}
+      :error ->
+        {:noreply, socket |> put_flash(:error, "Unable to register new user")}
+    end
   end
 end

@@ -7,10 +7,6 @@ import Config
 # any compile-time configuration in here, as it won't be applied.
 # The block below contains prod specific runtime configuration.
 
-# ## API keys & secrets
-config :profitry, Profitry.Exchanges.Clients.Finnhub.FinnhubClient,
-  api_key: System.get_env("FINNHUB_API_KEY")
-
 # ## Using releases
 #
 # If you use `mix release`, you need to explicitly enable the server

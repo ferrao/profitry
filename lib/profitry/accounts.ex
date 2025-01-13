@@ -210,30 +210,42 @@ defmodule Profitry.Accounts do
 
   ## Authentication
 
-  @spec login_or_register_user(String.t()) :: {:ok, Swoosh.Email.t()}
+  @spec login_or_register_user(String.t()) :: {:ok, Swoosh.Email.t()} | :error
   def login_or_register_user(email) do
     case get_user_by_email(email) do
       # Found existing user.
-      %User{} = user ->
-        {email_token, token} = UserToken.build_email_token(user, "magic_link")
-        Repo.insert!(token)
-
-        UserNotifier.deliver_login_link(
-          user,
-          "#{ProfitryWeb.Endpoint.url()}/login/email/token/#{email_token}"
-        )
-
+      %User{} = user -> login(user)
       # New user, create a new account.
-      _ ->
-        {:ok, user} = register_user(%{email: email})
-
-        {email_token, token} = UserToken.build_email_token(user, "magic_link")
-        Repo.insert!(token)
-
-        UserNotifier.deliver_register_link(
-          user,
-          "#{ProfitryWeb.Endpoint.url()}/login/email/token/#{email_token}"
-        )
+      _ -> register(email, Application.fetch_env!(:profitry, __MODULE__)[:register])
     end
+  end
+
+  @spec login(User.t()) :: {:ok, Swoosh.Email.t()}
+  def login(user) do
+    {email_token, token} = UserToken.build_email_token(user, "magic_link")
+    Repo.insert!(token)
+
+    UserNotifier.deliver_login_link(
+      user,
+      "#{ProfitryWeb.Endpoint.url()}/login/email/token/#{email_token}"
+    )
+  end
+
+  @spec register(String.t(), boolean()) :: {:ok, Swoosh.Email.t()} | :error
+
+  def register(_email, false) do
+    :error
+  end
+
+  def register(email, _can_register) do
+    {:ok, user} = register_user(%{email: email})
+
+    {email_token, token} = UserToken.build_email_token(user, "magic_link")
+    Repo.insert!(token)
+
+    UserNotifier.deliver_register_link(
+      user,
+      "#{ProfitryWeb.Endpoint.url()}/login/email/token/#{email_token}"
+    )
   end
 end

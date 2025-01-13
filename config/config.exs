@@ -59,6 +59,9 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Enable or disable new user registration
+config :profitry, Profitry.Accounts, register: false
+
 # Exchanges related configuration
 import_config "exchanges.exs"
 

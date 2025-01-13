@@ -67,6 +67,22 @@ defmodule Profitry.AccountsTest do
     end
   end
 
+  describe "login_or_register_user/1" do
+    test "registers users" do
+      assert {:ok, %Swoosh.Email{}} = Accounts.login_or_register_user(unique_user_email())
+    end
+
+    test "does not register users if disabled by configuration" do
+      Application.put_env(:profitry, Profitry.Accounts, register: false)
+
+      assert :error === Accounts.login_or_register_user(unique_user_email())
+
+      on_exit(fn ->
+        Application.put_env(:profitry, Profitry.Accounts, register: true)
+      end)
+    end
+  end
+
   describe "change_user_email/2" do
     test "returns a user changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_email(%User{})
