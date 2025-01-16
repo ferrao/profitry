@@ -35,7 +35,7 @@ config :logger, level: :warning
 # Do not start Exchanges supervision tree
 config :profitry, :start_exchanges, false
 
-# Enable or disable new user registration
+# Enable new user registration
 config :profitry, Profitry.Accounts, register: true
 
 # Initialize plugs at runtime for faster test compilation

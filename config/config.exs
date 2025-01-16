@@ -32,7 +32,7 @@ config :profitry, Profitry.Mailer, adapter: Swoosh.Adapters.Local
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  default: [
+  profitry: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -42,7 +42,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "3.3.2",
-  default: [
+  profitry: [
     args: ~w(
       --config=tailwind.config.js
       --input=css/app.css

@@ -9,7 +9,10 @@ defmodule Profitry.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: [
+        profitry: [include_executables_for: [:unix]]
+      ]
     ]
   end
 
@@ -85,6 +88,7 @@ defmodule Profitry.MixProject do
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind profitry", "esbuild profitry"],
       "assets.deploy": ["tailwind profitry --minify", "esbuild profitry --minify", "phx.digest"],
+      "assets.clean": ["phx.digest.clean --all"],
       check: "dialyzer"
     ]
   end
