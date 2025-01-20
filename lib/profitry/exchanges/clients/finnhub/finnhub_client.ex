@@ -28,6 +28,9 @@ defmodule Profitry.Exchanges.Clients.Finnhub.FinnhubClient do
       {:ok, %Req.Response{status: 404}} ->
         {:error, "Not found"}
 
+      {:ok, %Req.Response{status: _status, body: %{"error" => error}}} ->
+        {:error, "#{error}"}
+
       {:ok, %Req.Response{status: status, body: body}} ->
         {:error, "#{status} #{body}"}
 
