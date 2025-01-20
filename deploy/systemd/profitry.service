@@ -7,6 +7,9 @@ Type=simple
 User=profitry
 EnvironmentFile=/etc/profitry/env
 
+StandardOutput=append:/var/log/profitry/server.log
+StandardError=append:/var/log/profitry/error.log
+
 ExecStart=/opt/profitry/bin/server
 Restart=on-failure
 RestartSec=5

@@ -1,0 +1,15 @@
+# Web Host
+PHX_HOST=www.profitry.xyz
+
+# Secrets
+SECRET_KEY_BASE=secret
+
+# Database
+DATABASE_URL=ecto://user:pass@localhost/profitry
+
+# Email
+MAILGUN_DOMAIN=profitry.xyz
+MAILGUN_API_KEY=secret_key
+
+# Finnhub
+FINNHUB_API_KEY=secret_key
