@@ -89,7 +89,8 @@ defmodule Profitry.MixProject do
       "assets.build": ["tailwind profitry", "esbuild profitry"],
       "assets.deploy": ["tailwind profitry --minify", "esbuild profitry --minify", "phx.digest"],
       "assets.clean": ["phx.digest.clean --all"],
-      check: "dialyzer"
+      check: "dialyzer",
+      deploy: ["cmd deploy/release.sh"]
     ]
   end
 end
