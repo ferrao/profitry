@@ -1,0 +1,21 @@
+[Unit]
+Description=Profitry Server
+After=network.target
+
+[Service]
+Type=simple
+User=profitry
+EnvironmentFile=/etc/profitry/env
+
+ExecStart=/opt/profitry/bin/server
+Restart=on-failure
+RestartSec=5
+
+# Optional but recommended security settings
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
