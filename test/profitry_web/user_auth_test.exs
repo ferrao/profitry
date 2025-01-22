@@ -6,7 +6,7 @@ defmodule ProfitryWeb.UserAuthTest do
   alias ProfitryWeb.UserAuth
   import Profitry.AccountsFixtures
 
-  @remember_me_cookie "_profitry_web_user_remember_me"
+  @remember_me_cookie "_profitry_web_user"
 
   setup %{conn: conn} do
     conn =
@@ -36,8 +36,8 @@ defmodule ProfitryWeb.UserAuthTest do
       assert redirected_to(conn) == "/hello"
     end
 
-    test "writes a cookie if remember_me is configured", %{conn: conn, user: user} do
-      conn = conn |> fetch_cookies() |> UserAuth.login_user(user, %{"remember_me" => "true"})
+    test "writes a cookie", %{conn: conn, user: user} do
+      conn = conn |> fetch_cookies() |> UserAuth.login_user(user)
       assert get_session(conn, :user_token) == conn.cookies[@remember_me_cookie]
 
       assert %{value: signed_token, max_age: max_age} = conn.resp_cookies[@remember_me_cookie]
@@ -92,7 +92,7 @@ defmodule ProfitryWeb.UserAuthTest do
 
     test "authenticates user from cookies", %{conn: conn, user: user} do
       logged_in_conn =
-        conn |> fetch_cookies() |> UserAuth.login_user(user, %{"remember_me" => "true"})
+        conn |> fetch_cookies() |> UserAuth.login_user(user)
 
       user_token = logged_in_conn.cookies[@remember_me_cookie]
       %{value: signed_token} = logged_in_conn.resp_cookies[@remember_me_cookie]

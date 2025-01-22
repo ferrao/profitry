@@ -25,8 +25,8 @@ defmodule Profitry.Exchanges.Supervisor do
       [
         Subscribers.LogSubscriber,
         Subscribers.HistorySubscriber,
-        {PollServer, {Clients.Finnhub.FinnhubClient, tickers: Profitry.Investment.list_tickers()}}
-        # {PollServer, {Clients.DummyClient, tickers: ["TSLA", "SOFI", "HOOD"], interval: 5000}}
+        # {PollServer, {Clients.Finnhub.FinnhubClient, tickers: Profitry.Investment.list_tickers()}}
+        {PollServer, {Clients.DummyClient, tickers: ["TSLA", "SOFI", "HOOD"], interval: 5000}}
       ]
 
     children =
