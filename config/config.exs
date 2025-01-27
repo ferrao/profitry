@@ -62,6 +62,9 @@ config :phoenix, :json_library, Jason
 # Enable or disable new user registration
 config :profitry, Profitry.Accounts, register: false
 
+# Start exchange clients
+config :profitry, :start_exchanges, true
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

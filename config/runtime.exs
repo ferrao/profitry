@@ -20,8 +20,6 @@ if System.get_env("PHX_SERVER") do
   config :profitry, ProfitryWeb.Endpoint, server: true
 end
 
-config :profitry, :start_exchanges, true
-
 config :profitry, Profitry.Exchanges.Clients.Finnhub.FinnhubClient,
   api_key: System.get_env("FINNHUB_API_KEY"),
   url: "https://finnhub.io/api",
