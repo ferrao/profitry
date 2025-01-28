@@ -1,6 +1,6 @@
 defmodule Profitry.Exchanges.PollServerTest do
   # Not running async due to genserver name and pubsub topic being shared between tests
-  use ExUnit.Case
+  use ExUnit.Case, async: false
 
   alias Profitry.Exchanges.Clients.DummyClient
   alias Profitry.Exchanges.PollServer
