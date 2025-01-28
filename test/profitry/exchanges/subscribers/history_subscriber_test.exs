@@ -46,7 +46,9 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
   describe "history subscriber" do
     test "state is initialized and preserved" do
       backlog_size = 3
-      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size, name: __MODULE__)
+
+      server =
+        start_supervised!({HistorySubscriber, backlog_size: backlog_size, name: __MODULE__})
 
       state = :sys.get_state(server)
 
@@ -56,7 +58,9 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
 
     test "keeps a history of recent quotes for each ticker" do
       backlog_size = 2
-      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size, name: __MODULE__)
+
+      server =
+        start_supervised!({HistorySubscriber, backlog_size: backlog_size, name: __MODULE__})
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
@@ -83,7 +87,9 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
 
     test "gets the most recent quote for a ticker" do
       backlog_size = 2
-      {:ok, server} = HistorySubscriber.start_link(backlog_size: backlog_size, name: __MODULE__)
+
+      server =
+        start_supervised!({HistorySubscriber, backlog_size: backlog_size, name: __MODULE__})
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
@@ -99,7 +105,8 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
     end
 
     test "does not find quotes for non existing ticker" do
-      {:ok, server} = HistorySubscriber.start_link(name: __MODULE__)
+      server =
+        start_supervised!({HistorySubscriber, name: __MODULE__})
 
       assert HistorySubscriber.list_quotes(server, "TSLA") === []
       assert HistorySubscriber.get_quote(server, "TSLA") === nil
