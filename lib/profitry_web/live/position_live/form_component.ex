@@ -29,6 +29,7 @@ defmodule ProfitryWeb.PositionLive.FormComponent do
     case Investment.update_position(socket.assigns.position, position_params) do
       {:ok, position} ->
         notify_parent({:saved, position, socket.assigns.count})
+        Profitry.broadcast_ticker_update(position_params["ticker"])
 
         {:noreply,
          socket
@@ -44,6 +45,7 @@ defmodule ProfitryWeb.PositionLive.FormComponent do
     case Investment.create_position(socket.assigns.portfolio, position_params) do
       {:ok, position} ->
         notify_parent({:saved, position, socket.assigns.count + 1})
+        Profitry.broadcast_ticker_update(position_params["ticker"])
 
         {:noreply,
          socket

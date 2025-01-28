@@ -12,9 +12,14 @@ defmodule Profitry do
   alias Profitry.Exchanges.Subscribers.HistorySubscriber
 
   defdelegate list_tickers(), to: Investment
+
   defdelegate broadcast_quote(quote), to: Exchanges
   defdelegate subscribe_quotes(), to: Exchanges
   defdelegate unsubscribe_quotes(), to: Exchanges
+
+  defdelegate broadcast_ticker_update(ticker), to: Exchanges
+  defdelegate subscribe_ticker_updates(), to: Exchanges
+
   defdelegate get_quote(ticker), to: HistorySubscriber
   defdelegate list_quotes(ticker), to: HistorySubscriber
 end

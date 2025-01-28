@@ -1,5 +1,5 @@
 defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
-  # Not running async due to genserver name and pubsub topic being shared between tests
+  # FIXME: Not running async due to genserver name and pubsub topic being shared between tests
   use ExUnit.Case, async: false
 
   alias Profitry.Exchanges.Schema.Quote

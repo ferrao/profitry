@@ -43,6 +43,7 @@ defmodule ProfitryWeb.PositionLiveTest do
     end
 
     test "saves new position", %{conn: conn, portfolio: portfolio} do
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "update_tickers")
       {:ok, position_live, _html} = live(conn, ~p"/portfolios/#{portfolio.id}")
 
       assert position_live
@@ -67,9 +68,13 @@ defmodule ProfitryWeb.PositionLiveTest do
       assert position_live
              |> element("span#count-positions")
              |> render() =~ "(2 positions)"
+
+      ticker = @create_attrs.ticker
+      assert_receive(^ticker)
     end
 
     test "updates existing position", %{conn: conn, portfolio: portfolio, position: position} do
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "update_tickers")
       {:ok, position_live, _html} = live(conn, ~p"/portfolios/#{portfolio.id}")
 
       assert position_live
@@ -97,6 +102,9 @@ defmodule ProfitryWeb.PositionLiveTest do
       assert position_live
              |> element("span#count-positions")
              |> render() =~ "(1 positions)"
+
+      ticker = @update_attrs.ticker
+      assert_receive(^ticker)
     end
 
     test "deletes an existing position", %{conn: conn, portfolio: portfolio, position: position} do

@@ -37,4 +37,24 @@ defmodule Profitry.Exchanges do
   def unsubscribe_quotes() do
     PubSub.unsubscribe(Profitry.PubSub, "quotes")
   end
+
+  @doc """
+
+  Publishes a new ticker
+
+  """
+  @spec broadcast_ticker_update(String.t()) :: :ok | {:error, any()}
+  def broadcast_ticker_update(ticker) do
+    PubSub.broadcast(Profitry.PubSub, "update_tickers", ticker)
+  end
+
+  @doc """
+
+  Subscribes to the update tickers channel.
+
+  """
+  @spec subscribe_ticker_updates() :: :ok | {:error, any()}
+  def subscribe_ticker_updates() do
+    PubSub.subscribe(Profitry.PubSub, "update_tickers")
+  end
 end

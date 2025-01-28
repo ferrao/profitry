@@ -1,5 +1,5 @@
 defmodule Profitry.Exchanges.PollServerTest do
-  # Not running async due to genserver name and pubsub topic being shared between tests
+  # FIXME: Not running async due to genserver name and pubsub topic being shared between tests
   use ExUnit.Case, async: false
 
   alias Profitry.Exchanges.Clients.DummyClient
@@ -40,6 +40,36 @@ defmodule Profitry.Exchanges.PollServerTest do
         assert_receive {:new_quote, received_quote}, @message_timeout
         assert(received_quote.ticker === ticker)
       end
+    end
+
+    test "adds a new ticker to the ticker list" do
+      ticker = "TSLA"
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "quotes")
+
+      start_supervised!({PollServer, {DummyClient, tickers: [], interval: 0}})
+
+      refute_receive {:neq_qoote}, @message_timeout
+
+      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", ticker)
+
+      assert_receive {:new_quote, received_quote}, @message_timeout
+      assert(received_quote.ticker === ticker)
+    end
+
+    test "does not add the same ticker to the ticker list multiple times" do
+      tickers = ["TSLA"]
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "update_tickers")
+
+      server = start_supervised!({PollServer, {DummyClient, tickers: tickers, interval: 0}})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
+      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
+      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
+
+      # Give PollServer time to receive the messages
+      Process.sleep(100)
+
+      state = :sys.get_state(server)
+      assert tickers === state.tickers
     end
   end
 end

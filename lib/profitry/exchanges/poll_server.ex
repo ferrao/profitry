@@ -40,6 +40,11 @@ defmodule Profitry.Exchanges.PollServer do
     }
   end
 
+  @doc """
+
+  Initializes the server state
+
+  """
   @impl true
   def init({exchange_client, tickers, interval}) do
     state = %__MODULE__{
@@ -54,25 +59,38 @@ defmodule Profitry.Exchanges.PollServer do
     {:ok, state, {:continue, :start}}
   end
 
+  @doc """
+
+  Starts server polling loop
+
+  """
   @impl true
   def handle_continue(:start, state) do
     send(self(), :tick)
     {:noreply, state}
   end
 
+  # tickers list is empty, just schedule another run
   @impl true
   def handle_info(:tick, %{tickers: [], interval: interval} = state) do
+    Profitry.subscribe_ticker_updates()
     Process.send_after(self(), :tick, interval)
     {:noreply, state}
   end
 
+  # fetch one quote from the ticker list and schedule another run
   @impl true
-  def handle_info(
-        :tick,
-        %{index: index, tickers: tickers, interval: interval, client_opts: options, warm: warm} =
-          state
-      ) do
-    fetch_quote(state.client, Enum.at(tickers, index), options)
+  def handle_info(:tick, state) do
+    %{
+      index: index,
+      tickers: tickers,
+      interval: interval,
+      client_opts: options,
+      warm: warm,
+      client: client
+    } = state
+
+    fetch_quote(client, Enum.at(tickers, index), options)
     |> handle_quote
 
     interval = if warm, do: interval, else: @fast_start
@@ -86,6 +104,19 @@ defmodule Profitry.Exchanges.PollServer do
          index: rem(index + 1, length(tickers))
      }}
   end
+
+  # add a new ticker to the list of tickers to fetch
+  @impl true
+  def handle_info(ticker, %{tickers: tickers} = state) when is_binary(ticker) do
+    Logger.info("Adding #{ticker} to ticker list")
+
+    {:noreply,
+     %{state | tickers: update_tickers(tickers, ticker, !Enum.member?(tickers, ticker))}}
+  end
+
+  @spec update_tickers(list(String.t()), String.t(), boolean()) :: list(String.t())
+  defp update_tickers(tickers, ticker, true), do: [ticker | tickers]
+  defp update_tickers(tickers, _ticker, _update), do: tickers
 
   @spec handle_quote({:error, any()}) :: :ok
   defp handle_quote({:error, reason}), do: Logger.warning("Unable to fetch quote: #{reason}")
@@ -103,10 +134,6 @@ defmodule Profitry.Exchanges.PollServer do
 
   @spec is_warm?(boolean(), integer(), integer()) :: integer()
   defp is_warm?(warm, index, length) do
-    if !warm && index === length - 1 do
-      true
-    else
-      warm
-    end
+    if !warm && index === length - 1, do: true, else: warm
   end
 end
