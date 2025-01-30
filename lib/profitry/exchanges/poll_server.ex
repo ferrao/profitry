@@ -107,8 +107,12 @@ defmodule Profitry.Exchanges.PollServer do
 
   # add a new ticker to the list of tickers to fetch
   @impl true
-  def handle_info(ticker, %{tickers: tickers} = state) when is_binary(ticker) do
+  def handle_info(ticker, %{tickers: tickers, client: client, client_opts: options} = state)
+      when is_binary(ticker) do
     Logger.info("Adding #{ticker} to ticker list")
+
+    fetch_quote(client, ticker, options)
+    |> handle_quote()
 
     {:noreply,
      %{state | tickers: update_tickers(tickers, ticker, !Enum.member?(tickers, ticker))}}
