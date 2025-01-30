@@ -42,7 +42,8 @@ defmodule Profitry.Exchanges.PollServer do
 
   @doc """
 
-  Initializes the server state
+  Initializes the server state, subscribes to
+  ticker updates and starts the server polling loop
 
   """
   @impl true
@@ -56,14 +57,14 @@ defmodule Profitry.Exchanges.PollServer do
       client_opts: exchange_client.init()
     }
 
-    {:ok, state, {:continue, :start}}
+    {:ok, state, {:continue, :sub}}
   end
 
-  @doc """
+  def handle_continue(:sub, state) do
+    :ok = Profitry.subscribe_ticker_updates()
+    {:noreply, state, {:continue, :start}}
+  end
 
-  Starts server polling loop
-
-  """
   @impl true
   def handle_continue(:start, state) do
     send(self(), :tick)
@@ -73,7 +74,6 @@ defmodule Profitry.Exchanges.PollServer do
   # tickers list is empty, just schedule another run
   @impl true
   def handle_info(:tick, %{tickers: [], interval: interval} = state) do
-    Profitry.subscribe_ticker_updates()
     Process.send_after(self(), :tick, interval)
     {:noreply, state}
   end

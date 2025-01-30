@@ -5,6 +5,9 @@ defmodule Profitry.Exchanges do
 
   """
 
+  @quotes "quotes"
+  @ticker_updates "update_tickers"
+
   alias Phoenix.PubSub
   alias Profitry.Exchanges.Schema.Quote
 
@@ -15,7 +18,7 @@ defmodule Profitry.Exchanges do
   """
   @spec broadcast_quote(Quote.t()) :: :ok | {:error, any()}
   def broadcast_quote(%Quote{} = quote) do
-    PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, quote})
+    PubSub.broadcast(Profitry.PubSub, @quotes, {:new_quote, quote})
   end
 
   @doc """
@@ -25,7 +28,7 @@ defmodule Profitry.Exchanges do
   """
   @spec subscribe_quotes() :: :ok | {:error, any()}
   def subscribe_quotes() do
-    PubSub.subscribe(Profitry.PubSub, "quotes")
+    PubSub.subscribe(Profitry.PubSub, @quotes)
   end
 
   @doc """
@@ -35,7 +38,7 @@ defmodule Profitry.Exchanges do
   """
   @spec unsubscribe_quotes() :: :ok
   def unsubscribe_quotes() do
-    PubSub.unsubscribe(Profitry.PubSub, "quotes")
+    PubSub.unsubscribe(Profitry.PubSub, @quotes)
   end
 
   @doc """
@@ -45,7 +48,7 @@ defmodule Profitry.Exchanges do
   """
   @spec broadcast_ticker_update(String.t()) :: :ok | {:error, any()}
   def broadcast_ticker_update(ticker) do
-    PubSub.broadcast(Profitry.PubSub, "update_tickers", ticker)
+    PubSub.broadcast(Profitry.PubSub, @ticker_updates, ticker)
   end
 
   @doc """
@@ -55,6 +58,6 @@ defmodule Profitry.Exchanges do
   """
   @spec subscribe_ticker_updates() :: :ok | {:error, any()}
   def subscribe_ticker_updates() do
-    PubSub.subscribe(Profitry.PubSub, "update_tickers")
+    PubSub.subscribe(Profitry.PubSub, @ticker_updates)
   end
 end
