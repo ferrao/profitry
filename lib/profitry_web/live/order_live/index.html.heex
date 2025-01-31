@@ -25,7 +25,13 @@
   <:col :let={{_id, order}} label="Type">{order.type}</:col>
   <:col :let={{_id, order}} label="Instrument">{order.instrument}</:col>
   <:col :let={{_id, order}} label="Quantity">{order.quantity}</:col>
-  <:col :let={{_id, order}} label="Price">{format_currency(order.price)}</:col>
+  <:col :let={{_id, order}} label="Price">
+    <%= if order.option do %>
+      {format_currency(order.price, 100)}
+    <% else %>
+      {format_currency(order.price)}
+    <% end %>
+  </:col>
 
   <:col :let={{_id, order}} label="Contract">
     <%= if order.option do %>

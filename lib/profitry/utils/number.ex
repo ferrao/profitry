@@ -30,4 +30,11 @@ defmodule Profitry.Utils.Number do
     number
     |> Currency.number_to_currency()
   end
+
+  @spec format_currency(Decimal.t(), number()) :: String.t()
+  def format_currency(number, multiplier) do
+    Decimal.new(multiplier)
+    |> Decimal.mult(number)
+    |> Currency.number_to_currency()
+  end
 end
