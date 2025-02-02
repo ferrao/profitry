@@ -1,9 +1,11 @@
 defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
-  # FIXME: Not running async due to genserver name and pubsub topic being shared between tests
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Exchanges.Subscribers.HistorySubscriber
+
+  # override topic to allow for async tests
+  @topic to_string(__MODULE__) <> "_quotes"
 
   @quote1 %Quote{
     exchange: "IBKR",
@@ -47,10 +49,11 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
     test "state is initialized and preserved" do
       backlog_size = 3
 
-      server =
-        start_supervised!({HistorySubscriber, backlog_size: backlog_size, name: __MODULE__})
+      start_supervised!(
+        {HistorySubscriber, backlog_size: backlog_size, topic: @topic, name: __MODULE__}
+      )
 
-      state = :sys.get_state(server)
+      state = :sys.get_state(__MODULE__)
 
       assert state.backlog_size === backlog_size
       assert state.quotes === %{}
@@ -59,24 +62,25 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
     test "keeps a history of recent quotes for each ticker" do
       backlog_size = 2
 
-      server =
-        start_supervised!({HistorySubscriber, backlog_size: backlog_size, name: __MODULE__})
+      start_supervised!(
+        {HistorySubscriber, backlog_size: backlog_size, topic: @topic, name: __MODULE__}
+      )
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote1})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote2})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote3})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote4})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote5})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote6})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote1})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote2})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote3})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote4})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote5})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote6})
 
       # Give HistorySubscriber time to receive the messages
       Process.sleep(100)
 
-      tsla_quotes = HistorySubscriber.list_quotes(server, "TSLA")
-      sofi_quotes = HistorySubscriber.list_quotes(server, "SOFI")
+      tsla_quotes = HistorySubscriber.list_quotes(__MODULE__, "TSLA")
+      sofi_quotes = HistorySubscriber.list_quotes(__MODULE__, "SOFI")
 
       assert Enum.count(tsla_quotes) === backlog_size
       assert Enum.count(sofi_quotes) === backlog_size
@@ -88,28 +92,28 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
     test "gets the most recent quote for a ticker" do
       backlog_size = 2
 
-      server =
-        start_supervised!({HistorySubscriber, backlog_size: backlog_size, name: __MODULE__})
+      start_supervised!(
+        {HistorySubscriber, backlog_size: backlog_size, topic: @topic, name: __MODULE__}
+      )
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote1})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote3})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "quotes", {:new_quote, @quote5})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote1})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote3})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote5})
 
       # Give HistorySubscriber time to receive the messages
       Process.sleep(100)
 
-      assert HistorySubscriber.get_quote(server, "TSLA") === @quote5
+      assert HistorySubscriber.get_quote(__MODULE__, "TSLA") === @quote5
     end
 
     test "does not find quotes for non existing ticker" do
-      server =
-        start_supervised!({HistorySubscriber, name: __MODULE__})
+      start_supervised!({HistorySubscriber, topic: @topic, name: __MODULE__})
 
-      assert HistorySubscriber.list_quotes(server, "TSLA") === []
-      assert HistorySubscriber.get_quote(server, "TSLA") === nil
+      assert HistorySubscriber.list_quotes(__MODULE__, "TSLA") === []
+      assert HistorySubscriber.get_quote(__MODULE__, "TSLA") === nil
     end
   end
 end

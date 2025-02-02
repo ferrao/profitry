@@ -1,5 +1,5 @@
 defmodule Profitry.Investment.PositionTotalsTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   alias Profitry.Investment.Schema.{PositionReport, PositionTotals}
 

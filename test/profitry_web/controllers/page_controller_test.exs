@@ -1,5 +1,5 @@
 defmodule ProfitryWeb.PageControllerTest do
-  use ProfitryWeb.ConnCase
+  use ProfitryWeb.ConnCase, async: true
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

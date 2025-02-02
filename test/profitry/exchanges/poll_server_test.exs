@@ -1,19 +1,27 @@
 defmodule Profitry.Exchanges.PollServerTest do
-  # FIXME: Not running async due to genserver name and pubsub topic being shared between tests
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
 
   alias Profitry.Exchanges.Clients.DummyClient
   alias Profitry.Exchanges.PollServer
 
   @message_timeout 2000
 
+  # override default topics to allow for async tests
+  @topics %{
+    quotes: to_string(__MODULE__) <> "_quotes",
+    ticker_updates: to_string(__MODULE__) <> "_ticker_updates"
+  }
+
   describe "poll server" do
     test "client options are initialized and preserved" do
       client_opts = DummyClient.init()
 
-      server = start_supervised!({PollServer, {DummyClient, tickers: ["TSLA"], interval: 1000}})
+      start_supervised!(
+        {PollServer,
+         {DummyClient, tickers: ["TSLA"], interval: 1000, topics: @topics, name: __MODULE__}}
+      )
 
-      state = :sys.get_state(server)
+      state = :sys.get_state(__MODULE__)
 
       {:noreply, new_state} = PollServer.handle_info(:tick, state)
 
@@ -22,9 +30,12 @@ defmodule Profitry.Exchanges.PollServerTest do
 
     test "quotes arrive within configured interval" do
       interval = 200
-      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "quotes")
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, @topics.quotes)
 
-      start_supervised!({PollServer, {DummyClient, tickers: ["TSLA"], interval: interval}})
+      start_supervised!(
+        {PollServer,
+         {DummyClient, tickers: ["TSLA"], interval: interval, topics: @topics, name: __MODULE__}}
+      )
 
       refute_receive {:neq_qoote}, interval - 50
       assert_receive {:new_quote, _received_quote}, interval + 50
@@ -32,9 +43,12 @@ defmodule Profitry.Exchanges.PollServerTest do
 
     test "loops over the quotes" do
       tickers = ["TSLA", "SOFI", "HOOD"]
-      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "quotes")
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, @topics.quotes)
 
-      start_supervised!({PollServer, {DummyClient, tickers: tickers, interval: 0}})
+      start_supervised!(
+        {PollServer,
+         {DummyClient, tickers: tickers, interval: 0, topics: @topics, name: __MODULE__}}
+      )
 
       for ticker <- tickers |> Enum.concat(tickers) |> Enum.concat(tickers) do
         assert_receive {:new_quote, received_quote}, @message_timeout
@@ -44,13 +58,15 @@ defmodule Profitry.Exchanges.PollServerTest do
 
     test "adds a new ticker to the ticker list" do
       ticker = "TSLA"
-      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "quotes")
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, @topics.quotes)
 
-      start_supervised!({PollServer, {DummyClient, tickers: [], interval: 0}})
+      start_supervised!(
+        {PollServer, {DummyClient, tickers: [], interval: 0, topics: @topics, name: __MODULE__}}
+      )
 
       refute_receive {:neq_qoote}, @message_timeout
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", ticker)
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.ticker_updates, ticker)
 
       assert_receive {:new_quote, received_quote}, @message_timeout
       assert(received_quote.ticker === ticker)
@@ -58,9 +74,13 @@ defmodule Profitry.Exchanges.PollServerTest do
 
     test "does not add the same ticker to the ticker list multiple times" do
       tickers = ["TSLA"]
-      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "update_tickers")
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, @topics.ticker_updates)
 
-      server = start_supervised!({PollServer, {DummyClient, tickers: tickers, interval: 0}})
+      start_supervised!(
+        {PollServer,
+         {DummyClient, tickers: tickers, interval: 0, topics: @topics, name: __MODULE__}}
+      )
+
       Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
       Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
       Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
@@ -68,7 +88,7 @@ defmodule Profitry.Exchanges.PollServerTest do
       # Give PollServer time to receive the messages
       Process.sleep(100)
 
-      state = :sys.get_state(server)
+      state = :sys.get_state(__MODULE__)
       assert tickers === state.tickers
     end
   end

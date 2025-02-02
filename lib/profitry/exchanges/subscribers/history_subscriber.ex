@@ -11,9 +11,10 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
 
   @type t() :: %__MODULE__{
           backlog_size: integer(),
-          quotes: %{String.t() => list(Quote.t())}
+          quotes: %{String.t() => list(Quote.t())},
+          topic: String.t()
         }
-  defstruct [:backlog_size, :quotes]
+  defstruct [:backlog_size, :quotes, :topic]
 
   @doc """
 
@@ -23,40 +24,48 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   @spec start_link(keyword()) :: GenServer.on_start()
   def start_link(opts \\ []) do
     backlog_size = Keyword.get(opts, :backlog_size, 1)
-    name = Keyword.get(opts, :name, __MODULE__)
+    server_name = Keyword.get(opts, :name, __MODULE__)
+    topic = Keyword.get(opts, :topic, nil)
 
-    GenServer.start_link(__MODULE__, backlog_size, name: name)
+    GenServer.start_link(__MODULE__, {backlog_size, topic}, name: server_name)
   end
 
   @impl true
-  def init(backlog_size) do
+  def init({backlog_size, topic}) do
     {:ok,
      %__MODULE__{
        backlog_size: backlog_size,
-       quotes: %{}
+       quotes: %{},
+       topic: topic
      }, {:continue, :subscribe}}
   end
 
   @impl true
-  def handle_continue(:subscribe, history) do
+  def handle_continue(:subscribe, %__MODULE__{topic: nil} = state) do
     Exchanges.subscribe_quotes()
-    {:noreply, history}
+    {:noreply, state}
   end
 
   @impl true
-  def handle_info({:new_quote, quote}, history) do
-    ticker_quotes = Map.get(history.quotes, quote.ticker) || []
-    new_ticker_quotes = [quote | ticker_quotes] |> Enum.take(history.backlog_size)
-
-    new_quotes = Map.put(history.quotes, quote.ticker, new_ticker_quotes)
-    new_history = Map.put(history, :quotes, new_quotes)
-
-    {:noreply, new_history}
+  def handle_continue(:subscribe, %__MODULE__{topic: topic} = state) do
+    Exchanges.subscribe_quotes(topic)
+    {:noreply, state}
   end
 
   @impl true
-  def handle_call({:list_quotes, ticker}, _from, history) do
-    {:reply, Map.get(history.quotes, ticker), history}
+  def handle_info({:new_quote, quote}, state) do
+    ticker_quotes = Map.get(state.quotes, quote.ticker) || []
+    new_ticker_quotes = [quote | ticker_quotes] |> Enum.take(state.backlog_size)
+
+    new_quotes = Map.put(state.quotes, quote.ticker, new_ticker_quotes)
+    new_state = Map.put(state, :quotes, new_quotes)
+
+    {:noreply, new_state}
+  end
+
+  @impl true
+  def handle_call({:list_quotes, ticker}, _from, state) do
+    {:reply, Map.get(state.quotes, ticker), state}
   end
 
   @doc """

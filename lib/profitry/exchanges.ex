@@ -5,6 +5,11 @@ defmodule Profitry.Exchanges do
 
   """
 
+  @type topics :: %{
+          quotes: String.t(),
+          ticker_updates: String.t()
+        }
+
   @quotes "quotes"
   @ticker_updates "update_tickers"
 
@@ -16,9 +21,9 @@ defmodule Profitry.Exchanges do
   Publishes a quote to the quotes channel.
 
   """
-  @spec broadcast_quote(Quote.t()) :: :ok | {:error, any()}
-  def broadcast_quote(%Quote{} = quote) do
-    PubSub.broadcast(Profitry.PubSub, @quotes, {:new_quote, quote})
+  @spec broadcast_quote(Quote.t(), String.t()) :: :ok | {:error, any()}
+  def broadcast_quote(%Quote{} = quote, topic \\ @quotes) do
+    PubSub.broadcast(Profitry.PubSub, topic, {:new_quote, quote})
   end
 
   @doc """
@@ -26,9 +31,9 @@ defmodule Profitry.Exchanges do
   Subscribes to the quotes channel.
 
   """
-  @spec subscribe_quotes() :: :ok | {:error, any()}
-  def subscribe_quotes() do
-    PubSub.subscribe(Profitry.PubSub, @quotes)
+  @spec subscribe_quotes(String.t()) :: :ok | {:error, any()}
+  def subscribe_quotes(topic \\ @quotes) do
+    PubSub.subscribe(Profitry.PubSub, topic)
   end
 
   @doc """
@@ -36,9 +41,9 @@ defmodule Profitry.Exchanges do
   Unsubscribes from the quotes channel.
 
   """
-  @spec unsubscribe_quotes() :: :ok
-  def unsubscribe_quotes() do
-    PubSub.unsubscribe(Profitry.PubSub, @quotes)
+  @spec unsubscribe_quotes(String.t()) :: :ok
+  def unsubscribe_quotes(topic \\ @quotes) do
+    PubSub.unsubscribe(Profitry.PubSub, topic)
   end
 
   @doc """
@@ -46,9 +51,9 @@ defmodule Profitry.Exchanges do
   Publishes a new ticker
 
   """
-  @spec broadcast_ticker_update(String.t()) :: :ok | {:error, any()}
-  def broadcast_ticker_update(ticker) do
-    PubSub.broadcast(Profitry.PubSub, @ticker_updates, ticker)
+  @spec broadcast_ticker_update(String.t(), String.t()) :: :ok | {:error, any()}
+  def broadcast_ticker_update(ticker, topic \\ @ticker_updates) do
+    PubSub.broadcast(Profitry.PubSub, topic, ticker)
   end
 
   @doc """
@@ -56,8 +61,8 @@ defmodule Profitry.Exchanges do
   Subscribes to the update tickers channel.
 
   """
-  @spec subscribe_ticker_updates() :: :ok | {:error, any()}
-  def subscribe_ticker_updates() do
-    PubSub.subscribe(Profitry.PubSub, @ticker_updates)
+  @spec subscribe_ticker_updates(String.t()) :: :ok | {:error, any()}
+  def subscribe_ticker_updates(topic \\ @ticker_updates) do
+    PubSub.subscribe(Profitry.PubSub, topic)
   end
 end

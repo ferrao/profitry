@@ -1,5 +1,5 @@
 defmodule ProfitryWeb.CustomComponentsTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   import Phoenix.LiveViewTest
   import ProfitryWeb.CustomComponents

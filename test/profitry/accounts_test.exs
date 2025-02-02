@@ -1,5 +1,5 @@
 defmodule Profitry.AccountsTest do
-  use Profitry.DataCase
+  use Profitry.DataCase, async: true
 
   alias Profitry.Accounts
 

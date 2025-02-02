@@ -9,8 +9,19 @@ defmodule Profitry.Exchanges.PollServer do
   require Logger
 
   alias Profitry.Exchanges.Schema.Quote
+  alias Profitry.Exchanges
 
-  defstruct [:tickers, :interval, :index, :warm, :client, :client_opts]
+  @type t :: %__MODULE__{
+          tickers: list(String.t()),
+          interval: number(),
+          topics: Exchanges.topics(),
+          index: number(),
+          warm: boolean(),
+          client: module(),
+          client_opts: keyword()
+        }
+
+  defstruct [:tickers, :interval, :topics, :index, :warm, :client, :client_opts]
 
   @fast_start 1000
 
@@ -23,8 +34,12 @@ defmodule Profitry.Exchanges.PollServer do
   def start_link(exchange_client, opts \\ []) do
     tickers = Keyword.get(opts, :tickers, [])
     interval = Keyword.get(opts, :interval, interval(exchange_client))
+    server_name = Keyword.get(opts, :name, exchange_client)
+    topics = Keyword.get(opts, :topics, nil)
 
-    GenServer.start_link(__MODULE__, {exchange_client, tickers, interval}, name: exchange_client)
+    GenServer.start_link(__MODULE__, {exchange_client, tickers, interval, topics},
+      name: server_name
+    )
   end
 
   @doc """
@@ -47,10 +62,11 @@ defmodule Profitry.Exchanges.PollServer do
 
   """
   @impl true
-  def init({exchange_client, tickers, interval}) do
+  def init({exchange_client, tickers, interval, topics}) do
     state = %__MODULE__{
       tickers: tickers,
       interval: interval,
+      topics: topics,
       index: 0,
       warm: false,
       client: exchange_client,
@@ -60,8 +76,15 @@ defmodule Profitry.Exchanges.PollServer do
     {:ok, state, {:continue, :sub}}
   end
 
-  def handle_continue(:sub, state) do
-    :ok = Profitry.subscribe_ticker_updates()
+  @impl true
+  def handle_continue(:sub, %__MODULE__{topics: nil} = state) do
+    :ok = Exchanges.subscribe_ticker_updates()
+    {:noreply, state, {:continue, :start}}
+  end
+
+  @impl true
+  def handle_continue(:sub, %__MODULE__{topics: %{ticker_updates: ticker_updates}} = state) do
+    :ok = Exchanges.subscribe_ticker_updates(ticker_updates)
     {:noreply, state, {:continue, :start}}
   end
 
@@ -91,7 +114,7 @@ defmodule Profitry.Exchanges.PollServer do
     } = state
 
     fetch_quote(client, Enum.at(tickers, index), options)
-    |> handle_quote
+    |> handle_quote(state)
 
     interval = if warm, do: interval, else: @fast_start
 
@@ -112,7 +135,7 @@ defmodule Profitry.Exchanges.PollServer do
     Logger.info("Adding #{ticker} to ticker list")
 
     fetch_quote(client, ticker, options)
-    |> handle_quote()
+    |> handle_quote(state)
 
     {:noreply,
      %{state | tickers: update_tickers(tickers, ticker, !Enum.member?(tickers, ticker))}}
@@ -122,12 +145,18 @@ defmodule Profitry.Exchanges.PollServer do
   defp update_tickers(tickers, ticker, true), do: [ticker | tickers]
   defp update_tickers(tickers, _ticker, _update), do: tickers
 
-  @spec handle_quote({:error, any()}) :: :ok
-  defp handle_quote({:error, reason}), do: Logger.warning("Unable to fetch quote: #{reason}")
+  @spec handle_quote({:error, any()}, map()) :: :ok
+  defp handle_quote({:error, reason}, _state),
+    do: Logger.warning("Unable to fetch quote: #{reason}")
 
-  @spec handle_quote({:ok, Quote.t()}) :: :ok | {:error, any()}
-  defp handle_quote({:ok, %Quote{} = quote}) do
-    Profitry.broadcast_quote(quote)
+  @spec handle_quote({:ok, Quote.t()}, map()) :: :ok | {:error, any()}
+  defp handle_quote({:ok, %Quote{} = quote}, %__MODULE__{topics: nil}) do
+    Exchanges.broadcast_quote(quote)
+  end
+
+  @spec handle_quote({:ok, Quote.t()}, map()) :: :ok | {:error, any()}
+  defp handle_quote({:ok, %Quote{} = quote}, %__MODULE__{topics: %{quotes: quotes_topic}}) do
+    Exchanges.broadcast_quote(quote, quotes_topic)
   end
 
   @spec interval(module()) :: integer()
