@@ -25,8 +25,8 @@ config :profitry, ProfitryWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "ZtLo+5MNHMpLUloFUqjzCa5Un0ZSSdJ1F9vTqL3qPf4jAaM79GJlCblFwRNfahCD",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:profitry, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:profitry, ~w(--watch)]}
   ]
 
 # ## SSL Support
