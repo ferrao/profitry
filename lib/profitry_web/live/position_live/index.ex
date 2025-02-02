@@ -81,7 +81,12 @@ defmodule ProfitryWeb.PositionLive.Index do
          socket
          |> put_flash(
            :error,
-           Errors.get_message(changeset, :positions, "Error deleting position.") |> List.first()
+           Errors.get_message(
+             changeset,
+             :positions,
+             "Error deleting position, delete orders first."
+           )
+           |> List.first()
          )}
     end
   end

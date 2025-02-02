@@ -5,20 +5,19 @@ defmodule Profitry.Utils.Errors do
 
   """
   @spec get_message(Ecto.Changeset.t(), atom(), String.t() | nil) :: [String.t() | nil]
-  @spec get_message(Ecto.Changeset.t(), atom()) :: [String.t() | nil]
   def get_message(%Ecto.Changeset{} = changeset, field, default_msg \\ nil) do
     case Map.fetch(get_errors(changeset), field) do
       {:ok, msg} ->
         msg
 
       :error ->
-        default_msg
+        [default_msg]
     end
   end
 
   @doc """
 
-  Traverses the list of errors in the changeset and
+    Traverses the list of errors in the changeset and
   returns a map of errors for each association
 
   """
