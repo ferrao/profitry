@@ -60,4 +60,13 @@ defmodule Profitry.Investment.Schema.Option do
     |> validate_required([:type, :strike, :expiration])
     |> validate_number(:strike, greater_than: 0)
   end
+
+  @doc """
+
+  Returns true if the option contract(s) have expired
+
+  """
+  @spec expired?(t()) :: boolean()
+  def expired?(option),
+    do: Date.after?(Date.utc_today(), option.expiration)
 end

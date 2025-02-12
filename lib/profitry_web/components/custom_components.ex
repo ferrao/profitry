@@ -9,6 +9,9 @@ defmodule ProfitryWeb.CustomComponents do
   import Profitry.Utils.Number
   import ProfitryWeb.CoreComponents
 
+  alias ElixirLS.LanguageServer.Plugins.Option
+  alias Profitry.Investment.Schema.Option
+
   @doc """
 
   Renders a profit or loss value.
@@ -73,7 +76,7 @@ defmodule ProfitryWeb.CustomComponents do
     color =
       cond do
         option === nil -> "text-slate-300"
-        Date.after?(Date.utc_today(), option.expiration) -> "text-red-600"
+        Option.expired?(option) -> "text-red-600"
         true -> "text-emerald-600"
       end
 

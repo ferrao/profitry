@@ -36,5 +36,11 @@ defmodule Profitry.Investment.Schema.OptionTest do
       assert [^error] = errors_on(changeset1).strike
       assert [^error] = errors_on(changeset2).strike
     end
+
+    test "expired?/1 returns true if option has expired" do
+      assert false === Option.expired?(%Option{expiration: Date.add(Date.utc_today(), 1)})
+      assert false === Option.expired?(%Option{expiration: Date.utc_today()})
+      assert true === Option.expired?(%Option{expiration: Date.add(Date.utc_today(), -1)})
+    end
   end
 end
