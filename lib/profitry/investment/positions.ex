@@ -31,7 +31,7 @@ defmodule Profitry.Investment.Positions do
   def create_position(portfolio, attrs) do
     %Position{}
     |> Position.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:portfolio, portfolio)
+    |> Changeset.put_assoc(:portfolio, portfolio)
     |> Repo.insert()
   end
 
@@ -104,10 +104,8 @@ defmodule Profitry.Investment.Positions do
   """
   @spec find_position(Portfolio.t(), String.t()) :: Position.t() | nil
   def find_position(%Portfolio{} = portfolio, ticker) do
-    portfolio = portfolio |> Repo.preload(:positions)
-
-    portfolio.positions
-    |> Enum.find(&(&1.ticker === ticker))
+    portfolio = Repo.preload(portfolio, :positions)
+    Enum.find(portfolio.positions, &(&1.ticker === ticker))
   end
 
   @doc """

@@ -5,7 +5,7 @@ defmodule Profitry.Investment.Splits do
 
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.Query
 
   alias Ecto.Changeset
   alias Profitry.Repo
@@ -53,7 +53,7 @@ defmodule Profitry.Investment.Splits do
   """
   @spec find_splits(String.t()) :: list(Split.t())
   def find_splits(ticker) do
-    Ecto.Query.where(Split, ticker: ^ticker)
+    where(Split, ticker: ^ticker)
     |> Repo.all()
   end
 
