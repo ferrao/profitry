@@ -50,5 +50,13 @@ defmodule Profitry.Utils.Date do
 
   """
   @spec after_today?(Date.t()) :: boolean()
-  def after_today?(date), do: Date.after?(Date.utc_today(), date)
+  def after_today?(date), do: Date.after?(date, Date.utc_today())
+
+  @doc """
+
+  Checks if date is in the past
+
+  """
+  @spec before_today?(Date.t()) :: boolean()
+  def before_today?(date), do: Date.after?(Date.utc_today(), date)
 end

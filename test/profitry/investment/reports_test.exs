@@ -355,4 +355,134 @@ defmodule Profitry.Investment.ReportsTest do
              }
            ]
   end
+
+  test "position_closed?/1 returns false if report contains stocks" do
+    report = %PositionReport{
+      id: 666,
+      ticker: "TSLA",
+      investment: Decimal.new("23400"),
+      shares: Decimal.new("100"),
+      price: Decimal.new("234"),
+      long_options: [],
+      short_options: []
+    }
+
+    assert false === Reports.position_closed?(report)
+  end
+
+  test "position_closed?/1 returns false if report contains long options" do
+    report = %PositionReport{
+      id: 666,
+      ticker: "TSLA",
+      investment: Decimal.new(0),
+      shares: Decimal.new(0),
+      price: Decimal.new("234"),
+      long_options: [
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.utc_today(),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        },
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.add(Date.utc_today(), -1),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        }
+      ],
+      short_options: []
+    }
+
+    assert false === Reports.position_closed?(report)
+  end
+
+  test "position_closed?/1 returns false if report contains short options" do
+    report = %PositionReport{
+      id: 666,
+      ticker: "TSLA",
+      investment: Decimal.new(0),
+      shares: Decimal.new(0),
+      price: Decimal.new("234"),
+      short_options: [
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.utc_today(),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        },
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.add(Date.utc_today(), -1),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        }
+      ],
+      long_options: []
+    }
+
+    assert false === Reports.position_closed?(report)
+  end
+
+  test "position_closed?/1 returns true if report contains no shares and only expired options" do
+    report = %PositionReport{
+      id: 666,
+      ticker: "TSLA",
+      investment: Decimal.new(0),
+      shares: Decimal.new(0),
+      price: Decimal.new("234"),
+      short_options: [
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.add(Date.utc_today(), -1),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        },
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.add(Date.utc_today(), -2),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        }
+      ],
+      long_options: [
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.add(Date.utc_today(), -1),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        },
+        %OptionsReport{
+          type: :call,
+          strike: Decimal.new("200"),
+          expiration: Date.add(Date.utc_today(), -2),
+          contracts: Decimal.new("2"),
+          investment: Decimal.new("140.20")
+        }
+      ]
+    }
+
+    assert true === Reports.position_closed?(report)
+  end
+
+  test "position_closed?/1 returns true with empty position" do
+    report = %PositionReport{
+      id: 666,
+      ticker: "TSLA",
+      investment: Decimal.new(0),
+      shares: Decimal.new(0),
+      price: Decimal.new("234"),
+      short_options: [],
+      long_options: []
+    }
+
+    assert true === Reports.position_closed?(report)
+  end
 end

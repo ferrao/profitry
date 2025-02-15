@@ -5,7 +5,8 @@ defmodule Profitry.Investment.Reports do
 
   """
 
-  alias Profitry.Utils.Date, as: DateUtils
+  import Profitry.Utils.Date
+
   alias Profitry.Investment.Schema.Split
   alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Investment.Schema.OptionsReport
@@ -80,7 +81,7 @@ defmodule Profitry.Investment.Reports do
   @spec options_expired?(list(OptionsReport.t())) :: boolean()
   defp options_expired?(option_reports) do
     Enum.all?(option_reports, fn option_report ->
-      !DateUtils.after_today?(option_report.expiration)
+      before_today?(option_report.expiration)
     end)
   end
 

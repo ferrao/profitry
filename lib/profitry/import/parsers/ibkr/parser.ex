@@ -4,10 +4,10 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
   Parser for Interactive Brokers activity statement
 
   """
+  import Profitry.Utils.Date
 
   alias Profitry.Import.Parsers.Schema.Trade
   alias NimbleCSV.RFC4180, as: CSV
-  alias Profitry.Utils.Date, as: DateUtils
 
   @stock "Stocks"
   @option "Equity and Index Options"
@@ -111,7 +111,7 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     |> List.pop_at(1)
     |> Tuple.to_list()
     |> List.first()
-    |> DateUtils.parse_expiration!()
+    |> parse_expiration!()
   end
 
   @doc false

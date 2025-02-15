@@ -69,5 +69,5 @@ defmodule Profitry.Investment.Schema.Option do
   """
   @spec expired?(t()) :: boolean()
   def expired?(option),
-    do: DateUtils.after_today?(option.expiration)
+    do: DateUtils.before_today?(option.expiration)
 end
