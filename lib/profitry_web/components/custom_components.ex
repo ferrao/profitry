@@ -23,29 +23,19 @@ defmodule ProfitryWeb.CustomComponents do
 
   """
 
-  attr :profit, :string, doc: "the position profit or loss value"
-  attr :total, :string, doc: "the optional total portfolio value"
+  attr :profit, Decimal, required: true, doc: "the position profit or loss value"
+  attr :total, Decimal, default: Decimal.new(0), doc: "the optional total portfolio value"
 
-  def profit(%{profit: profit} = assigns) do
-    {profit, _} = Float.parse(profit)
-    {total, _} = Float.parse(Map.get(assigns, :total, "0"))
-
+  def profit(%{profit: profit, total: total} = assigns) do
     # alert on 1% portfolio loss
-    alert_value = abs(total) * 0.01
+    alert_value =
+      total
+      |> Decimal.abs()
+      |> Decimal.mult(Decimal.from_float(0.01))
+      |> Decimal.to_float()
 
-    color =
-      case {profit, alert_value} do
-        {profit, _} when profit > 0 ->
-          "text-green-700"
-
-        {profit, alert_value} when profit < 0 and abs(profit) < alert_value ->
-          "text-yellow-700"
-
-        {_, _} ->
-          "text-red-700"
-      end
-
-    assigns = assign(assigns, :profit, profit)
+    color = profit_color(Decimal.to_float(profit), alert_value)
+    assigns = assign(assigns, :profit, format_number(profit))
     assigns = assign(assigns, :color, color)
 
     ~H"""
@@ -59,6 +49,20 @@ defmodule ProfitryWeb.CustomComponents do
       </span>
     <% end %>
     """
+  end
+
+  @spec profit_color(float(), float()) :: String.t()
+  defp profit_color(profit, alert_value) do
+    case {profit, alert_value} do
+      {profit, _} when profit > 0 ->
+        "text-green-700"
+
+      {profit, alert_value} when profit < 0 and abs(profit) < alert_value ->
+        "text-yellow-700"
+
+      {_, _} ->
+        "text-red-700"
+    end
   end
 
   @doc """

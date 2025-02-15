@@ -7,7 +7,7 @@ defmodule ProfitryWeb.PositionLive.Index do
   alias Profitry.Utils.Errors
   alias Profitry.Investment
   alias Profitry.Investment.Positions
-  alias Profitry.Investment.Schema.{Position, PositionTotals, PositionReport}
+  alias Profitry.Investment.Schema.{Position, PositionTotals}
 
   @impl true
   def mount(params, _session, socket) do
@@ -18,9 +18,9 @@ defmodule ProfitryWeb.PositionLive.Index do
 
     socket =
       assign(socket, portfolio: portfolio)
-      |> assign(totals: PositionTotals.cast(totals))
+      |> assign(totals: totals)
       |> assign(count: Enum.count(reports))
-      |> stream(:reports, PositionReport.cast(reports))
+      |> stream(:reports, reports)
 
     {:ok, socket}
   end
@@ -57,7 +57,7 @@ defmodule ProfitryWeb.PositionLive.Index do
 
     socket =
       assign(socket, :count, count)
-      |> stream_insert(:reports, PositionReport.cast(report))
+      |> stream_insert(:reports, report)
 
     {:noreply, socket}
   end

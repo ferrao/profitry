@@ -43,4 +43,12 @@ defmodule Profitry.Utils.Date do
   """
   @spec format_timestamp(NaiveDateTime.t()) :: String.t()
   def format_timestamp(date), do: Calendar.strftime(date, "%d/%m/%Y %H:%M:%S")
+
+  @doc """
+
+  Checks if date is in the future
+
+  """
+  @spec after_today?(Date.t()) :: boolean()
+  def after_today?(date), do: Date.after?(Date.utc_today(), date)
 end

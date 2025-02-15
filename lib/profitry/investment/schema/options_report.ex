@@ -63,26 +63,4 @@ defmodule Profitry.Investment.Schema.OptionsReport do
 
   @spec update_reports(list(t()), t()) :: list(t())
   def update_reports([h | t], options_report), do: [h | update_reports(t, options_report)]
-
-  @doc """
-
-  Casts option report fields to strings
-
-  """
-  @spec cast(t()) :: map()
-  def cast(%__MODULE__{} = options_report) do
-    %{
-      options_report
-      | investment: Decimal.to_string(options_report.investment),
-        type: to_string(options_report.type),
-        strike: Decimal.to_string(options_report.strike),
-        expiration: Date.to_string(options_report.expiration),
-        contracts: Decimal.to_string(options_report.contracts)
-    }
-  end
-
-  @spec cast(list(t())) :: list(map())
-  def cast(options_reports) when is_list(options_reports) do
-    Enum.map(options_reports, fn options_report -> cast(options_report) end)
-  end
 end

@@ -5,6 +5,7 @@ defmodule Profitry.Investment.Reports do
 
   """
 
+  alias Profitry.Utils.Date, as: DateUtils
   alias Profitry.Investment.Schema.Split
   alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Investment.Schema.OptionsReport
@@ -62,6 +63,25 @@ defmodule Profitry.Investment.Reports do
       end)
 
     report
+  end
+
+  @doc """
+
+  Checks if position is closed
+
+  """
+  @spec position_closed?(PositionReport.t()) :: boolean()
+  def position_closed?(position_report) do
+    options_expired?(position_report.long_options) &&
+      options_expired?(position_report.short_options) &&
+      Decimal.eq?(position_report.shares, 0)
+  end
+
+  @spec options_expired?(list(OptionsReport.t())) :: boolean()
+  defp options_expired?(option_reports) do
+    Enum.all?(option_reports, fn option_report ->
+      !DateUtils.after_today?(option_report.expiration)
+    end)
   end
 
   @doc false

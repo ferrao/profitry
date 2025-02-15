@@ -59,23 +59,5 @@ defmodule Profitry.Investment.Schema.PositionReportTest do
 
       assert Decimal.compare(report.value, 0) === :eq
     end
-
-    test "casts a position report" do
-      casted_position_report = PositionReport.cast(@position_report)
-
-      assert casted_position_report.investment === "1800"
-      assert casted_position_report.shares === "32"
-      assert casted_position_report.cost_basis === "30.2"
-      assert casted_position_report.price === "51.4"
-      assert casted_position_report.value === "4532.32"
-      assert casted_position_report.profit === "1234.32"
-    end
-
-    test "casts a list of position reports" do
-      assert PositionReport.cast([@position_report, @position_report]) === [
-               PositionReport.cast(@position_report),
-               PositionReport.cast(@position_report)
-             ]
-    end
   end
 end

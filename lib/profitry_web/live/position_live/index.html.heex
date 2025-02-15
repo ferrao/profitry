@@ -27,6 +27,15 @@
       JS.navigate(~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders")
     end
   }
+  row_style={
+    fn {_id, report} ->
+      if Investment.position_closed?(report) do
+        "line-through"
+      else
+        ""
+      end
+    end
+  }
 >
   <:col :let={{_id, report}} label="Ticker">{report.ticker}</:col>
 

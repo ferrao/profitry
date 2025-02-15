@@ -9,6 +9,7 @@ defmodule Profitry.Investment.Schema.Option do
 
   import Ecto.Changeset
 
+  alias Profitry.Utils.Date, as: DateUtils
   alias Profitry.Investment.Schema.Order
 
   @type contract_type :: :call | :put
@@ -68,5 +69,5 @@ defmodule Profitry.Investment.Schema.Option do
   """
   @spec expired?(t()) :: boolean()
   def expired?(option),
-    do: Date.after?(Date.utc_today(), option.expiration)
+    do: DateUtils.after_today?(option.expiration)
 end

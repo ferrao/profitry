@@ -123,7 +123,7 @@ defmodule Profitry.Investment.Portfolios do
 
   @doc """
 
-  Lists reports for a portfolio
+  Lists reports for a portfolio, sorted by open positions and highest profit first
 
   Raises `Ecto.NoResultsError` if the Portfolio does not exist.
 
@@ -146,6 +146,7 @@ defmodule Profitry.Investment.Portfolios do
       Investment.make_report(position, quote)
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
+    |> Enum.sort_by(&Investment.position_closed?(&1))
   end
 
   @doc """

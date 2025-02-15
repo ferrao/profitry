@@ -465,6 +465,7 @@ defmodule ProfitryWeb.CoreComponents do
   attr :rows, :list, required: true
   attr :row_id, :any, default: nil, doc: "the function for generating the row id"
   attr :row_click, :any, default: nil, doc: "the function for handling phx-click on each row"
+  attr :row_style, :any, default: nil, doc: "the function for styling each row"
 
   attr :row_item, :any,
     default: &Function.identity/1,
@@ -477,6 +478,8 @@ defmodule ProfitryWeb.CoreComponents do
   slot :action, doc: "the slot for showing user actions in the last table column"
 
   def table(assigns) do
+    assigns = assign(assigns, row_style: assigns.row_style || fn _ -> nil end)
+
     assigns =
       with %{rows: %Phoenix.LiveView.LiveStream{}} <- assigns do
         assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
@@ -506,7 +509,11 @@ defmodule ProfitryWeb.CoreComponents do
             >
               <div class="block py-4 pr-6">
                 <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class={[
+                  "relative",
+                  i == 0 && "font-semibold text-zinc-900",
+                  @row_style.(row)
+                ]}>
                   {render_slot(col, @row_item.(row))}
                 </span>
               </div>

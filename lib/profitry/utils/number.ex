@@ -25,7 +25,7 @@ defmodule Profitry.Utils.Number do
     Formats a number as currency for using in web views
 
   """
-  @spec format_number(Decimal.t()) :: String.t()
+  @spec format_currency(Decimal.t()) :: String.t()
   def format_currency(number) do
     number
     |> Currency.number_to_currency()

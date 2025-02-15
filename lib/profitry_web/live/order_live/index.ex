@@ -6,7 +6,7 @@ defmodule ProfitryWeb.OrderLive.Index do
 
   alias Profitry.Utils.Errors
   alias Profitry.Investment
-  alias Profitry.Investment.Schema.{PositionReport, Order}
+  alias Profitry.Investment.Schema.Order
 
   @impl true
   def mount(params, _session, socket) do
@@ -23,7 +23,7 @@ defmodule ProfitryWeb.OrderLive.Index do
       assign(socket, position: position)
       |> assign(portfolio: portfolio)
       |> assign(position: position)
-      |> assign(report: PositionReport.cast(report))
+      |> assign(report: report)
       |> assign(count: Enum.count(orders))
       |> assign(:option_modal?, false)
       |> stream(:orders, orders)
