@@ -20,6 +20,7 @@ defmodule ProfitryWeb.PositionLive.Index do
       assign(socket, portfolio: portfolio)
       |> assign(totals: totals)
       |> assign(count: Enum.count(reports))
+      |> assign(filter_form: to_form(%{}))
       |> stream(:reports, reports)
 
     {:ok, socket}
@@ -58,6 +59,19 @@ defmodule ProfitryWeb.PositionLive.Index do
     socket =
       assign(socket, :count, count)
       |> stream_insert(:reports, report)
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("filter", params, socket) do
+    id = Map.get(params, "id")
+    filter_param = Map.get(params, "ticker")
+
+    socket =
+      socket
+      |> assign(:filter_form, to_form(params))
+      |> stream(:reports, Investment.list_reports!(id, filter_param), reset: true)
 
     {:noreply, socket}
   end

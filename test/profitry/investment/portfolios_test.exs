@@ -79,12 +79,22 @@ defmodule Profitry.Investment.PortfoliosTest do
       assert portfolio === Repo.get!(Portfolio, portfolio.id)
     end
 
-    test "list_reports!/1 lists reports for a portfolio" do
+    test "list_reports!/2 lists reports for a portfolio" do
       {portfolio, _position, _order} = option_fixture()
 
-      reports = Portfolios.list_reports!(portfolio.id)
+      reports = Portfolios.list_reports!(portfolio.id, nil)
 
       assert [%PositionReport{}] = reports
+    end
+
+    test "list_reports!/2 filters list of reports for a portfolio" do
+      {portfolio, _position, _order} = option_fixture()
+
+      reports_tsla = Portfolios.list_reports!(portfolio.id, "ts")
+      reports_sofi = Portfolios.list_reports!(portfolio.id, "so")
+
+      assert [%PositionReport{}] = reports_tsla
+      assert [] = reports_sofi
     end
 
     test "list_tickers/0 lists tickers for all portfolios" do

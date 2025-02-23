@@ -42,6 +42,20 @@ defmodule ProfitryWeb.PositionLiveTest do
              |> render() =~ "(1 positions)"
     end
 
+    test "filters list of portfolio positions", %{
+      conn: conn,
+      portfolio: portfolio,
+      position: position
+    } do
+      {:ok, position_live, html} = live(conn, ~p"/portfolios/#{portfolio.id}")
+
+      assert html =~ position.ticker
+
+      refute position_live
+             |> element("#filter-form")
+             |> render_change(%{id: portfolio.id, ticker: "sofi"}) =~ position.ticker
+    end
+
     test "saves new position", %{conn: conn, portfolio: portfolio} do
       :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "update_tickers")
       {:ok, position_live, _html} = live(conn, ~p"/portfolios/#{portfolio.id}")

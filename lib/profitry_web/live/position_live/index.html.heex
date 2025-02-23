@@ -17,6 +17,16 @@
   <:col :let={totals} label="Portfolio Value">{format_currency(totals.value)}</:col>
   <:col :let={totals} label="Investment">{format_currency(totals.investment)}</:col>
   <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
+  <:col label="Ticker">
+    <.form for={@filter_form} id="filter-form" phx-change="filter">
+      <.input
+        field={@filter_form[:ticker]}
+        placeholder="Search..."
+        autocomplete="off"
+        phx-debounce="250"
+      />
+    </.form>
+  </:col>
 </.table>
 
 <.table
@@ -28,9 +38,9 @@
     end
   }
   row_style={
-    fn {_id, report} ->
-      if Investment.position_closed?(report) do
-        "line-through"
+    fn {id, report} ->
+      if Investment.position_closed?(report) && id === 0 do
+        "line-through text-opacity-25"
       else
         ""
       end

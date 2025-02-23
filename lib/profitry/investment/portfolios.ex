@@ -124,6 +124,7 @@ defmodule Profitry.Investment.Portfolios do
   @doc """
 
   Lists reports for a portfolio, sorted by open positions and highest profit first
+  and optionally filtered by ticker
 
   Raises `Ecto.NoResultsError` if the Portfolio does not exist.
 
@@ -131,15 +132,18 @@ defmodule Profitry.Investment.Portfolios do
     iex> list_reports!(123)
     [%PositionReport{}]
 
+    iex> list_reports!(123, "tsla")
+    [%PositionReport{}]
+
     iex> list_reports!(666)
     ** (Ecto.NoResultsError)
 
   """
-  @spec list_reports!(integer()) :: list(PositionReport.t())
-  def list_reports!(id) do
+  @spec list_reports!(integer(), String.t() | nil) :: list(PositionReport.t())
+  def list_reports!(id, filter_param) do
     portfolio =
       get_portfolio!(id)
-      |> Repo.preload(:positions)
+      |> Repo.preload(positions: filter_query(filter_param))
 
     for position <- portfolio.positions do
       quote = Profitry.get_quote(position.ticker)
@@ -147,6 +151,14 @@ defmodule Profitry.Investment.Portfolios do
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
     |> Enum.sort_by(&Investment.position_closed?(&1))
+  end
+
+  defp filter_query(filter_param) when filter_param in ["", nil] do
+    from(p in Position)
+  end
+
+  defp filter_query(filter_param) do
+    from(p in Position, where: ilike(p.ticker, ^"%#{filter_param}%"))
   end
 
   @doc """

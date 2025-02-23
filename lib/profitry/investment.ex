@@ -12,7 +12,7 @@ defmodule Profitry.Investment do
   defdelegate update_portfolio(portfolio, attrs), to: Portfolios
   defdelegate delete_portfolio(portfolio), to: Portfolios
   defdelegate change_portfolio(portfolio, attrs \\ %{}), to: Portfolios
-  defdelegate list_reports!(id), to: Portfolios
+  defdelegate list_reports!(id, params \\ nil), to: Portfolios
   defdelegate position_closed?(position_report), to: Reports
   defdelegate list_tickers, to: Portfolios
 
