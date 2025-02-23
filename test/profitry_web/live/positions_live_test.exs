@@ -53,7 +53,7 @@ defmodule ProfitryWeb.PositionLiveTest do
 
       refute position_live
              |> element("#filter-form")
-             |> render_change(%{id: portfolio.id, ticker: "sofi"}) =~ position.ticker
+             |> render_change(%{ticker: "sofi"}) =~ position.ticker
     end
 
     test "saves new position", %{conn: conn, portfolio: portfolio} do

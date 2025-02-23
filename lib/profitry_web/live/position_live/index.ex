@@ -65,7 +65,7 @@ defmodule ProfitryWeb.PositionLive.Index do
 
   @impl true
   def handle_event("filter", params, socket) do
-    id = Map.get(params, "id")
+    id = socket.assigns.portfolio.id
     filter_param = Map.get(params, "ticker")
 
     socket =
