@@ -37,17 +37,10 @@
       JS.navigate(~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders")
     end
   }
-  row_style={
-    fn {id, report} ->
-      if Investment.position_closed?(report) && id === 0 do
-        "line-through text-opacity-25"
-      else
-        ""
-      end
-    end
-  }
 >
-  <:col :let={{_id, report}} label="Ticker">{report.ticker}</:col>
+  <:col :let={{_id, report}} label="Ticker">
+    <.position_icon report={report} />
+  </:col>
 
   <:col :let={{_id, report}} label="Shares">{format_number(report.shares)}</:col>
   <:col :let={{_id, report}} label="Current Price">{format_currency(report.price)}</:col>

@@ -9,6 +9,7 @@ defmodule ProfitryWeb.CustomComponents do
   import Profitry.Utils.Number
   import ProfitryWeb.CoreComponents
 
+  alias Profitry.Investment
   alias ElixirLS.LanguageServer.Plugins.Option
   alias Profitry.Investment.Schema.Option
 
@@ -71,7 +72,7 @@ defmodule ProfitryWeb.CustomComponents do
 
       ## Examples
 
-      <.option_idcon option=%Option{} />
+      <.option_icon option=%Option{} />
 
   """
   attr :option, Option, doc: "the option schema"
@@ -93,9 +94,50 @@ defmodule ProfitryWeb.CustomComponents do
     """
   end
 
+  @doc """
+
+    Renders a position icon
+
+      ## Examples
+
+      <.posiiton_icon report=%PositionReport{}>
+        TSLA
+      <./position_icon>
+
+  """
+  attr :report, :map, required: true, doc: "the position report"
+
+  def position_icon(%{report: report} = assigns) do
+    {color, name} =
+      cond do
+        Investment.position_closed?(report) -> {"text-red-700", "hero-x-circle"}
+        true -> {"text-green-700", "hero-play-circle"}
+      end
+
+    assigns =
+      assigns
+      |> assign(:color, color)
+      |> assign(:name, name)
+
+    ~H"""
+    <div class="flex items-center">
+      <.icon name={@name} class={Enum.join(["h-4 w-4 ", @color])} /> &nbsp; {@report.ticker}
+    </div>
+    """
+  end
+
   attr :ticker, :string, doc: "the position ticker"
   attr :order, Order, doc: "the order schema"
 
+  @doc """
+
+    Renders the option position data
+
+      ## Examples
+
+      <.option_data ticker="TSLA" order={%PositionOrder{}} />
+
+  """
   def option_data(assigns) do
     ~H"""
     <div>

@@ -51,6 +51,16 @@ defmodule ProfitryWeb.CustomComponentsTest do
              ) =~ "text-red-600"
     end
 
+    test "render a position icon" do
+      report = %{ticker: "TSLA", shares: 0, long_options: [], short_options: []}
+
+      assert render_component(&position_icon/1, report: report) =~ "TSLA"
+      assert render_component(&position_icon/1, report: report) =~ "text-red-700"
+
+      assert render_component(&position_icon/1, report: %{report | shares: 1}) =~ "TSLA"
+      assert render_component(&position_icon/1, report: %{report | shares: 1}) =~ "text-green-700"
+    end
+
     test "renders option data" do
       order = %{
         type: :buy,
