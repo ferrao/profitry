@@ -10,6 +10,7 @@ defmodule Profitry.Import.TradesTest do
     ticker: "CLOV",
     quantity: Decimal.new("-100"),
     price: Decimal.new("5.69"),
+    fees: Decimal.new("1.2"),
     ts: ~N[2021-11-19 10:38:39],
     option: nil
   }
@@ -20,6 +21,7 @@ defmodule Profitry.Import.TradesTest do
     ticker: "SOFI",
     quantity: Decimal.new("1"),
     price: Decimal.new("1.8"),
+    fees: Decimal.new("1"),
     ts: ~N[2021-12-03 12:47:43],
     option: %{
       contract: :call,
@@ -36,6 +38,7 @@ defmodule Profitry.Import.TradesTest do
       assert order.quantity == "100"
       assert order.instrument == "stock"
       assert order.price == to_string(@trade1.price)
+      assert order.fees == to_string(@trade1.fees)
       assert order.inserted_at == @trade1.ts |> NaiveDateTime.to_string()
     end
 
@@ -46,6 +49,7 @@ defmodule Profitry.Import.TradesTest do
       assert order.quantity == "1"
       assert order.instrument == "option"
       assert order.price == to_string(@trade2.price)
+      assert order.fees == to_string(@trade2.fees)
       assert order.inserted_at == @trade2.ts |> NaiveDateTime.to_string()
 
       assert order.option.type == "call"

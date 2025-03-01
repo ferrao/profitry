@@ -19,6 +19,7 @@ defmodule Profitry.Import.Trades do
           instrument: String.t(),
           quantity: String.t(),
           price: String.t(),
+          fees: String.t(),
           inserted_at: String.t()
         }
 
@@ -40,6 +41,7 @@ defmodule Profitry.Import.Trades do
       instrument: to_string(trade.asset),
       quantity: Decimal.abs(trade.quantity) |> Decimal.to_string(),
       price: Decimal.to_string(trade.price),
+      fees: Decimal.to_string(trade.fees),
       inserted_at: NaiveDateTime.to_string(trade.ts)
     }
   end

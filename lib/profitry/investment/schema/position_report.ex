@@ -11,6 +11,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
           id: integer(),
           ticker: String.t(),
           investment: Decimal.t(),
+          fees: Decimal.t(),
           shares: Decimal.t(),
           cost_basis: Decimal.t(),
           price: Decimal.t(),
@@ -24,6 +25,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
     :id,
     :ticker,
     investment: Decimal.new(0),
+    fees: Decimal.new(0),
     shares: Decimal.new(0),
     cost_basis: Decimal.new(0),
     price: Decimal.new(0),
@@ -47,7 +49,8 @@ defmodule Profitry.Investment.Schema.PositionReport do
   # with shares
   @spec calculate_cost_basis(t(), boolean()) :: t()
   def calculate_cost_basis(report, _has_shares) do
-    Map.put(report, :cost_basis, Decimal.div(report.investment, report.shares))
+    cost_basis = Decimal.div(report.investment, report.shares)
+    Map.put(report, :cost_basis, cost_basis)
   end
 
   @doc """

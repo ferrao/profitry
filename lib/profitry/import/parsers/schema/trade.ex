@@ -13,6 +13,7 @@ defmodule Profitry.Import.Parsers.Schema.Trade do
           ticker: String.t(),
           quantity: Decimal.t(),
           price: Decimal.t(),
+          fees: Decimal.t(),
           ts: NaiveDateTime.t(),
           option: option_trade | nil
         }
@@ -23,6 +24,7 @@ defmodule Profitry.Import.Parsers.Schema.Trade do
     :ticker,
     :quantity,
     :price,
+    :fees,
     :ts,
     option: nil
   ]

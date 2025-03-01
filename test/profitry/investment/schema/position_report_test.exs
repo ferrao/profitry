@@ -9,6 +9,7 @@ defmodule Profitry.Investment.Schema.PositionReportTest do
     shares: Decimal.new(32),
     cost_basis: Decimal.new("30.2"),
     price: Decimal.new("51.4"),
+    fees: Decimal.new("10.5"),
     value: Decimal.new("4532.32"),
     profit: Decimal.new("1234.32")
   }

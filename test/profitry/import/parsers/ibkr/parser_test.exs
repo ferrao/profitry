@@ -46,13 +46,23 @@ defmodule Profitry.Import.Parsers.Ibkr.ParserTest do
                ticker: "DM",
                quantity: quantity,
                price: price,
+               fees: fees,
                ts: ~N[2021-10-15 16:20:00],
                option: nil
              } =
-               Parser.parse_trade(@stock, "USD", @symbol3, "3", "10.2", "2021-10-15, 16:20:00")
+               Parser.parse_trade(
+                 @stock,
+                 "USD",
+                 @symbol3,
+                 "3",
+                 "10.2",
+                 "-0.145",
+                 "2021-10-15, 16:20:00"
+               )
 
       assert quantity === Decimal.new("3")
       assert price === Decimal.new("10.2")
+      assert fees === Decimal.new("0.145")
     end
 
     test "parses an option trade" do
@@ -62,6 +72,7 @@ defmodule Profitry.Import.Parsers.Ibkr.ParserTest do
                ticker: "TSLA",
                quantity: quantity,
                price: price,
+               fees: fees,
                ts: ~N[2021-10-15 16:20:00],
                option: %{
                  contract: :call,
@@ -69,11 +80,20 @@ defmodule Profitry.Import.Parsers.Ibkr.ParserTest do
                  expiration: ~D[2021-11-19]
                }
              } =
-               Parser.parse_trade(@option, "USD", @symbol1, "3", "10.2", "2021-10-15, 16:20:00")
+               Parser.parse_trade(
+                 @option,
+                 "USD",
+                 @symbol1,
+                 "3",
+                 "10.2",
+                 "-0.237",
+                 "2021-10-15, 16:20:00"
+               )
 
       assert quantity === Decimal.new("3")
       assert price === Decimal.new("10.2")
       assert strike === Decimal.new("1100.0")
+      assert fees === Decimal.new("0.237")
     end
   end
 

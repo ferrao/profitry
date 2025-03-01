@@ -10,6 +10,7 @@ defmodule ProfitryWeb.OrderLiveTest do
     instrument: :stock,
     quantity: "2",
     price: "0.75",
+    fees: "0.5",
     inserted_at: "2024-11-30T14:10"
   }
   @update_attrs %{type: :sell, instrument: :option, price: "0.8"}
@@ -20,6 +21,7 @@ defmodule ProfitryWeb.OrderLiveTest do
     instrument: :option,
     quantity: "2",
     price: "0.75",
+    fees: "1.5",
     inserted_at: "2024-11-30T14:10",
     option: %{
       type: "call",

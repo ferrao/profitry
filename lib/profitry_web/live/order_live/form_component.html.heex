@@ -23,6 +23,7 @@
       />
       <.input field={@form[:quantity]} type="number" step="any" label="Quantity" />
       <.input field={@form[:price]} type="number" step="any" label="Price (USD)" />
+      <.input field={@form[:fees]} type="number" step="any" label="Fees (USD)" />
       <.input field={@form[:inserted_at]} type="datetime-local" label="Order Date" />
 
       <.inputs_for :let={option} :if={@instrument === "option"} field={@form[:option]}>

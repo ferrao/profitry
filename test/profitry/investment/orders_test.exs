@@ -16,6 +16,7 @@ defmodule Profitry.Investment.OrdersTest do
         instrument: "stock",
         quantity: "1.3",
         price: "132.3",
+        fees: "1.2",
         inserted_at: "2024-01-01 12:00:07"
       }
 
@@ -25,6 +26,7 @@ defmodule Profitry.Investment.OrdersTest do
       assert order.instrument === String.to_atom(attrs.instrument)
       assert Decimal.compare(order.quantity, attrs.quantity) === :eq
       assert Decimal.compare(order.price, attrs.price) === :eq
+      assert Decimal.compare(order.fees, attrs.fees) === :eq
       assert order.inserted_at === NaiveDateTime.from_iso8601!(attrs.inserted_at)
 
       assert order ===
@@ -41,6 +43,7 @@ defmodule Profitry.Investment.OrdersTest do
         instrument: "option",
         quantity: "1.3",
         price: "132.3",
+        fees: "1.2",
         inserted_at: "2024-01-01 12:00:07",
         option: %{type: "call", strike: "50", expiration: "2024-02-01"}
       }
@@ -51,6 +54,7 @@ defmodule Profitry.Investment.OrdersTest do
       assert order.instrument === String.to_atom(attrs.instrument)
       assert Decimal.compare(order.quantity, attrs.quantity) === :eq
       assert Decimal.compare(order.price, attrs.price) === :eq
+      assert Decimal.compare(order.fees, attrs.fees) === :eq
       assert order.inserted_at === NaiveDateTime.from_iso8601!(attrs.inserted_at)
 
       assert order ==

@@ -51,6 +51,7 @@ defmodule Profitry.Investment.ReportsTest do
         instrument: :stock,
         quantity: Decimal.new("10"),
         price: Decimal.new("100"),
+        fees: Decimal.new("1.53"),
         inserted_at: ~N[2022-12-24 16:30:00]
       },
       %Order{
@@ -59,6 +60,7 @@ defmodule Profitry.Investment.ReportsTest do
         instrument: :option,
         quantity: Decimal.new("2"),
         price: Decimal.new("0.75"),
+        fees: Decimal.new("2.3"),
         option: %Option{
           type: :put,
           strike: Decimal.new("110"),
@@ -73,6 +75,7 @@ defmodule Profitry.Investment.ReportsTest do
         instrument: :stock,
         quantity: Decimal.new("2.5"),
         price: Decimal.new("120"),
+        fees: Decimal.new("2"),
         inserted_at: ~N[2022-12-25 16:30:00]
       },
       %Order{
@@ -81,6 +84,7 @@ defmodule Profitry.Investment.ReportsTest do
         instrument: :option,
         quantity: Decimal.new("2"),
         price: Decimal.new("0.25"),
+        fees: Decimal.new("2.4"),
         option: %Option{
           type: :call,
           strike: Decimal.new("120"),
@@ -95,6 +99,7 @@ defmodule Profitry.Investment.ReportsTest do
         instrument: :stock,
         quantity: Decimal.new("5"),
         price: Decimal.new("110"),
+        fees: Decimal.new("1.4"),
         inserted_at: ~N[2023-02-03 16:30:00]
       }
     ]
@@ -103,16 +108,20 @@ defmodule Profitry.Investment.ReportsTest do
   describe "position report" do
     test "creates a position report on a portfolio position" do
       report = Investment.make_report(@position, @quote)
+
       [long_option | _t] = report.long_options
       [short_option | _t] = report.short_options
 
       assert report.id == 666
       assert report.ticker == "TSLA"
       assert Decimal.compare(report.price, @quote.price) === :eq
+
+      assert Decimal.compare(report.fees, Decimal.new("9.63")) === :eq
+
       assert Decimal.compare(report.value |> Decimal.round(2), Decimal.new("1736.25")) === :eq
-      assert Decimal.compare(report.investment |> Decimal.round(2), Decimal.new("650")) === :eq
+      assert Decimal.compare(report.investment |> Decimal.round(2), Decimal.new("659.63")) === :eq
       assert Decimal.compare(report.shares |> Decimal.round(2), Decimal.new("7.50")) === :eq
-      assert Decimal.compare(report.cost_basis |> Decimal.round(2), Decimal.new("86.67")) === :eq
+      assert Decimal.compare(report.cost_basis |> Decimal.round(2), Decimal.new("87.95")) === :eq
 
       assert long_option.type === :call
       assert long_option.strike === Decimal.new("120")
@@ -151,7 +160,8 @@ defmodule Profitry.Investment.ReportsTest do
 
       assert Decimal.compare(report.price, Decimal.new(0)) === :eq
       assert Decimal.compare(report.value, Decimal.new(0)) === :eq
-      assert Decimal.compare(report.profit, Decimal.new("-12530.81")) === :eq
+      assert Decimal.compare(report.fees, Decimal.new("3.43")) === :eq
+      assert Decimal.compare(report.profit, Decimal.new("-12534.24")) === :eq
     end
 
     test "adjusts position report when applicable split is found" do
@@ -162,9 +172,9 @@ defmodule Profitry.Investment.ReportsTest do
       long_option = Enum.at(report.long_options, 0)
       short_option = Enum.at(report.short_options, 0)
 
-      assert Decimal.compare(report.investment, Decimal.new("650")) === :eq
+      assert Decimal.compare(report.investment, Decimal.new("659.63")) === :eq
       assert Decimal.compare(report.shares, Decimal.new("32.5")) === :eq
-      assert Decimal.compare(report.cost_basis, Decimal.new("20")) === :eq
+      assert Decimal.compare(report.cost_basis |> Decimal.round(2), Decimal.new("20.30")) === :eq
 
       assert Decimal.compare(long_option.investment, Decimal.new("50")) === :eq
       assert Decimal.compare(long_option.contracts, Decimal.new("2")) === :eq
@@ -195,6 +205,7 @@ defmodule Profitry.Investment.ReportsTest do
                   instrument: :stock,
                   quantity: Decimal.new("2"),
                   price: Decimal.new("100"),
+                  fees: Decimal.new("1.23"),
                   inserted_at: ~N[2023-02-03 16:30:00]
                 }
               ]
@@ -205,9 +216,9 @@ defmodule Profitry.Investment.ReportsTest do
       long_option = Enum.at(report.long_options, 0)
       short_option = Enum.at(report.short_options, 0)
 
-      assert Decimal.compare(report.investment, Decimal.new("850")) === :eq
+      assert Decimal.compare(report.investment, Decimal.new("860.86")) === :eq
       assert Decimal.compare(report.shares |> Decimal.round(2), Decimal.new("1.17")) === :eq
-      assert Decimal.compare(report.cost_basis |> Decimal.round(2), Decimal.new("728.57")) === :eq
+      assert Decimal.compare(report.cost_basis |> Decimal.round(2), Decimal.new("737.88")) === :eq
 
       assert Decimal.compare(long_option.investment, Decimal.new("50")) === :eq
       assert Decimal.compare(long_option.contracts, Decimal.new("2")) === :eq
@@ -227,13 +238,14 @@ defmodule Profitry.Investment.ReportsTest do
         type: :buy,
         instrument: :stock,
         quantity: Decimal.new("3"),
-        price: Decimal.new("252.7")
+        price: Decimal.new("252.7"),
+        fees: Decimal.new("2.1")
       }
 
       report = Reports.calculate_order(@report, order)
 
       assert Decimal.compare(report.shares, "103") === :eq
-      assert Decimal.compare(report.investment, "24158.1") === :eq
+      assert Decimal.compare(report.investment, "24160.2") === :eq
 
       assert report.long_options == [
                %OptionsReport{
@@ -261,13 +273,14 @@ defmodule Profitry.Investment.ReportsTest do
         type: :sell,
         instrument: :stock,
         quantity: Decimal.new("3"),
-        price: Decimal.new("252.7")
+        price: Decimal.new("252.7"),
+        fees: Decimal.new("2.1")
       }
 
       report = Reports.calculate_order(@report, order)
 
       assert Decimal.compare(report.shares, Decimal.new("97")) === :eq
-      assert Decimal.compare(report.investment, "22641.9") === :eq
+      assert Decimal.compare(report.investment, "22644.0") === :eq
 
       assert report.long_options == [
                %OptionsReport{
@@ -297,6 +310,7 @@ defmodule Profitry.Investment.ReportsTest do
       instrument: :option,
       quantity: Decimal.new("2"),
       price: Decimal.new("1.7"),
+      fees: Decimal.new("1.05"),
       option: %Option{
         type: :call,
         strike: Decimal.new("200"),
@@ -311,7 +325,7 @@ defmodule Profitry.Investment.ReportsTest do
     assert Decimal.compare(report.shares, @report.shares) === :eq
     assert Decimal.compare(report.price, @report.price) === :eq
 
-    assert Decimal.compare(report.investment, "23740") === :eq
+    assert Decimal.compare(report.investment, "23741.05") === :eq
 
     assert report.long_options == [
              %OptionsReport{
@@ -330,6 +344,7 @@ defmodule Profitry.Investment.ReportsTest do
       instrument: :option,
       quantity: Decimal.new("2"),
       price: Decimal.new("1.7"),
+      fees: Decimal.new("1.05"),
       option: %Option{
         type: :put,
         strike: Decimal.new("250"),
@@ -343,7 +358,7 @@ defmodule Profitry.Investment.ReportsTest do
     assert Decimal.compare(report.shares, @report.shares) === :eq
     assert Decimal.compare(report.price, @report.price) === :eq
 
-    assert Decimal.compare(report.investment, "23060") === :eq
+    assert Decimal.compare(report.investment, "23061.05") === :eq
 
     assert report.short_options == [
              %OptionsReport{
@@ -363,6 +378,7 @@ defmodule Profitry.Investment.ReportsTest do
       investment: Decimal.new("23400"),
       shares: Decimal.new("100"),
       price: Decimal.new("234"),
+      fees: Decimal.new("3.5"),
       long_options: [],
       short_options: []
     }
@@ -377,6 +393,7 @@ defmodule Profitry.Investment.ReportsTest do
       investment: Decimal.new(0),
       shares: Decimal.new(0),
       price: Decimal.new("234"),
+      fees: Decimal.new("3.5"),
       long_options: [
         %OptionsReport{
           type: :call,
@@ -406,6 +423,7 @@ defmodule Profitry.Investment.ReportsTest do
       investment: Decimal.new(0),
       shares: Decimal.new(0),
       price: Decimal.new("234"),
+      fees: Decimal.new("3.5"),
       short_options: [
         %OptionsReport{
           type: :call,
@@ -435,6 +453,7 @@ defmodule Profitry.Investment.ReportsTest do
       investment: Decimal.new(0),
       shares: Decimal.new(0),
       price: Decimal.new("234"),
+      fees: Decimal.new("3.5"),
       short_options: [
         %OptionsReport{
           type: :call,
@@ -479,6 +498,7 @@ defmodule Profitry.Investment.ReportsTest do
       investment: Decimal.new(0),
       shares: Decimal.new(0),
       price: Decimal.new("234"),
+      fees: Decimal.new("3.5"),
       short_options: [],
       long_options: []
     }

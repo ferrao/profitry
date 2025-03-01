@@ -10,10 +10,14 @@ defmodule Profitry.Investment.Schema.PositionTotals do
   @type t :: %__MODULE__{
           value: Decimal.t(),
           profit: Decimal.t(),
-          investment: Decimal.t()
+          investment: Decimal.t(),
+          fees: Decimal.t()
         }
 
-  defstruct value: Decimal.new(0), profit: Decimal.new(0), investment: Decimal.new(0)
+  defstruct value: Decimal.new(0),
+            profit: Decimal.new(0),
+            investment: Decimal.new(0),
+            fees: Decimal.new(0)
 
   @doc """
 
@@ -28,7 +32,8 @@ defmodule Profitry.Investment.Schema.PositionTotals do
       %__MODULE__{
         value: Decimal.add(pr.value, acc.value),
         profit: Decimal.add(pr.profit, acc.profit),
-        investment: Decimal.add(pr.investment, acc.investment)
+        investment: Decimal.add(pr.investment, acc.investment),
+        fees: Decimal.add(pr.fees, acc.fees)
       }
     end)
   end
@@ -39,7 +44,8 @@ defmodule Profitry.Investment.Schema.PositionTotals do
       position_totals
       | value: Decimal.to_string(position_totals.value),
         profit: Decimal.to_string(position_totals.profit),
-        investment: Decimal.to_string(position_totals.investment)
+        investment: Decimal.to_string(position_totals.investment),
+        fees: Decimal.to_string(position_totals.fees)
     }
   end
 

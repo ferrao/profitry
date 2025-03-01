@@ -106,12 +106,16 @@ defmodule Profitry.Investment.Reports do
         type: :buy,
         instrument: :stock,
         quantity: quantity,
-        price: price
+        price: price,
+        fees: fees
       }) do
     %PositionReport{
       report
-      | investment: Decimal.add(report.investment, stock_investment(quantity, price)),
-        shares: Decimal.add(report.shares, quantity)
+      | investment:
+          Decimal.add(report.investment, stock_investment(quantity, price))
+          |> Decimal.add(fees),
+        shares: Decimal.add(report.shares, quantity),
+        fees: Decimal.add(report.fees, fees)
     }
   end
 
@@ -122,12 +126,16 @@ defmodule Profitry.Investment.Reports do
         type: :sell,
         instrument: :stock,
         quantity: quantity,
-        price: price
+        price: price,
+        fees: fees
       }) do
     %PositionReport{
       report
-      | investment: Decimal.sub(report.investment, stock_investment(quantity, price)),
-        shares: Decimal.sub(report.shares, quantity)
+      | investment:
+          Decimal.sub(report.investment, stock_investment(quantity, price))
+          |> Decimal.add(fees),
+        shares: Decimal.sub(report.shares, quantity),
+        fees: Decimal.add(report.fees, fees)
     }
   end
 
@@ -139,6 +147,7 @@ defmodule Profitry.Investment.Reports do
         instrument: :option,
         quantity: quantity,
         price: price,
+        fees: fees,
         option: %Option{
           type: type,
           strike: strike,
@@ -147,7 +156,10 @@ defmodule Profitry.Investment.Reports do
       }) do
     %PositionReport{
       report
-      | investment: Decimal.add(report.investment, option_investment(quantity, price)),
+      | investment:
+          Decimal.add(report.investment, option_investment(quantity, price))
+          |> Decimal.add(fees),
+        fees: Decimal.add(report.fees, fees),
         long_options:
           OptionsReport.update_reports(report.long_options, %OptionsReport{
             type: type,
@@ -169,6 +181,7 @@ defmodule Profitry.Investment.Reports do
           instrument: :option,
           quantity: quantity,
           price: price,
+          fees: fees,
           option: %Option{
             type: type,
             strike: strike,
@@ -178,7 +191,10 @@ defmodule Profitry.Investment.Reports do
       ) do
     %PositionReport{
       report
-      | investment: Decimal.sub(report.investment, option_investment(quantity, price)),
+      | investment:
+          Decimal.sub(report.investment, option_investment(quantity, price))
+          |> Decimal.add(fees),
+        fees: Decimal.add(report.fees, fees),
         short_options:
           OptionsReport.update_reports(report.short_options, %OptionsReport{
             type: type,

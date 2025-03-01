@@ -14,9 +14,6 @@
 </.header>
 
 <.table id="totals" rows={[@totals]}>
-  <:col :let={totals} label="Portfolio Value">{format_currency(totals.value)}</:col>
-  <:col :let={totals} label="Investment">{format_currency(totals.investment)}</:col>
-  <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
   <:col label="Ticker">
     <.form for={@filter_form} id="filter-form" phx-change="filter">
       <.input
@@ -27,6 +24,10 @@
       />
     </.form>
   </:col>
+  <:col :let={totals} label="Portfolio Value">{format_currency(totals.value)}</:col>
+  <:col :let={totals} label="Investment">{format_currency(totals.investment)}</:col>
+  <:col :let={totals} label="Fees">{format_currency(totals.fees)}</:col>
+  <:col :let={totals} label="P/L"><.profit profit={totals.profit} /></:col>
 </.table>
 
 <.table

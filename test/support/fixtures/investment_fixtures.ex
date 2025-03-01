@@ -55,6 +55,7 @@ defmodule Profitry.InvestmentFixtures do
       instrument: :stock,
       quantity: Decimal.new("1.3"),
       price: Decimal.new("123.7"),
+      fees: Decimal.new("1.2"),
       inserted_at: ~N[2023-01-01 12:00:07]
     }
     |> Order.changeset(attrs)
@@ -80,6 +81,7 @@ defmodule Profitry.InvestmentFixtures do
       instrument: :option,
       quantity: Decimal.new("1"),
       price: Decimal.new("123.7"),
+      fees: Decimal.new("1.03"),
       inserted_at: ~N[2023-01-01 12:00:07]
     }
     |> Order.changeset(attrs)

@@ -29,37 +29,55 @@ defmodule Profitry.Import.Parsers.Ibkr.Parser do
     |> Stream.filter(fn row -> row =~ ~r/^Trades,(Data|Header)/ end)
     |> CSV.parse_stream()
     |> Stream.filter(fn [_, type | _] -> type !== "Header" end)
-    |> Stream.map(fn [_, _, _, asset, currency, symbol, ts, quantity, price | _] ->
-      parse_trade(asset, currency, symbol, quantity, price, ts)
+    |> Stream.map(fn [_, _, _, asset, currency, symbol, ts, quantity, price, _, _, fees | _] ->
+      parse_trade(asset, currency, symbol, quantity, price, fees, ts)
     end)
     |> Enum.map(& &1)
   end
 
   @doc false
-  @spec parse_trade(String.t(), String.t(), String.t(), String.t(), String.t(), String.t()) ::
+  @spec parse_trade(
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t()
+        ) ::
           Trade.t()
-  def parse_trade(_asset = @stock, currency, symbol, quantity, price, ts) do
+  def parse_trade(_asset = @stock, currency, symbol, quantity, price, fees, ts) do
     %Trade{
       asset: :stock,
       currency: currency,
       ticker: symbol,
       quantity: Decimal.new(quantity),
       price: Decimal.new(price),
+      fees: Decimal.new(fees) |> Decimal.abs(),
       ts: parse_timestamp(ts),
       option: nil
     }
   end
 
   @doc false
-  @spec parse_trade(String.t(), String.t(), String.t(), String.t(), String.t(), String.t()) ::
+  @spec parse_trade(
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t(),
+          String.t()
+        ) ::
           Trade.t()
-  def parse_trade(_asset = @option, currency, symbol, quantity, price, ts) do
+  def parse_trade(_asset = @option, currency, symbol, quantity, price, fees, ts) do
     %Trade{
       asset: :option,
       currency: currency,
       ticker: symbol_to_ticker(symbol),
       quantity: Decimal.new(quantity),
       price: Decimal.new(price),
+      fees: Decimal.new(fees) |> Decimal.abs(),
       ts: parse_timestamp(ts),
       option: %{
         contract: symbol_to_contract(symbol),

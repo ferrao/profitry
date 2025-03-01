@@ -18,6 +18,7 @@ defmodule Profitry.Investment.Schema.Order do
           instrument: instrument | nil,
           quantity: Decimal.t() | nil,
           price: Decimal.t() | nil,
+          fees: Decimal.t() | nil,
           option: Option.t() | Ecto.Association.NotLoaded.t() | nil,
           position: Position.t() | Ecto.Association.NotLoaded.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
@@ -29,6 +30,7 @@ defmodule Profitry.Investment.Schema.Order do
     field :instrument, Ecto.Enum, values: [:stock, :option]
     field :quantity, :decimal
     field :price, :decimal
+    field :fees, :decimal, default: Decimal.new(0)
     has_one :option, Option
     belongs_to :position, Position
 
@@ -43,10 +45,11 @@ defmodule Profitry.Investment.Schema.Order do
   @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:type, :instrument, :quantity, :price, :inserted_at])
+    |> cast(attrs, [:type, :instrument, :quantity, :price, :fees, :inserted_at])
     |> cast_assoc(:option)
     |> validate_required([:type, :instrument, :quantity, :price, :inserted_at])
     |> validate_number(:quantity, greater_than: 0)
     |> validate_number(:price, greater_than_or_equal_to: 0)
+    |> validate_number(:fees, greater_than_or_equal_to: 0)
   end
 end
