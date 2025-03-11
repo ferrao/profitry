@@ -6,6 +6,8 @@ defmodule ProfitryWeb.CustomComponentsTest do
 
   describe "profit component" do
     test "renders profit with no totals" do
+      assert render_component(&profit/1, profit: Decimal.new(0)) =~ "text-green"
+      assert render_component(&profit/1, profit: Decimal.new(0)) =~ "$0.0"
       assert render_component(&profit/1, profit: Decimal.new("12.2")) =~ "text-green"
       assert render_component(&profit/1, profit: Decimal.new("12.2")) =~ "$12.20"
       assert render_component(&profit/1, profit: Decimal.new("0.2")) =~ "text-green"
@@ -17,6 +19,11 @@ defmodule ProfitryWeb.CustomComponentsTest do
     end
 
     test "renders profit with totals" do
+      assert render_component(&profit/1, profit: Decimal.new(0), total: Decimal.new(0)) =~
+               "text-green"
+
+      assert render_component(&profit/1, profit: Decimal.new(0), total: Decimal.new(0)) =~ "$0.0"
+
       assert render_component(&profit/1, profit: Decimal.new("12.2"), total: Decimal.new("50.2")) =~
                "text-green"
 

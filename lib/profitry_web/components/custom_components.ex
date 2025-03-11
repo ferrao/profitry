@@ -55,7 +55,7 @@ defmodule ProfitryWeb.CustomComponents do
   @spec profit_color(float(), float()) :: String.t()
   defp profit_color(profit, alert_value) do
     case {profit, alert_value} do
-      {profit, _} when profit > 0 ->
+      {profit, _} when profit >= 0 ->
         "text-green-700"
 
       {profit, alert_value} when profit < 0 and abs(profit) < alert_value ->
