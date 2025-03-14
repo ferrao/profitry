@@ -15,7 +15,7 @@
 
 <.table id="totals" rows={[@totals]}>
   <:col label="Ticker">
-    <.form for={@filter_form} id="filter-form" phx-change="filter">
+    <.form for={@filter_form} id="filter-form" phx-change="filter" phx-submit="submit">
       <.input
         field={@filter_form[:ticker]}
         placeholder="Search..."
