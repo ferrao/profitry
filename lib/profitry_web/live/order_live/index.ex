@@ -1,9 +1,10 @@
 defmodule ProfitryWeb.OrderLive.Index do
   use ProfitryWeb, :live_view
 
-  import Profitry.Utils.{Date, Number}
-  import ProfitryWeb.CustomComponents
+  import Profitry.Utils.Number
+  import ProfitryWeb.{CustomComponents, OrdersTable}
 
+  alias Phoenix.LiveView.JS
   alias Profitry.Utils.Errors
   alias Profitry.Investment
   alias Profitry.Investment.Schema.Order
@@ -16,6 +17,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     portfolio = Investment.get_portfolio!(portfolio_id)
     position = Investment.find_position(portfolio, ticker)
     orders = Investment.list_orders(position)
+    splits = Investment.find_splits(ticker)
     quote = Profitry.get_quote(ticker)
     report = Investment.make_report(position, quote)
 
@@ -24,6 +26,7 @@ defmodule ProfitryWeb.OrderLive.Index do
       |> assign(portfolio: portfolio)
       |> assign(position: position)
       |> assign(report: report)
+      |> assign(splits: splits)
       |> assign(count: Enum.count(orders))
       |> assign(:option_modal?, false)
       |> stream(:orders, orders)
