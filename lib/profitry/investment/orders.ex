@@ -42,12 +42,12 @@ defmodule Profitry.Investment.Orders do
 
   ## Examples
 
-      iex> list_orders(position)
+      iex> list_orders_by_insertion(position)
       [%Order{}, ...]
 
   """
-  @spec list_orders(Position.t()) :: list(Order.t())
-  def list_orders(%Position{} = position) do
+  @spec list_orders_by_insertion(Position.t()) :: list(Order.t())
+  def list_orders_by_insertion(%Position{} = position) do
     Ecto.assoc(position, :orders)
     |> preload(:option)
     |> order_by(desc: :inserted_at)

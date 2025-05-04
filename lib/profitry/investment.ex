@@ -26,7 +26,7 @@ defmodule Profitry.Investment do
   defdelegate make_report(position), to: Positions
 
   defdelegate create_order(position, attrs), to: Orders
-  defdelegate list_orders(position), to: Orders
+  defdelegate list_orders_by_insertion(position), to: Orders
   defdelegate get_order(id), to: Orders
   defdelegate update_order(order, attrs), to: Orders
   defdelegate delete_order(order), to: Orders

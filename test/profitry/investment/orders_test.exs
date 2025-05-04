@@ -69,11 +69,12 @@ defmodule Profitry.Investment.OrdersTest do
       assert {:error, %Ecto.Changeset{}} = Investment.create_order(position, %{})
     end
 
-    test "list_orders/1 returns the orders for a position" do
+    test "list_orders_by_insertion/1 returns the orders for a position sorted by insertion date" do
       {_portfolio, position, order} = option_fixture()
+      order2 = option_fixture(position, %{inserted_at: "2024-01-01 12:00:07"})
 
-      assert Investment.list_orders(position)
-             |> Repo.preload(position: :portfolio) === [order]
+      assert Investment.list_orders_by_insertion(position)
+             |> Repo.preload(position: :portfolio) === [order2, order]
     end
 
     test "get_order/1 returns existing order" do
