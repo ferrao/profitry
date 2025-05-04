@@ -22,7 +22,12 @@
   <:col :let={report} label="P/L"><.profit profit={report.profit} total={@report.value} /></:col>
 </.table>
 
-<.orders_table orders={@streams.orders} portfolio={@portfolio} position={@position} />
+<.orders_table
+  orders={@streams.orders}
+  portfolio={@portfolio}
+  position={@position}
+  splits={@splits}
+/>
 
 <.back navigate={~p"/portfolios/#{@portfolio}"}>Back to positions</.back>
 

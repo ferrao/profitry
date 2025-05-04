@@ -26,12 +26,36 @@ defmodule ProfitryWeb.OrderLive.Index do
       |> assign(portfolio: portfolio)
       |> assign(position: position)
       |> assign(report: report)
-      |> assign(splits: splits)
+      |> assign(splits: calculate_split_indexes(orders, splits))
       |> assign(count: Enum.count(orders))
       |> assign(:option_modal?, false)
-      |> stream(:orders, orders)
+      |> stream(
+        :orders,
+        Enum.with_index(orders, fn order, index ->
+          %{id: order.id, index: index, order: order}
+        end)
+      )
 
     {:ok, socket}
+  end
+
+  defp calculate_split_indexes(orders, splits) do
+    Enum.map(splits, fn split ->
+      index =
+        Enum.find_index(orders, fn order ->
+          Date.compare(
+            NaiveDateTime.to_date(order.inserted_at),
+            split.date
+          ) == :lt
+        end)
+
+      index = if is_nil(index), do: length(orders), else: index
+
+      %{
+        index: index,
+        split: split
+      }
+    end)
   end
 
   @impl true
