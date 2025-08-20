@@ -29,14 +29,15 @@ defmodule ProfitryWeb.OrderLive.Index do
       |> assign(splits: calculate_split_indexes(orders, splits))
       |> assign(count: Enum.count(orders))
       |> assign(:option_modal?, false)
-      |> stream(
-        :orders,
-        Enum.with_index(orders, fn order, index ->
-          %{id: order.id, index: index, order: order}
-        end)
-      )
+      |> stream(:orders, calculate_order_indexes(orders))
 
     {:ok, socket}
+  end
+
+  defp calculate_order_indexes(orders) do
+    Enum.with_index(orders, fn order, index ->
+      %{index: index} |> Map.merge(order)
+    end)
   end
 
   defp calculate_split_indexes(orders, splits) do
@@ -51,10 +52,7 @@ defmodule ProfitryWeb.OrderLive.Index do
 
       index = if is_nil(index), do: length(orders), else: index
 
-      %{
-        index: index,
-        split: split
-      }
+      %{index: index} |> Map.merge(split)
     end)
   end
 

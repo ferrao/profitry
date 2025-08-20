@@ -13,32 +13,6 @@ defmodule ProfitryWeb.OrdersTable do
 
   alias Phoenix.LiveView.JS
 
-  @doc """
-
-  Renders an icon with a tooltip
-
-  ## Examples
-
-      <.action_icon icon="hero-scissors" text="1:10 Split" color="text-amber-700" />
-
-  """
-
-  attr :icon, :string, required: true
-  attr :text, :string, required: true
-  attr :color, :string, required: true
-
-  def action_icon(assigns) do
-    ~H"""
-    <div class={Enum.join(["absolute bottom-4 right-6 ", @color])}>
-      <.icon name={@icon} class="h-5 w-5 peer hover:cursor-pointer" />
-
-      <span class="absolute right-full mr-2 top-1/2 -translate-y-1/2 hidden peer-hover:block rounded bg-gray-800 p-2 text-xs text-white whitespace-nowrap pointer-events-none">
-        {@text}
-      </span>
-    </div>
-    """
-  end
-
   def split_action(assigns) do
     action_icon(%{
       icon: "hero-scissors",
@@ -73,22 +47,22 @@ defmodule ProfitryWeb.OrdersTable do
   def orders_table(assigns) do
     ~H"""
     <.table id="orders" rows={@orders}>
-      <:col :let={{_id, %{order: order, index: index}}} label="Type">
+      <:col :let={{_id, order}} label="Type">
         <%= for split <- @splits do %>
-          <%= if split.index === index do %>
-            <%= if split.split.reverse do %>
-              <.reverse_split_action multiple={split.split.multiple} />
+          <%= if split.index === order.index do %>
+            <%= if split.reverse do %>
+              <.reverse_split_action multiple={split.multiple} />
             <% else %>
-              <.split_action multiple={split.split.multiple} />
+              <.split_action multiple={split.multiple} />
             <% end %>
           <% end %>
         <% end %>
 
         {order.type}
       </:col>
-      <:col :let={{_id, %{order: order}}} label="Instrument">{order.instrument}</:col>
-      <:col :let={{_id, %{order: order}}} label="Quantity">{order.quantity}</:col>
-      <:col :let={{_id, %{order: order}}} label="Price">
+      <:col :let={{_id, order}} label="Instrument">{order.instrument}</:col>
+      <:col :let={{_id, order}} label="Quantity">{order.quantity}</:col>
+      <:col :let={{_id, order}} label="Price">
         <%= if order.option do %>
           {format_currency(order.price, 100)}
         <% else %>
@@ -96,7 +70,7 @@ defmodule ProfitryWeb.OrdersTable do
         <% end %>
       </:col>
 
-      <:col :let={{_id, %{order: order}}} label="Contract">
+      <:col :let={{_id, order}} label="Contract">
         <%= if order.option do %>
           <.link
             class="option-contract"
@@ -109,16 +83,16 @@ defmodule ProfitryWeb.OrdersTable do
         <% end %>
       </:col>
 
-      <:col :let={{_id, %{order: order}}} label="Opened">{format_timestamp(order.inserted_at)}</:col>
+      <:col :let={{_id, order}} label="Opened">{format_timestamp(order.inserted_at)}</:col>
 
-      <:action :let={{_id, %{order: order}}}>
+      <:action :let={{_id, order}}>
         <.link patch={
           ~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders/#{order}/edit"
         }>
           Edit
         </.link>
       </:action>
-      <:action :let={{_id, %{order: order}}}>
+      <:action :let={{_id, order}}>
         <.link phx-click={JS.push("delete", value: %{id: order.id})} data-confirm="Are you sure?">
           Delete
         </.link>

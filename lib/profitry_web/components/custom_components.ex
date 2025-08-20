@@ -100,7 +100,7 @@ defmodule ProfitryWeb.CustomComponents do
 
       ## Examples
 
-      <.posiiton_icon report=%PositionReport{}>
+      <.position_icon report=%PositionReport{}>
         TSLA
       <./position_icon>
 
@@ -155,6 +155,32 @@ defmodule ProfitryWeb.CustomComponents do
         <:item title="Strike Price">{format_currency(@order.option.strike)}</:item>
         <:item title="Expiry Date">{@order.option.expiration}</:item>
       </.list>
+    </div>
+    """
+  end
+
+  @doc """
+
+  Renders an icon with a tooltip
+
+  ## Examples
+
+      <.action_icon icon="hero-scissors" text="1:10 Split" color="text-amber-700" />
+
+  """
+
+  attr :icon, :string, required: true
+  attr :text, :string, required: true
+  attr :color, :string, required: true
+
+  def action_icon(assigns) do
+    ~H"""
+    <div class={Enum.join(["absolute bottom-4 right-6 ", @color])}>
+      <.icon name={@icon} class="h-5 w-5 peer hover:cursor-pointer" />
+
+      <span class="absolute right-full mr-2 top-1/2 -translate-y-1/2 hidden peer-hover:block rounded bg-gray-800 p-2 text-xs text-white whitespace-nowrap pointer-events-none">
+        {@text}
+      </span>
     </div>
     """
   end
