@@ -15,6 +15,11 @@ defmodule Profitry.Import.File do
 
   Processes a broker statement file, by importing all the positions and orders into a portfolio
 
+  ## Examples
+
+    iex> Profitry.Import.File.process(1, "path/to/file.csv")
+    [%Profitry.Investment.Schema.Order{}, ...]
+
   """
   @spec process(integer(), String.t()) :: list(Order.t())
   def process(portfolio_id, file) do
