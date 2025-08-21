@@ -83,5 +83,18 @@ defmodule ProfitryWeb.CustomComponentsTest do
       assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "$132.30"
       assert render_component(&option_data/1, %{order: order, ticker: "TSLA"}) =~ "2024-02-01"
     end
+
+    test "renders an action icon" do
+      assigns = %{
+        icon: "hero-scissors",
+        text: "Split",
+        color: "text-amber-700"
+      }
+
+      assert render_component(&action_icon/1, assigns) =~ assigns.icon
+      assert render_component(&action_icon/1, assigns) =~ assigns.text
+      assert render_component(&action_icon/1, assigns) =~ assigns.color
+      render_component(&action_icon/1, assigns) |> IO.inspect()
+    end
   end
 end

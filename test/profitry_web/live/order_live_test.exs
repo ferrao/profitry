@@ -50,7 +50,8 @@ defmodule ProfitryWeb.OrderLiveTest do
       conn: conn,
       portfolio: portfolio,
       position: position,
-      order: order
+      order: order,
+      order_option: order_option
     } do
       {:ok, _order_live, html} =
         live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
@@ -58,9 +59,25 @@ defmodule ProfitryWeb.OrderLiveTest do
       assert html =~ "Listing Orders"
       assert html =~ position.ticker
       assert html =~ to_string(order.type)
-      assert html =~ to_string(order.instrument)
-      assert html =~ Decimal.to_string(order.quantity)
-      assert html =~ Decimal.to_string(order.price)
+      assert html =~ to_string(order_option.type)
+      assert html =~ to_string(order_option.instrument)
+      assert html =~ Decimal.to_string(order_option.quantity)
+      assert html =~ Decimal.to_string(order_option.price)
+    end
+
+    test "displays split for position splits", %{
+      conn: conn,
+      portfolio: portfolio,
+      position: position,
+      order: order
+    } do
+      split_fixture()
+
+      {:ok, _order_live, html} =
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+
+      [before_order | _] = String.split(html, to_string(order.type))
+      assert String.contains?(before_order, "1:3 Split")
     end
 
     test "counts orders", %{
