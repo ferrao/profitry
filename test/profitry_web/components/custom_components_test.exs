@@ -94,7 +94,6 @@ defmodule ProfitryWeb.CustomComponentsTest do
       assert render_component(&action_icon/1, assigns) =~ assigns.icon
       assert render_component(&action_icon/1, assigns) =~ assigns.text
       assert render_component(&action_icon/1, assigns) =~ assigns.color
-      render_component(&action_icon/1, assigns) |> IO.inspect()
     end
   end
 end
