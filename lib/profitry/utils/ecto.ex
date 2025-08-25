@@ -7,7 +7,7 @@ defmodule Profitry.Utils.Ecto do
 
   @doc """
 
-    Capitalize changes on a Changeset
+  Capitalize changes on a Changeset
 
   """
   @spec capitalize(Ecto.Changeset.t(), list(atom())) :: Ecto.Changeset.t()
@@ -20,6 +20,23 @@ defmodule Profitry.Utils.Ecto do
     case Ecto.Changeset.get_change(changeset, field) do
       nil -> changeset
       value -> Ecto.Changeset.put_change(changeset, field, String.upcase(value))
+    end
+  end
+
+  @doc """
+
+  Validates if two fields are not equal
+
+  """
+  @spec validate_not_equal(Ecto.Changeset.t(), atom(), atom()) :: Ecto.Changeset.t()
+  def validate_not_equal(changeset, field1, field2) do
+    value1 = Ecto.Changeset.get_field(changeset, field1)
+    value2 = Ecto.Changeset.get_field(changeset, field2)
+
+    if value1 == value2 do
+      Ecto.Changeset.add_error(changeset, field2, "#{field2} cannot be the same as #{field1}")
+    else
+      changeset
     end
   end
 end

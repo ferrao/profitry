@@ -6,7 +6,7 @@ defmodule Profitry.InvestmentFixtures do
 
   """
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.{Portfolio, Position, Order, Option, Split}
+  alias Profitry.Investment.Schema.{Portfolio, Position, Order, Option, Split, TickerChange}
 
   @doc """
 
@@ -110,6 +110,21 @@ defmodule Profitry.InvestmentFixtures do
       date: ~D[2023-01-02]
     }
     |> Split.changeset(attrs)
+    |> Repo.insert!()
+  end
+
+  @doc """
+
+  Generates a ticker change
+
+  """
+  def ticker_change_fixture(attrs \\ %{}) do
+    %TickerChange{
+      ticker: "AAPL",
+      original_ticker: "AAAA",
+      date: ~D[2023-01-02]
+    }
+    |> TickerChange.changeset(attrs)
     |> Repo.insert!()
   end
 end

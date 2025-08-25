@@ -1,4 +1,4 @@
-defmodule Profitry.Investment.Schema.TickerChanges do
+defmodule Profitry.Investment.Schema.TickerChange do
   @moduledoc """
 
   Schema representing a ticker change
@@ -31,5 +31,6 @@ defmodule Profitry.Investment.Schema.TickerChanges do
     |> validate_required([:ticker, :original_ticker, :date])
     |> capitalize([:ticker, :original_ticker])
     |> unique_constraint(:ticker_date, name: :ticker_date_ticker_changes_index)
+    |> validate_not_equal(:ticker, :original_ticker)
   end
 end

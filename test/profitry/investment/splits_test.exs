@@ -64,7 +64,7 @@ defmodule Profitry.Investment.SplitsTest do
       assert updated_split.reverse === attrs.reverse
     end
 
-    test "update_split/2 with invalid data updates a stock split" do
+    test "update_split/2 with invalid data does not update a stock split" do
       split = split_fixture()
       attrs = %{multiple: -2}
 
