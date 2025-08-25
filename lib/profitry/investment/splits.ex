@@ -59,23 +59,6 @@ defmodule Profitry.Investment.Splits do
 
   @doc """
 
-  Returns the list of stock splits
-
-  ## Examples
-
-      iex> list_splits(split)
-      [%Split{}, ...]
-
-  """
-  @spec list_splits(Split.t()) :: list(Split.t())
-  def list_splits(%Split{} = split) do
-    split
-    |> order_by(desc: :date)
-    |> Repo.all()
-  end
-
-  @doc """
-
   Gets a single stock split.
 
   ## Examples
