@@ -3,7 +3,7 @@ defmodule ProfitryWeb.PortfolioLive.FormComponent do
 
   alias Profitry.Investment
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def update(%{portfolio: portfolio} = assigns, socket) do
     {:ok,
      socket
@@ -13,7 +13,7 @@ defmodule ProfitryWeb.PortfolioLive.FormComponent do
      end)}
   end
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def handle_event("validate", %{"portfolio" => portfolio_params}, socket) do
     changeset = Investment.change_portfolio(socket.assigns.portfolio, portfolio_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}

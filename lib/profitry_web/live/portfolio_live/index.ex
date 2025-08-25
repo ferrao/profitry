@@ -5,7 +5,7 @@ defmodule ProfitryWeb.PortfolioLive.Index do
   alias Profitry.Investment
   alias Profitry.Investment.Schema.Portfolio
 
-  @impl true
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     portfolios = Investment.list_portfolios()
 
@@ -16,7 +16,7 @@ defmodule ProfitryWeb.PortfolioLive.Index do
     {:ok, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
@@ -39,7 +39,7 @@ defmodule ProfitryWeb.PortfolioLive.Index do
     |> assign(:portfolio, nil)
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_info({ProfitryWeb.PortfolioLive.FormComponent, {:saved, portfolio, count}}, socket) do
     socket =
       assign(socket, :count, count)
@@ -48,7 +48,7 @@ defmodule ProfitryWeb.PortfolioLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     portfolio = Investment.get_portfolio!(id)
 

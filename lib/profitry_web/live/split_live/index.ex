@@ -1,12 +1,13 @@
 defmodule ProfitryWeb.SplitLive.Index do
   alias Profitry.Investment
+
   use ProfitryWeb, :live_view
 
   alias Profitry.Utils.Errors
   alias Profitry.Investment
   alias Profitry.Investment.Schema.Split
 
-  @impl true
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     splits = Investment.list_splits()
 
@@ -17,7 +18,7 @@ defmodule ProfitryWeb.SplitLive.Index do
     {:ok, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
@@ -40,7 +41,7 @@ defmodule ProfitryWeb.SplitLive.Index do
     |> assign(:split, nil)
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_info({ProfitryWeb.SplitLive.FormComponent, {:saved, split, count}}, socket) do
     socket =
       assign(socket, :count, count)
@@ -49,7 +50,7 @@ defmodule ProfitryWeb.SplitLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     split = Investment.get_split!(id)
 

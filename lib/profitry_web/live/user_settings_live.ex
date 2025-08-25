@@ -3,7 +3,7 @@ defmodule ProfitryWeb.UserSettingsLive do
 
   alias Profitry.Accounts
 
-  @impl true
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <.header class="text-center">
@@ -33,7 +33,7 @@ defmodule ProfitryWeb.UserSettingsLive do
     """
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
@@ -60,7 +60,7 @@ defmodule ProfitryWeb.UserSettingsLive do
     {:ok, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("validate_email", params, socket) do
     %{"user" => user_params} = params
 
@@ -73,7 +73,7 @@ defmodule ProfitryWeb.UserSettingsLive do
     {:noreply, assign(socket, email_form: email_form)}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("update_email", params, socket) do
     %{"user" => user_params} = params
     user = socket.assigns.current_user

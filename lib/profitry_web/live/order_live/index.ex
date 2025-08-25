@@ -9,7 +9,7 @@ defmodule ProfitryWeb.OrderLive.Index do
   alias Profitry.Investment
   alias Profitry.Investment.Schema.Order
 
-  @impl true
+  @impl Phoenix.LiveView
   def mount(params, _session, socket) do
     portfolio_id = Map.get(params, "portfolio_id")
     ticker = Map.get(params, "ticker")
@@ -56,7 +56,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     end)
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
@@ -88,7 +88,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     |> assign(:instrument, to_string(order.instrument))
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_info({ProfitryWeb.OrderLive.FormComponent, {:saved, order, count}}, socket) do
     socket =
       assign(socket, :count, count)
@@ -97,7 +97,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("delete", %{"id" => id}, socket) do
     order = Investment.get_order(id)
 
@@ -120,7 +120,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     end
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("open-option-modal", %{"id" => id}, socket) do
     order = Investment.get_order(id)
 
@@ -135,7 +135,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
+  @impl Phoenix.LiveView
   def handle_event("close-option-modal", _params, socket) do
     {:noreply, assign(socket, :option_modal?, false)}
   end

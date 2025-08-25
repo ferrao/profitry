@@ -3,7 +3,7 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
 
   alias Profitry.Investment
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def update(%{order: order} = assigns, socket) do
     {:ok,
      socket
@@ -11,7 +11,7 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
      |> assign_new(:form, fn -> to_form(Investment.change_order(order)) end)}
   end
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def handle_event("validate", %{"order" => order_params}, socket) do
     changeset = Investment.change_order(socket.assigns.order, order_params)
     instrument = order_params["instrument"] || socket.assigns.instrument

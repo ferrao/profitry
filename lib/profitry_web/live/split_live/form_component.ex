@@ -2,7 +2,7 @@ defmodule ProfitryWeb.SplitLive.FormComponent do
   alias Profitry.Investment
   use ProfitryWeb, :live_component
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def update(%{split: split} = assigns, socket) do
     {:ok,
      socket
@@ -12,7 +12,7 @@ defmodule ProfitryWeb.SplitLive.FormComponent do
      end)}
   end
 
-  @impl true
+  @impl Phoenix.LiveComponent
   def handle_event("validate", %{"split" => split_params}, socket) do
     changeset = Investment.change_split(socket.assigns.split, split_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
