@@ -4,6 +4,18 @@ defmodule Profitry.Investment.Schema.SplitsTests do
   alias Profitry.Investment.Schema.Split
 
   describe "split" do
+    test "changes are created correctly" do
+      changes =
+        Split.changeset(%Split{}, %{
+          ticker: "AAPL",
+          multiple: 3,
+          reverse: false,
+          date: ~D[2025-08-22]
+        })
+
+      assert changes.valid?
+    end
+
     test "ticker is required" do
       changeset = Split.changeset(%Split{}, %{})
       assert ["can't be blank"] = errors_on(changeset).ticker

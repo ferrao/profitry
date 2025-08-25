@@ -4,6 +4,11 @@ defmodule Profitry.Investment.Schema.PositionTest do
   alias Profitry.Investment.Schema.Position
 
   describe "position" do
+    test "changes are created correctly" do
+      changes = Position.changeset(%Position{}, %{ticker: "AAPL"})
+      assert changes.valid?
+    end
+
     test "ticker is required" do
       changeset = Position.changeset(%Position{}, %{})
 

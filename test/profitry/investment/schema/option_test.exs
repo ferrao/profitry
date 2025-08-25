@@ -4,6 +4,17 @@ defmodule Profitry.Investment.Schema.OptionTest do
   alias Profitry.Investment.Schema.Option
 
   describe "option" do
+    test "changes are created correctly" do
+      changes =
+        Option.changeset(%Option{}, %{
+          type: :call,
+          strike: 130,
+          expiration: ~D[2000-01-01]
+        })
+
+      assert changes.valid?
+    end
+
     test "number of shares per contracts is 100" do
       assert Option.shares_per_contract() === 100
     end

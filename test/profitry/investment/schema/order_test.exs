@@ -4,6 +4,20 @@ defmodule Profitry.Investment.Schema.OrderTest do
   alias Profitry.Investment.Schema.Order
 
   describe "order" do
+    test "changes are created correctly" do
+      changes =
+        Order.changeset(%Order{}, %{
+          type: :buy,
+          instrument: :stock,
+          quantity: 1,
+          price: 1,
+          fees: 0,
+          inserted_at: ~N[2000-01-01 23:00:07]
+        })
+
+      assert changes.valid?
+    end
+
     test "type is required" do
       changeset = Order.changeset(%Order{}, %{})
       assert ["can't be blank"] = errors_on(changeset).type
