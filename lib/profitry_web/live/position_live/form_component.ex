@@ -1,5 +1,4 @@
 defmodule ProfitryWeb.PositionLive.FormComponent do
-  alias Phoenix.LiveView
   use ProfitryWeb, :live_component
 
   alias Profitry.Investment

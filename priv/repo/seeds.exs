@@ -10,6 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 alias Profitry.Investment.Schema.Split
+alias Profitry.Investment.Schema.TickerChange
 
 Profitry.Repo.delete_all(Split)
 
@@ -46,4 +47,10 @@ Profitry.Repo.insert!(%Split{
   multiple: 35,
   reverse: true,
   date: ~D[2024-06-12]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "PTRAQ",
+  original_ticker: "PTRA",
+  date: ~D[2023-08-17]
 })

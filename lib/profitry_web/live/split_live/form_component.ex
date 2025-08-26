@@ -1,6 +1,7 @@
 defmodule ProfitryWeb.SplitLive.FormComponent do
-  alias Profitry.Investment
   use ProfitryWeb, :live_component
+
+  alias Profitry.Investment
 
   @impl Phoenix.LiveComponent
   def update(%{split: split} = assigns, socket) do

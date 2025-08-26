@@ -33,13 +33,17 @@ defmodule ProfitryWeb.Router do
     live "/splits/new", SplitLive.Index, :new
     live "/splits/:id/edit", SplitLive.Index, :edit
 
-    live "/portfolios/:id", PositionLive.Index, :list
-    live("/portfolios/:id/positions/new", PositionLive.Index, :new)
-    live("/portfolios/:id/positions/:ticker/edit", PositionLive.Index, :edit)
+    live "/ticker-changes", TickerChangesLive.Index, :list
+    live "/ticker-changes/new", TickerChangesLive.Index, :new
+    live "/ticker-changes/:id/edit", TickerChangesLive.Index, :edit
 
-    live("/portfolios/:portfolio_id/positions/:ticker/orders", OrderLive.Index, :list)
-    live("/portfolios/:portfolio_id/positions/:ticker/orders/new", OrderLive.Index, :new)
-    live("/portfolios/:portfolio_id/positions/:ticker/orders/:id/edit", OrderLive.Index, :edit)
+    live "/portfolios/:id", PositionLive.Index, :list
+    live "/portfolios/:id/positions/new", PositionLive.Index, :new
+    live "/portfolios/:id/positions/:ticker/edit", PositionLive.Index, :edit
+
+    live "/portfolios/:portfolio_id/positions/:ticker/orders", OrderLive.Index, :list
+    live "/portfolios/:portfolio_id/positions/:ticker/orders/new", OrderLive.Index, :new
+    live "/portfolios/:portfolio_id/positions/:ticker/orders/:id/edit", OrderLive.Index, :edit
   end
 
   # Other scopes may use custom stacks.

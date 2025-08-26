@@ -1,0 +1,22 @@
+<div>
+  <.header>
+    {@title}
+    <:subtitle>Use this form to manage ticker changes</:subtitle>
+  </.header>
+
+  <.simple_form
+    for={@form}
+    id="ticker-change-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save"
+  >
+    <.input field={@form[:ticker]} label="Ticker" />
+    <.input field={@form[:original_ticker]} label="Original Ticker" />
+    <.input field={@form[:date]} type="date" label="Date" />
+
+    <:actions>
+      <.button phx-disable-with="Saving...">Save Ticker Change</.button>
+    </:actions>
+  </.simple_form>
+</div>
