@@ -12,21 +12,21 @@
   </:actions>
 </.header>
 
-<.table id="ticker-changes" rows={@ticker_changes}>
-  <:col :let={ticker_change} label="Ticker">
+<.table id="ticker-changes" rows={@streams.ticker_changes}>
+  <:col :let={{_id, ticker_change}} label="Ticker">
     {ticker_change.ticker}
   </:col>
-  <:col :let={ticker_change} label="Original Ticker">
+  <:col :let={{_id, ticker_change}} label="Original Ticker">
     {ticker_change.original_ticker}
   </:col>
-  <:col :let={ticker_change} label="Date">
+  <:col :let={{_id, ticker_change}} label="Date">
     {ticker_change.date}
   </:col>
 
-  <:action :let={ticker_change}>
+  <:action :let={{_id, ticker_change}}>
     <.link patch={~p"/ticker-changes/#{ticker_change}/edit"}>Edit</.link>
   </:action>
-  <:action :let={ticker_change}>
+  <:action :let={{_id, ticker_change}}>
     <.link
       phx-click={JS.push("delete", value: %{id: ticker_change.id})}
       data-confirm="Are you sure?"
@@ -47,7 +47,7 @@
     id={@ticker_change || :new}
     title={@page_title}
     action={@live_action}
-    ticker-change={@ticker_change}
+    ticker_change={@ticker_change}
     count={@count}
     patch={~p"/ticker-changes"}
   />

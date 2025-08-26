@@ -31,6 +31,16 @@ defmodule Profitry.Investment.TickerChangesTest do
       assert Investment.list_ticker_changes() === [ticker_change]
     end
 
+    test "get_ticker_changer!/1 returns existing ticker change" do
+      ticker_change = ticker_change_fixture()
+
+      assert Investment.get_ticker_change!(ticker_change.id) === ticker_change
+    end
+
+    test "get_ticker_change!/1 returns nil for invalid stock split id" do
+      assert_raise Ecto.NoResultsError, fn -> Investment.get_ticker_change!(9999) end
+    end
+
     test "update_ticker_change/2 with valid data updates a ticker change" do
       ticker_change = ticker_change_fixture()
       attrs = %{ticker: "bbbb", original_ticker: "aaaa"}

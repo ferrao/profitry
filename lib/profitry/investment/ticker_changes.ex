@@ -46,6 +46,24 @@ defmodule Profitry.Investment.TickerChanges do
 
   @doc """
 
+  Gets a single ticker change.
+
+  ## Examples
+
+    iex> get_ticker_change!(123)
+    %TickerChange{}
+
+    iex> get_ticker_change!(456)
+    ** (Ecto.NoResultsError)
+
+  """
+  @spec get_ticker_change!(integer()) :: TickerChange.t()
+  def get_ticker_change!(id) do
+    Repo.get!(TickerChange, id)
+  end
+
+  @doc """
+
   Updates a ticker change event
 
   ## Examples
