@@ -4,7 +4,6 @@ defmodule Profitry.Investment.TickerChanges do
   Operations on TickerChanges struct
 
   """
-
   alias Ecto.Changeset
   alias Profitry.Repo
   alias Profitry.Investment.Schema.TickerChange
@@ -117,5 +116,18 @@ defmodule Profitry.Investment.TickerChanges do
   @spec change_ticker_change(TickerChange.t(), map()) :: Changeset.t()
   def change_ticker_change(%TickerChange{} = ticker_change, attrs \\ %{}) do
     TickerChange.changeset(ticker_change, attrs)
+  end
+
+  @doc """
+
+  Finds the most up to date ticker for a ticker name
+
+  """
+  @spec find_ticker(String.t()) :: String.t()
+  def find_ticker(ticker) do
+    case Repo.get_by(TickerChange, original_ticker: ticker) do
+      %TickerChange{ticker: updated_ticker} -> find_ticker(updated_ticker)
+      nil -> ticker
+    end
   end
 end

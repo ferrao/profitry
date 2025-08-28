@@ -7,7 +7,7 @@
     {@portfolio.broker}
   </:subtitle>
   <:actions>
-    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders/new"}>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@position.id}/orders/new"}>
       <.button>New Order</.button>
     </.link>
   </:actions>
@@ -46,7 +46,7 @@
   :if={@live_action in [:new, :edit]}
   id="order-modal"
   show
-  on_cancel={JS.patch(~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders")}
+  on_cancel={JS.patch(~p"/portfolios/#{@portfolio}/positions/#{@position.id}/orders")}
 >
   <.live_component
     module={ProfitryWeb.OrderLive.FormComponent}
@@ -58,6 +58,6 @@
     count={@count}
     order={@order}
     instrument={@instrument}
-    patch={~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders"}
+    patch={~p"/portfolios/#{@portfolio}/positions/#{@position.id}/orders"}
   />
 </.modal>

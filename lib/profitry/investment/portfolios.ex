@@ -146,8 +146,11 @@ defmodule Profitry.Investment.Portfolios do
       |> Repo.preload(positions: filter_query(filter_param))
 
     for position <- portfolio.positions do
-      quote = Profitry.get_quote(position.ticker)
+      ticker = Investment.find_ticker(position.ticker)
+      quote = Profitry.get_quote(ticker)
+
       Investment.make_report(position, quote)
+      |> Map.put(:ticker, ticker)
     end
     |> Enum.sort_by(& &1.profit, {:desc, Decimal})
     |> Enum.sort_by(&Investment.position_closed?(&1))

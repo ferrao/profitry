@@ -86,9 +86,7 @@ defmodule ProfitryWeb.OrdersTable do
       <:col :let={{_id, order}} label="Opened">{format_timestamp(order.inserted_at)}</:col>
 
       <:action :let={{_id, order}}>
-        <.link patch={
-          ~p"/portfolios/#{@portfolio}/positions/#{@position.ticker}/orders/#{order}/edit"
-        }>
+        <.link patch={~p"/portfolios/#{@portfolio}/positions/#{@position.id}/orders/#{order}/edit"}>
           Edit
         </.link>
       </:action>

@@ -11,9 +11,9 @@ defmodule ProfitryWeb.PositionLive.Index do
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
-    id = Map.get(params, "id")
-    portfolio = Investment.get_portfolio!(id)
-    reports = Investment.list_reports!(id)
+    portfolio_id = Map.get(params, "portf_id")
+    portfolio = Investment.get_portfolio!(portfolio_id)
+    reports = Investment.list_reports!(portfolio_id)
     totals = PositionTotals.make_totals(reports)
 
     socket =
@@ -43,10 +43,13 @@ defmodule ProfitryWeb.PositionLive.Index do
     |> assign(:position, %Position{})
   end
 
-  defp apply_action(socket, :edit, %{"ticker" => ticker}) do
+  defp apply_action(socket, :edit, %{"id" => id}) do
+    position = Investment.get_position!(id)
+    ticker = Investment.find_ticker(position.ticker)
+
     socket
     |> assign(:page_title, "Edit Position")
-    |> assign(:position, Investment.find_position(socket.assigns.portfolio, ticker))
+    |> assign(:position, position |> Map.put(:ticker, ticker))
   end
 
   @impl Phoenix.LiveView
@@ -77,10 +80,8 @@ defmodule ProfitryWeb.PositionLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("delete", %{"id" => id, "ticker" => ticker, "dom_id" => dom_id}, socket) do
-    position =
-      Investment.get_portfolio!(id)
-      |> Investment.find_position(ticker)
+  def handle_event("delete", %{"id" => id, "dom_id" => dom_id}, socket) do
+    position = Investment.get_position!(id)
 
     case Investment.delete_position(position) do
       {:ok, _position} ->

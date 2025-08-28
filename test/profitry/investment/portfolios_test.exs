@@ -4,8 +4,7 @@ defmodule Profitry.Investment.PortfoliosTest do
   import Profitry.InvestmentFixtures
 
   alias Profitry.Investment
-  alias Profitry.Investment.Portfolios
-  alias Profitry.Investment.Schema.{PositionReport, Portfolio}
+  alias Profitry.Investment.Schema.{PositionReport, Portfolio, Position}
 
   describe "investment" do
     test "create_portfolio/1 with valid data creates portfolio" do
@@ -61,7 +60,7 @@ defmodule Profitry.Investment.PortfoliosTest do
     test "change_portfolio/1 returns a portfolio changeset" do
       portfolio = portfolio_fixture()
 
-      assert %Ecto.Changeset{} = Portfolios.change_portfolio(portfolio)
+      assert %Ecto.Changeset{} = Investment.change_portfolio(portfolio)
     end
 
     test "delete_portfolio/1 deletes portfolio" do
@@ -82,7 +81,7 @@ defmodule Profitry.Investment.PortfoliosTest do
     test "list_reports!/2 lists reports for a portfolio" do
       {portfolio, _position, _order} = option_fixture()
 
-      reports = Portfolios.list_reports!(portfolio.id, nil)
+      reports = Investment.list_reports!(portfolio.id)
 
       assert [%PositionReport{}] = reports
     end
@@ -90,11 +89,25 @@ defmodule Profitry.Investment.PortfoliosTest do
     test "list_reports!/2 filters list of reports for a portfolio" do
       {portfolio, _position, _order} = option_fixture()
 
-      reports_tsla = Portfolios.list_reports!(portfolio.id, "ts")
-      reports_sofi = Portfolios.list_reports!(portfolio.id, "so")
+      reports_tsla = Investment.list_reports!(portfolio.id, "ts")
+      reports_sofi = Investment.list_reports!(portfolio.id, "so")
 
       assert [%PositionReport{}] = reports_tsla
       assert [] = reports_sofi
+    end
+
+    test "list_reports!/2 uses most recent ticker for a portfolio" do
+      {portfolio, position, _order} = option_fixture()
+      ticker_change = ticker_change_fixture()
+
+      Repo.insert(%Position{
+        ticker: ticker_change.original_ticker,
+        portfolio: portfolio
+      })
+
+      [report2, report1] = Investment.list_reports!(portfolio.id)
+      assert report1.ticker === position.ticker
+      assert report2.ticker === ticker_change.ticker
     end
 
     test "list_tickers/0 lists tickers for all portfolios" do

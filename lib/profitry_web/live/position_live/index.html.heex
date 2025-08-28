@@ -35,7 +35,7 @@
   rows={@streams.reports}
   row_click={
     fn {_id, report} ->
-      JS.navigate(~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/orders")
+      JS.navigate(~p"/portfolios/#{@portfolio}/positions/#{report}/orders")
     end
   }
 >
@@ -56,13 +56,11 @@
     <.profit profit={report.profit} total={@totals.value} />
   </:col>
   <:action :let={{_id, report}}>
-    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{report.ticker}/edit"}>Edit</.link>
+    <.link patch={~p"/portfolios/#{@portfolio}/positions/#{report}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, report}}>
     <.link
-      phx-click={
-        JS.push("delete", value: %{id: @portfolio.id, ticker: report.ticker, dom_id: id})
-      }
+      phx-click={JS.push("delete", value: %{id: report.id, dom_id: id})}
       data-confirm="Are you sure?"
     >
       Delete

@@ -71,5 +71,20 @@ defmodule Profitry.Investment.TickerChangesTest do
       assert {:ok, %TickerChange{}} = Investment.delete_ticker_change(ticker_change)
       assert_raise Ecto.NoResultsError, fn -> Repo.get!(TickerChange, ticker_change.id) end
     end
+
+    test "find_ticker/1 finds the most up to date ticker" do
+      first_ticker = "XXXX"
+      ticker_change = ticker_change_fixture()
+
+      Repo.insert!(%TickerChange{
+        ticker: ticker_change.original_ticker,
+        original_ticker: first_ticker,
+        date: Date.add(ticker_change.date, -365)
+      })
+
+      assert Investment.find_ticker(first_ticker) == ticker_change.ticker
+      assert Investment.find_ticker(ticker_change.original_ticker) == ticker_change.ticker
+      assert Investment.find_ticker(ticker_change.ticker) == ticker_change.ticker
+    end
   end
 end

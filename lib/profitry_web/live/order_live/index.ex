@@ -11,11 +11,12 @@ defmodule ProfitryWeb.OrderLive.Index do
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
-    portfolio_id = Map.get(params, "portfolio_id")
-    ticker = Map.get(params, "ticker")
+    portfolio_id = Map.get(params, "portf_id")
+    position_id = Map.get(params, "pos_id")
 
     portfolio = Investment.get_portfolio!(portfolio_id)
-    position = Investment.find_position(portfolio, ticker)
+    position = Investment.get_position!(position_id)
+    ticker = Investment.find_ticker(position.ticker)
     orders = Investment.list_orders_by_insertion(position)
     splits = Investment.find_splits(ticker)
     quote = Profitry.get_quote(ticker)

@@ -91,6 +91,24 @@ defmodule Profitry.Investment.Positions do
   end
 
   @doc """
+
+  Gets a single position.
+
+  ## Examples
+
+      iex> get_position!(123)
+      %Position{}
+
+      iex> get_position!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_position!(integer()) :: Position.t()
+  def get_position!(id) do
+    Repo.get!(Position, id)
+  end
+
+  @doc """
     Finds a portfolio position.
 
     ## Examples

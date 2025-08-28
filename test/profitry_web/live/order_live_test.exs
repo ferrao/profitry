@@ -54,7 +54,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       order_option: order_option
     } do
       {:ok, _order_live, html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert html =~ "Listing Orders"
       assert html =~ position.ticker
@@ -74,7 +74,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       split_fixture()
 
       {:ok, _order_live, html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       [before_order | _] = String.split(html, to_string(order.type))
       assert String.contains?(before_order, "1:3 Split")
@@ -86,7 +86,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       position: position
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("span#count-orders")
@@ -100,7 +100,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       order_option: order
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("#orders-#{order.id} a.option-contract")
@@ -115,7 +115,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       position: position
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("a", "New Order")
@@ -123,7 +123,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders/new"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders/new"
       )
 
       assert order_live
@@ -136,7 +136,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders"
       )
 
       html = render(order_live)
@@ -153,7 +153,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       position: position
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("a", "New Order")
@@ -161,7 +161,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders/new"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders/new"
       )
 
       html =
@@ -183,7 +183,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders"
       )
 
       html = render(order_live)
@@ -201,7 +201,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       order: order
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("#orders-#{order.id} a", "Edit")
@@ -209,7 +209,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders/#{order.id}/edit"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders/#{order.id}/edit"
       )
 
       assert order_live
@@ -222,7 +222,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders"
       )
 
       html = render(order_live)
@@ -240,7 +240,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       order_option: order
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("#orders-#{order.id} a", "Edit")
@@ -248,7 +248,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders/#{order.id}/edit"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders/#{order.id}/edit"
       )
 
       assert order_live
@@ -261,7 +261,7 @@ defmodule ProfitryWeb.OrderLiveTest do
 
       assert_patch(
         order_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders"
       )
 
       html = render(order_live)
@@ -279,7 +279,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       order: order
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("#orders-#{order.id} a", "Delete")
@@ -299,7 +299,7 @@ defmodule ProfitryWeb.OrderLiveTest do
       order_option: order
     } do
       {:ok, order_live, _html} =
-        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/orders")
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
 
       assert order_live
              |> element("#orders-#{order.id} a", "Delete")

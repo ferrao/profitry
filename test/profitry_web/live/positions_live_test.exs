@@ -97,7 +97,7 @@ defmodule ProfitryWeb.PositionLiveTest do
 
       assert_patch(
         position_live,
-        ~p"/portfolios/#{portfolio.id}/positions/#{position.ticker}/edit"
+        ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/edit"
       )
 
       assert position_live
