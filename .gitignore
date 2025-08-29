@@ -27,6 +27,7 @@ erl_crash.dump
 
 # Language server files
 .elixir_ls
+.expert
 
 # Ignore package tarball (built via "mix hex.build").
 profitry-*.tar
