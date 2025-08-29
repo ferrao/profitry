@@ -25,13 +25,13 @@ defmodule Profitry.Exchanges.Subscribers.LogSubscriber do
   Subscribes to exchange quotes and prints debug messages when they arrive
 
   """
-  @spec run() :: nil
+  @spec run() :: no_return()
   def run() do
     Exchanges.subscribe_quotes()
     listen()
   end
 
-  @spec listen() :: nil
+  @spec listen() :: no_return()
   defp listen do
     receive do
       {:new_quote, quote} ->
