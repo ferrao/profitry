@@ -233,6 +233,17 @@ defmodule Profitry.Investment.ReportsTest do
              ) === :eq
     end
 
+    test "position report accounts for all splits when ticker changes" do
+      {_portfolio, position, _order} = order_fixture()
+      split_fixture(%{ticker: "XPTO"})
+      ticker_change_fixture(%{ticker: "TSLA", original_ticker: "XPTO"})
+
+      report = Investment.make_report(position)
+
+      assert Decimal.compare(report.shares, Decimal.new("3.9")) === :eq
+      assert Decimal.compare(report.cost_basis |> Decimal.round(2), Decimal.new("41.54")) === :eq
+    end
+
     test "buying shares" do
       order = %Order{
         type: :buy,

@@ -133,7 +133,10 @@ defmodule Profitry.Investment.Positions do
   """
   @spec make_report(Position.t(), Quote.t() | nil) :: PositionReport.t()
   def make_report(position, quote \\ nil) do
-    splits = Investment.find_splits(position.ticker)
+    splits =
+      Investment.fetch_historical_tickers(position.ticker)
+      |> Enum.reduce([], fn ticker, acc -> [Investment.find_splits(ticker) | acc] end)
+      |> List.flatten()
 
     preload_orders(position)
     |> Reports.make_report(quote, splits)
