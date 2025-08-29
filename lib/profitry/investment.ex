@@ -21,7 +21,7 @@ defmodule Profitry.Investment do
   defdelegate delete_position(position), to: Positions
   defdelegate change_position(position, attrs \\ %{}), to: Positions
   defdelegate get_position!(id), to: Positions
-  defdelegate find_position(portfolio, ticker), to: Positions
+  defdelegate find_portfolio_position(portfolio, ticker), to: Positions
   defdelegate preload_orders(position), to: Positions
   defdelegate make_report(position, quote), to: Positions
   defdelegate make_report(position), to: Positions
@@ -49,4 +49,5 @@ defmodule Profitry.Investment do
   defdelegate get_ticker_change!(id), to: TickerChanges
   defdelegate find_recent_ticker(ticker), to: TickerChanges
   defdelegate fetch_historical_tickers(ticker), to: TickerChanges
+  defdelegate find_position_by_ticker(positions, ticker), to: TickerChanges
 end

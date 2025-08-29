@@ -120,8 +120,8 @@ defmodule Profitry.Investment.Positions do
         nil
 
   """
-  @spec find_position(Portfolio.t(), String.t()) :: Position.t() | nil
-  def find_position(%Portfolio{} = portfolio, ticker) do
+  @spec find_portfolio_position(Portfolio.t(), String.t()) :: Position.t() | nil
+  def find_portfolio_position(%Portfolio{} = portfolio, ticker) do
     portfolio = Repo.preload(portfolio, :positions)
     Enum.find(portfolio.positions, &(&1.ticker === ticker))
   end

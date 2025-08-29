@@ -6,7 +6,7 @@ defmodule Profitry.Investment.TickerChanges do
   """
   alias Ecto.Changeset
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.TickerChange
+  alias Profitry.Investment.Schema.{TickerChange, Position}
 
   @doc """
 
@@ -124,10 +124,10 @@ defmodule Profitry.Investment.TickerChanges do
 
   ## Examples
 
-      iex> find_recent_ticker(PTRA)
+      iex> find_recent_ticker("PTRA")
       "PTRAQ"
 
-      iex> find_recent_ticker(TSLA)
+      iex> find_recent_ticker("TSLA")
       "TSLA"
 
   """
@@ -154,5 +154,24 @@ defmodule Profitry.Investment.TickerChanges do
       nil ->
         acc
     end
+  end
+
+  @doc """
+
+  Finds the position for a stock ticker, taking into account all the historical ticker names
+
+  ## Examples
+
+      iex> find_position("PTRA")
+      %Position{ticker: "PTRAQ"}
+
+      iex> find_position("XPTO")
+      nil
+
+  """
+  @spec find_position_by_ticker([Position.t()], String.t()) :: Position.t() | nil
+  def find_position_by_ticker(positions, ticker) do
+    tickers = fetch_historical_tickers(ticker)
+    Enum.find(positions, fn position -> Enum.member?(tickers, position.ticker) end)
   end
 end

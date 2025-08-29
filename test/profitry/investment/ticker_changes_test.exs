@@ -102,5 +102,16 @@ defmodule Profitry.Investment.TickerChangesTest do
       assert Investment.fetch_historical_tickers(ticker_change.original_ticker) === hist_tickers
       assert Investment.fetch_historical_tickers(ticker_change.ticker) === hist_tickers
     end
+
+    test "find_position_by_ticker/2 finds the position for an historical ticker" do
+      {portfolio, position1} = position_fixture()
+      position2 = position_fixture(portfolio, %{ticker: "AAPL"})
+      ticker_change = ticker_change_fixture()
+
+      assert Investment.find_position_by_ticker([position1, position2], position2.ticker) === position2
+      assert Investment.find_position_by_ticker([position1, position2], position1.ticker) === position1
+      assert Investment.find_position_by_ticker([position1, position2], ticker_change.original_ticker) === position2
+      assert Investment.find_position_by_ticker([position1, position2], ticker_change.ticker) === position2
+    end
   end
 end

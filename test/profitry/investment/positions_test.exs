@@ -68,11 +68,11 @@ defmodule Profitry.Investment.PositionsTest do
              |> Repo.preload(:portfolio) === position
     end
 
-    test "find_position/2 finds an existing position in a portfolio" do
+    test "find_portfolio_position/2 finds an existing position in a portfolio" do
       {portfolio, position} = position_fixture()
 
       assert %Position{ticker: ticker, id: id} =
-               Investment.find_position(portfolio, position.ticker)
+               Investment.find_portfolio_position(portfolio, position.ticker)
 
       assert id == position.id
       assert ticker == position.ticker
