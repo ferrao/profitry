@@ -47,5 +47,6 @@ defmodule Profitry.Investment do
   defdelegate change_ticker_change(ticker_change, attrs \\ %{}), to: TickerChanges
   defdelegate list_ticker_changes(), to: TickerChanges
   defdelegate get_ticker_change!(id), to: TickerChanges
-  defdelegate find_ticker(ticker), to: TickerChanges
+  defdelegate find_recent_ticker(ticker), to: TickerChanges
+  defdelegate fetch_historical_tickers(ticker), to: TickerChanges
 end

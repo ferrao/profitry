@@ -72,7 +72,7 @@ defmodule Profitry.Investment.TickerChangesTest do
       assert_raise Ecto.NoResultsError, fn -> Repo.get!(TickerChange, ticker_change.id) end
     end
 
-    test "find_ticker/1 finds the most up to date ticker" do
+    test "find_recent_ticker/1 finds the most up to date ticker" do
       first_ticker = "XXXX"
       ticker_change = ticker_change_fixture()
 
@@ -82,9 +82,25 @@ defmodule Profitry.Investment.TickerChangesTest do
         date: Date.add(ticker_change.date, -365)
       })
 
-      assert Investment.find_ticker(first_ticker) == ticker_change.ticker
-      assert Investment.find_ticker(ticker_change.original_ticker) == ticker_change.ticker
-      assert Investment.find_ticker(ticker_change.ticker) == ticker_change.ticker
+      assert Investment.find_recent_ticker(first_ticker) == ticker_change.ticker
+      assert Investment.find_recent_ticker(ticker_change.original_ticker) == ticker_change.ticker
+      assert Investment.find_recent_ticker(ticker_change.ticker) == ticker_change.ticker
+    end
+
+    test "fetch_historical_tickers/1 fetches all relevant tickers for a stock" do
+      first_ticker = "XXXX"
+      ticker_change = ticker_change_fixture()
+      hist_tickers = [first_ticker, ticker_change.original_ticker, ticker_change.ticker]
+
+      Repo.insert!(%TickerChange{
+        ticker: ticker_change.original_ticker,
+        original_ticker: first_ticker,
+        date: Date.add(ticker_change.date, -365)
+      })
+
+      assert Investment.fetch_historical_tickers(first_ticker) === hist_tickers
+      assert Investment.fetch_historical_tickers(ticker_change.original_ticker) === hist_tickers
+      assert Investment.fetch_historical_tickers(ticker_change.ticker) === hist_tickers
     end
   end
 end

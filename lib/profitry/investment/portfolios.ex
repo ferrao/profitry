@@ -146,7 +146,7 @@ defmodule Profitry.Investment.Portfolios do
       |> Repo.preload(positions: filter_query(filter_param))
 
     for position <- portfolio.positions do
-      ticker = Investment.find_ticker(position.ticker)
+      ticker = Investment.find_recent_ticker(position.ticker)
       quote = Profitry.get_quote(ticker)
 
       Investment.make_report(position, quote)

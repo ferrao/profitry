@@ -21,7 +21,7 @@ defmodule Profitry.Investment.TickerChanges do
       {:error, %Ecto.Changeset{}}
 
   """
-  @spec create_ticker_change(map()) :: {:ok, TickerChange.t()}
+  @spec create_ticker_change(map()) :: {:ok, TickerChange.t()} | {:error, Ecto.Changeset.t()}
   def create_ticker_change(attrs \\ %{}) do
     %TickerChange{}
     |> TickerChange.changeset(attrs)
@@ -122,12 +122,37 @@ defmodule Profitry.Investment.TickerChanges do
 
   Finds the most up to date ticker for a ticker name
 
+  ## Examples
+
+      iex> find_recent_ticker(PTRA)
+      "PTRAQ"
+
+      iex> find_recent_ticker(TSLA)
+      "TSLA"
+
   """
-  @spec find_ticker(String.t()) :: String.t()
-  def find_ticker(ticker) do
+  @spec find_recent_ticker(String.t()) :: String.t()
+  def find_recent_ticker(ticker) do
     case Repo.get_by(TickerChange, original_ticker: ticker) do
-      %TickerChange{ticker: updated_ticker} -> find_ticker(updated_ticker)
+      %TickerChange{ticker: updated_ticker} -> find_recent_ticker(updated_ticker)
       nil -> ticker
+    end
+  end
+
+  @spec fetch_historical_tickers(String.t()) :: [String.t()]
+  def fetch_historical_tickers(ticker) do
+    recent_ticker = find_recent_ticker(ticker)
+    fetch_historical_tickers(recent_ticker, [recent_ticker])
+  end
+
+  @spec fetch_historical_tickers(String.t(), [String.t()]) :: [String.t()]
+  defp fetch_historical_tickers(ticker, acc) do
+    case Repo.get_by(TickerChange, ticker: ticker) do
+      %TickerChange{original_ticker: original_ticker} ->
+        fetch_historical_tickers(original_ticker, [original_ticker | acc])
+
+      nil ->
+        acc
     end
   end
 end

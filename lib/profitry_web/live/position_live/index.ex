@@ -45,7 +45,7 @@ defmodule ProfitryWeb.PositionLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     position = Investment.get_position!(id)
-    ticker = Investment.find_ticker(position.ticker)
+    ticker = Investment.find_recent_ticker(position.ticker)
 
     socket
     |> assign(:page_title, "Edit Position")
