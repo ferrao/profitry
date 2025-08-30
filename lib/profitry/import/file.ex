@@ -31,7 +31,7 @@ defmodule Profitry.Import.File do
 
     trades
     |> Enum.map(&Trades.convert/1)
-    |> Enum.map(fn order -> insert_order(portfolio.positions, order) end)
+    |> Enum.map(fn order_attrs -> insert_order(portfolio.positions, order_attrs) end)
     |> Enum.map(fn {:ok, order} -> order end)
   end
 
@@ -55,8 +55,11 @@ defmodule Profitry.Import.File do
     portfolio_tickers =
       portfolio.positions
       |> Enum.map(fn position -> position.ticker end)
+      |> Enum.map(&Investment.find_recent_ticker/1)
 
     tickers
+    |> Enum.map(&Investment.find_recent_ticker/1)
+    |> Enum.uniq()
     |> Enum.filter(fn ticker -> !Enum.member?(portfolio_tickers, ticker) end)
     |> Enum.map(fn ticker -> Investment.create_position(portfolio, %{ticker: ticker}) end)
     |> Enum.map(fn {:ok, position} -> position end)
@@ -65,7 +68,7 @@ defmodule Profitry.Import.File do
   @doc false
   @spec insert_order(list(Position.t()), Trades.attrs()) :: {:ok, Order.t()}
   def insert_order(positions, attrs) do
-    position = Enum.find(positions, fn position -> position.ticker == attrs.ticker end)
+    position = Investment.find_position_by_ticker(positions, attrs.ticker)
     Investment.create_order(position, attrs)
   end
 end

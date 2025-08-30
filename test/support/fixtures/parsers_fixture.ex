@@ -27,7 +27,7 @@ defmodule Profitry.ParsersFixtures do
       %Trade{
         asset: :stock,
         currency: "USD",
-        ticker: "TSLA",
+        ticker: "XXXX",
         quantity: Decimal.new("-100"),
         price: Decimal.new("1100"),
         fees: Decimal.new("0.5729"),

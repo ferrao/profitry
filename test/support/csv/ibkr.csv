@@ -111,8 +111,8 @@ Collateral for Customer Borrowing,Data,Total,,,,,"136,419.15",,"124,159.44",,"12
 Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
 Trades,Data,Order,Stocks,USD,CLOV,"2021-11-19, 10:38:39",100,5.69,5.75,-569,-1,570,0,6,O
 Trades,SubTotal,,Stocks,USD,CLOV,,100,,,-569,-1,570,0,6,
-Trades,Data,Order,Stocks,USD,TSLA,"2021-11-19, 16:20:00",-100,1100,1137.06,110000,-0.5729,-70474,39794.681373,-3706,A;C
-Trades,Total,,Stocks,USD,,,,,,-2569,-1.5729,42096,39794.681373,-20974, 
+Trades,Data,Order,Stocks,USD,XXXX,"2021-11-19, 16:20:00",-100,1100,1137.06,110000,-0.5729,-70474,39794.681373,-3706,A;C
+Trades,Total,,Stocks,USD,,,,,,-2569,-1.5729,42096,39794.681373,-20974,
 Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,MTM P/L,Code
 Trades,Data,Order,Equity and Index Options,USD,SOFI 18FEB22 17.5 C,"2021-12-03, 12:47:43",1,1.8,1.85,-180,-1.02135,181.02135,0,5,O
 Trades,SubTotal,,Equity and Index Options,USD,SOFI 18FEB22 17.5 C,,1,,,-180,-1.02135,181.02135,0,5,
@@ -122,7 +122,7 @@ Trades,Data,Order,Equity and Index Options,USD,TSLA 17DEC21 1100.0 P,"2021-12-17
 Trades,SubTotal,,Equity and Index Options,USD,TSLA 17DEC21 1100.0 P,,0,,,4400,-1.03579,0,0,15558,
 Trades,Data,Order,Equity and Index Options,USD,TSLA 21JAN22 1100.0 C,"2021-12-21, 09:37:55",-1,14,15.8028,1400,-1.02049,-1398.97951,0,-180.28,O
 Trades,SubTotal,,Equity and Index Options,USD,TSLA 21JAN22 1100.0 C,,-1,,,1400,-1.02049,-1398.97951,0,-180.28,
-Trades,Total,,Equity and Index Options,USD,,,,,,6954,-9.6606218,-1920.5408662,0,19574.67, 
+Trades,Total,,Equity and Index Options,USD,,,,,,6954,-9.6606218,-1920.5408662,0,19574.67,
 Transfers,Header,Asset Category,Currency,Symbol,Date,Type,Direction,Xfer Company,Xfer Account,Qty,Xfer Price,Market Value,Realized P/L,Cash Amount,Code
 Transfers,Data,Stocks,USD,SSYS,2021-04-28,FOP,In,--,FOP,45,--,"1,091.70",0.00,0.00,
 Transfers,Data,Stocks,USD,TSLA,2021-04-28,FOP,In,--,FOP,125,--,"88,092.50",0.00,0.00,
@@ -236,7 +236,7 @@ Codes,Data,XCH,Mutual Fund Exchange Transaction
 Notes/Legal Notes,Header,Type,Note
 Notes/Legal Notes,Data,Notes,"Most stock exchange transactions settle on the trade date plus two business days. Options, futures and US open-end mutual fund transactions settle on trade date plus one business day. (Some exchanges and other transaction types may have longer or shorter settlement periods.) Ending settled cash reflects the cash that has actually settled.  "
 Notes/Legal Notes,Data,Notes,Initial and maintenance margin requirements are available within the Account Window of the Trader Workstation.
-Notes/Legal Notes,Data,Notes,Quantities preceded by a "-" sign indicate sell transactions. Other transactions are purchases. 
+Notes/Legal Notes,Data,Notes,Quantities preceded by a "-" sign indicate sell transactions. Other transactions are purchases.
 Notes/Legal Notes,Data,Notes,"IB acts as agent in executing the fractional share portion of your order. In certain circumstances, IB routes the fractional portion of your order to an affiliate, which may execute the fractional portion of the order as principal. In such circumstances, this is indicated by the codes associated with the trade. If an IB affiliate acts as principal in executing any fractional share portion of your order, the order will be executed at the price displayed for the opposite side of the NBBO from your order (the offer if you are buying and the bid if you are selling) at the time of execution. If an IB affiliate is acting as riskless principal in connection with filling the fractional share portion of your order, the affiliate will execute the fractional share portion of your order at the price it receives for the execution of the whole share."
 Notes/Legal Notes,Data,Notes,"In case of partial executions, commissions are charged on the total quantity executed on the original order. The commission is displayed on the first partial execution only."
 Notes/Legal Notes,Data,Notes,Each closed lot indicated above with a reference to note (6) was chosen by the end of the trading day to be sold versus the specific opening purchase identified in that row.
