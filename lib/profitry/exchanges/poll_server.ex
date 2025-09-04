@@ -61,7 +61,7 @@ defmodule Profitry.Exchanges.PollServer do
   ticker updates and starts the server polling loop
 
   """
-  @impl true
+  @impl GenServer
   def init({exchange_client, tickers, interval, topics}) do
     state = %__MODULE__{
       tickers: tickers,
@@ -76,33 +76,33 @@ defmodule Profitry.Exchanges.PollServer do
     {:ok, state, {:continue, :sub}}
   end
 
-  @impl true
+  @impl GenServer
   def handle_continue(:sub, %__MODULE__{topics: nil} = state) do
     :ok = Exchanges.subscribe_ticker_updates()
     {:noreply, state, {:continue, :start}}
   end
 
-  @impl true
+  @impl GenServer
   def handle_continue(:sub, %__MODULE__{topics: %{ticker_updates: ticker_updates}} = state) do
     :ok = Exchanges.subscribe_ticker_updates(ticker_updates)
     {:noreply, state, {:continue, :start}}
   end
 
-  @impl true
+  @impl GenServer
   def handle_continue(:start, state) do
     send(self(), :tick)
     {:noreply, state}
   end
 
   # tickers list is empty, just schedule another run
-  @impl true
+  @impl GenServer
   def handle_info(:tick, %{tickers: [], interval: interval} = state) do
     Process.send_after(self(), :tick, interval)
     {:noreply, state}
   end
 
   # fetch one quote from the ticker list and schedule another run
-  @impl true
+  @impl GenServer
   def handle_info(:tick, state) do
     %{
       index: index,
@@ -129,7 +129,7 @@ defmodule Profitry.Exchanges.PollServer do
   end
 
   # add a new ticker to the list of tickers to fetch
-  @impl true
+  @impl GenServer
   def handle_info(ticker, %{tickers: tickers, client: client, client_opts: options} = state)
       when is_binary(ticker) do
     Logger.info("Adding #{ticker} to ticker list")

@@ -30,7 +30,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
     GenServer.start_link(__MODULE__, {backlog_size, topic}, name: server_name)
   end
 
-  @impl true
+  @impl GenServer
   def init({backlog_size, topic}) do
     {:ok,
      %__MODULE__{
@@ -40,19 +40,19 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
      }, {:continue, :subscribe}}
   end
 
-  @impl true
+  @impl GenServer
   def handle_continue(:subscribe, %__MODULE__{topic: nil} = state) do
     Exchanges.subscribe_quotes()
     {:noreply, state}
   end
 
-  @impl true
+  @impl GenServer
   def handle_continue(:subscribe, %__MODULE__{topic: topic} = state) do
     Exchanges.subscribe_quotes(topic)
     {:noreply, state}
   end
 
-  @impl true
+  @impl GenServer
   def handle_info({:new_quote, quote}, state) do
     ticker_quotes = Map.get(state.quotes, quote.ticker) || []
     new_ticker_quotes = [quote | ticker_quotes] |> Enum.take(state.backlog_size)
@@ -63,7 +63,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
     {:noreply, new_state}
   end
 
-  @impl true
+  @impl GenServer
   def handle_call({:list_quotes, ticker}, _from, state) do
     {:reply, Map.get(state.quotes, ticker), state}
   end
