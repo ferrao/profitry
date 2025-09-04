@@ -7,10 +7,9 @@ defmodule Profitry.Investment.Reports do
 
   import Profitry.Utils.Date
 
-  alias Profitry.Investment.Schema.Split
+  alias Profitry.Investment
   alias Profitry.Exchanges.Schema.Quote
-  alias Profitry.Investment.Schema.OptionsReport
-  alias Profitry.Investment.Schema.{Position, PositionReport, Order, Option}
+  alias Profitry.Investment.Schema.{Position, PositionReport, Order, Option, OptionsReport, Split}
 
   import Profitry.Investment.Schema.Option, only: [option_value: 1]
 
@@ -96,7 +95,7 @@ defmodule Profitry.Investment.Reports do
     |> PositionReport.calculate_profit(quote_price)
     |> PositionReport.calculate_value(quote_price)
     |> Map.put(:price, quote_price || Decimal.new(0))
-    |> Map.put(:ticker, report.ticker)
+    |> Map.put(:ticker, Investment.find_recent_ticker(report.ticker))
   end
 
   # buy stock

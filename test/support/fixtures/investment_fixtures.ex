@@ -105,7 +105,7 @@ defmodule Profitry.InvestmentFixtures do
   def split_fixture(attrs \\ %{}) do
     %Split{
       ticker: "TSLA",
-      multiple: 3,
+      multiple: Decimal.new("3"),
       reverse: false,
       date: ~D[2023-01-02]
     }

@@ -43,14 +43,96 @@ Profitry.Repo.insert!(%Split{
 })
 
 Profitry.Repo.insert!(%Split{
-  ticker: "VLDX",
+  ticker: "VLD",
   multiple: 35,
   reverse: true,
-  date: ~D[2024-06-12]
+  date: ~D[2024-06-11]
+})
+
+Profitry.Repo.insert!(%Split{
+  ticker: "VLDX",
+  multiple: 15,
+  reverse: true,
+  date: ~D[2025-07-28]
+})
+
+Profitry.Repo.insert!(%Split{
+  ticker: "MILE",
+  multiple: 19,
+  reverse: true,
+  date: ~D[2022-07-28]
+})
+
+Profitry.Repo.insert!(%Split{
+  ticker: "LTHM",
+  multiple: 2.406,
+  reverse: false,
+  date: ~D[2024-01-04]
+})
+
+Profitry.Repo.insert!(%Split{
+  ticker: "UNG",
+  multiple: 4,
+  reverse: true,
+  date: ~D[2024-01-24]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "UNG",
+  original_ticker: "UNG1",
+  date: ~D[2024-01-24]
 })
 
 Profitry.Repo.insert!(%TickerChange{
   ticker: "PTRAQ",
   original_ticker: "PTRA",
   date: ~D[2023-08-17]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "LMND",
+  original_ticker: "MILE",
+  date: ~D[2023-07-28]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "APPHQ",
+  original_ticker: "APPH",
+  date: ~D[2023-08-02]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "ALTM",
+  original_ticker: "LTHM",
+  date: ~D[2024-01-04]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "CSGP",
+  original_ticker: "MTTR",
+  date: ~D[2025-02-28]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "VLDX",
+  original_ticker: "VLD",
+  date: ~D[2024-09-11]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "VLDXD",
+  original_ticker: "VLDX",
+  date: ~D[2025-07-28]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "VELO",
+  original_ticker: "VLDXD",
+  date: ~D[2025-08-19]
+})
+
+Profitry.Repo.insert!(%TickerChange{
+  ticker: "XYZ",
+  original_ticker: "SQ",
+  date: ~D[2025-01-21]
 })

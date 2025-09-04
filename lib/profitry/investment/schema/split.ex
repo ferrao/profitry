@@ -12,7 +12,7 @@ defmodule Profitry.Investment.Schema.Split do
 
   @type t :: %__MODULE__{
           ticker: String.t() | nil,
-          multiple: integer() | nil,
+          multiple: Decimal.t() | nil,
           reverse: boolean() | nil,
           date: Date.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
@@ -21,7 +21,7 @@ defmodule Profitry.Investment.Schema.Split do
 
   schema "splits" do
     field :ticker, :string
-    field :multiple, :integer
+    field :multiple, :decimal
     field :reverse, :boolean
     field :date, :date
 

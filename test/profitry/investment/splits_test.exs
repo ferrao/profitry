@@ -17,7 +17,7 @@ defmodule Profitry.Investment.SplitsTest do
 
       assert {:ok, %Split{} = split} = Investment.create_split(attrs)
       assert split.ticker === String.upcase(attrs.ticker)
-      assert split.multiple === String.to_integer(attrs.multiple)
+      assert Decimal.eq?(split.multiple, Decimal.new(attrs.multiple)) === true
       assert split.reverse === attrs.reverse
       assert split.date === Date.from_iso8601!(attrs.date)
       assert split === Repo.get!(Split, split.id)
