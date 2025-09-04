@@ -181,5 +181,8 @@ defmodule Profitry.Investment.Portfolios do
     |> distinct(true)
     |> order_by([p], p.ticker)
     |> Repo.all()
+    |> Enum.map(&Investment.find_recent_ticker/1)
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 end

@@ -110,12 +110,14 @@ defmodule Profitry.Investment.PortfoliosTest do
       assert report2.ticker === ticker_change.ticker
     end
 
-    test "list_tickers/0 lists tickers for all portfolios" do
+    test "list_tickers/0 lists most recent tickers for all portfolios" do
+      ticker_change_fixture(%{ticker: "PTRAQ", original_ticker: "PTRA"})
       position_fixture()
       portfolio = portfolio_fixture(%{broker: "HOOD", description: "RobinHood"})
       position_fixture(portfolio, %{ticker: "SOFI"})
+      position_fixture(portfolio, %{ticker: "PTRA"})
 
-      assert Investment.list_tickers() === ["SOFI", "TSLA"]
+      assert Investment.list_tickers() === ["PTRAQ", "SOFI", "TSLA"]
     end
   end
 end
