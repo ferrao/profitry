@@ -1,5 +1,7 @@
 defmodule Profitry.Investment.TickerChangesTest do
-  use Profitry.DataCase, async: true
+  # Running tests synchronously as they test PubSub events on a hardcoded topic
+  # and would otherwise interfere with each other.
+  use Profitry.DataCase, async: false
 
   import Profitry.InvestmentFixtures
 
@@ -121,6 +123,42 @@ defmodule Profitry.Investment.TickerChangesTest do
 
       assert Investment.find_position_by_ticker([position1, position2], ticker_change.ticker) ===
                position2
+    end
+  end
+
+  describe "broadcasting" do
+    setup do
+      :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, "update_tickers")
+      :ok
+    end
+
+    test "create_ticker_change/1 broadcasts a message on success" do
+      attrs = %{
+        ticker: "aapl",
+        original_ticker: "aaaa",
+        date: "2024-01-01"
+      }
+
+      {:ok, _ticker_change} = Investment.create_ticker_change(attrs)
+
+      assert_receive {:ticker_changed, "AAAA", "AAPL"}, 100
+    end
+
+    test "create_ticker_change/1 does not broadcast a message on error" do
+      Investment.create_ticker_change(%{})
+      refute_receive _, 100
+    end
+
+    test "update_ticker_change/2 broadcasts a message on success" do
+      ticker_change = ticker_change_fixture()
+      Investment.update_ticker_change(ticker_change, %{ticker: "BBBB"})
+      assert_receive {:ticker_config_changed}, 100
+    end
+
+    test "delete_ticker_change/1 broadcasts a message on success" do
+      ticker_change = ticker_change_fixture()
+      Investment.delete_ticker_change(ticker_change)
+      assert_receive {:ticker_config_changed}, 100
     end
   end
 end

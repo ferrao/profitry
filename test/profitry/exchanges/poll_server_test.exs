@@ -92,4 +92,38 @@ defmodule Profitry.Exchanges.PollServerTest do
       assert tickers === state.tickers
     end
   end
+
+  describe "event handling" do
+    test "updates the ticker list when a ticker changes" do
+      tickers = ["OLD", "AAPL"]
+
+      start_supervised!(
+        {PollServer,
+         {DummyClient, tickers: tickers, interval: 0, topics: @topics, name: __MODULE__}}
+      )
+
+      Phoenix.PubSub.broadcast(
+        Profitry.PubSub,
+        @topics.ticker_updates,
+        {:ticker_changed, "OLD", "NEW"}
+      )
+
+      # Give PollServer time to receive the messages
+      Process.sleep(100)
+
+      state = :sys.get_state(__MODULE__)
+      assert state.tickers === ["NEW", "AAPL"]
+    end
+
+    test "restarts when the ticker configuration changes" do
+      {:ok, pid} =
+        start_supervised({PollServer, {DummyClient, name: __MODULE__, topics: @topics}})
+
+      monitor = Process.monitor(pid)
+
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.ticker_updates, {:ticker_config_changed})
+
+      assert_receive {:DOWN, ^monitor, :process, _, _}, 100
+    end
+  end
 end

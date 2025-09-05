@@ -14,7 +14,7 @@ defmodule Profitry.Exchanges.PollServer do
   @type t :: %__MODULE__{
           tickers: list(String.t()),
           interval: number(),
-          topics: Exchanges.topics(),
+          topics: Exchanges.topics() | nil,
           index: number(),
           warm: boolean(),
           client: module(),
@@ -129,6 +129,28 @@ defmodule Profitry.Exchanges.PollServer do
   end
 
   # add a new ticker to the list of tickers to fetch
+  @impl GenServer
+  def handle_info({:ticker_config_changed}, state) do
+    # A ticker change was updated/deleted. Restarting is the simplest way to
+    # ensure the server reloads its state from the database with the new rules.
+    Logger.warning("Ticker configuration changed. Restarting poll server to reload.")
+
+    {:stop, :normal, state}
+  end
+
+  @impl GenServer
+  def handle_info({:ticker_changed, old, new}, state) do
+    Logger.info("Ticker changed from #{old} to #{new}. Updating poll list.")
+
+    new_tickers =
+      state.tickers
+      |> List.delete(old)
+      |> List.insert_at(0, new)
+      |> Enum.uniq()
+
+    {:noreply, %{state | tickers: new_tickers}}
+  end
+
   @impl GenServer
   def handle_info(ticker, %{tickers: tickers, client: client, client_opts: options} = state)
       when is_binary(ticker) do

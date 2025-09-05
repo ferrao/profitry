@@ -6,15 +6,17 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   """
   use GenServer
 
+  require Logger
+
   alias Profitry.Exchanges
   alias Profitry.Exchanges.Schema.Quote
 
   @type t() :: %__MODULE__{
           backlog_size: integer(),
           quotes: %{String.t() => list(Quote.t())},
-          topic: String.t()
+          topics: Exchanges.topics() | nil
         }
-  defstruct [:backlog_size, :quotes, :topic]
+  defstruct [:backlog_size, :quotes, :topics]
 
   @doc """
 
@@ -25,31 +27,65 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   def start_link(opts \\ []) do
     backlog_size = Keyword.get(opts, :backlog_size, 1)
     server_name = Keyword.get(opts, :name, __MODULE__)
-    topic = Keyword.get(opts, :topic, nil)
+    topics = Keyword.get(opts, :topics, nil)
 
-    GenServer.start_link(__MODULE__, {backlog_size, topic}, name: server_name)
+    GenServer.start_link(__MODULE__, {backlog_size, topics}, name: server_name)
   end
 
   @impl GenServer
-  def init({backlog_size, topic}) do
+  def init({backlog_size, topics}) do
     {:ok,
      %__MODULE__{
        backlog_size: backlog_size,
        quotes: %{},
-       topic: topic
+       topics: topics
      }, {:continue, :subscribe}}
   end
 
   @impl GenServer
-  def handle_continue(:subscribe, %__MODULE__{topic: nil} = state) do
+  def handle_continue(:subscribe, %{topics: nil} = state) do
     Exchanges.subscribe_quotes()
+    Exchanges.subscribe_ticker_updates()
     {:noreply, state}
   end
 
   @impl GenServer
-  def handle_continue(:subscribe, %__MODULE__{topic: topic} = state) do
-    Exchanges.subscribe_quotes(topic)
+  def handle_continue(:subscribe, %{topics: topics} = state) do
+    Exchanges.subscribe_quotes(topics[:quotes])
+    Exchanges.subscribe_ticker_updates(topics[:ticker_updates])
     {:noreply, state}
+  end
+
+  @impl GenServer
+  def handle_info({:ticker_config_changed}, state) do
+    # A ticker change was updated/deleted. Restarting is the simplest way to
+    # flush the cache and ensure consistency with the new rules.
+    Logger.warning("Ticker configuration changed. Restarting history subscriber to flush cache.")
+
+    {:stop, :normal, state}
+  end
+
+  @impl GenServer
+  def handle_info({:ticker_changed, old, new}, state) do
+    Logger.info("Migrating history for ticker #{old} to #{new}.")
+
+    case Map.get(state.quotes, old) do
+      nil ->
+        # No history for the old ticker, do nothing
+        {:noreply, state}
+
+      old_quotes ->
+        # Combine old history with the new ticker's existing history (if any)
+        new_ticker_existing_quotes = Map.get(state.quotes, new, [])
+
+        combined_quotes =
+          (new_ticker_existing_quotes ++ old_quotes)
+          |> Enum.uniq()
+          |> Enum.take(state.backlog_size)
+
+        new_quotes_map = Map.put(state.quotes, new, combined_quotes)
+        {:noreply, %{state | quotes: new_quotes_map}}
+    end
   end
 
   @impl GenServer

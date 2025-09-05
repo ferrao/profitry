@@ -5,6 +5,7 @@ defmodule Profitry.Investment.TickerChanges do
 
   """
   alias Ecto.Changeset
+  alias Profitry.Exchanges
   alias Profitry.Repo
   alias Profitry.Investment.Schema.{TickerChange, Position}
 
@@ -26,6 +27,15 @@ defmodule Profitry.Investment.TickerChanges do
     %TickerChange{}
     |> TickerChange.changeset(attrs)
     |> Repo.insert()
+    |> tap(fn
+      {:ok, ticker_change} ->
+        Exchanges.broadcast_ticker_update(
+          {:ticker_changed, ticker_change.original_ticker, ticker_change.ticker}
+        )
+
+      _ ->
+        nil
+    end)
   end
 
   @doc """
@@ -80,6 +90,10 @@ defmodule Profitry.Investment.TickerChanges do
     ticker_change
     |> TickerChange.changeset(attrs)
     |> Repo.update()
+    |> tap(fn
+      {:ok, _} -> Exchanges.broadcast_ticker_update({:ticker_config_changed})
+      _ -> nil
+    end)
   end
 
   @doc """
@@ -101,6 +115,10 @@ defmodule Profitry.Investment.TickerChanges do
     ticker_change
     |> change_ticker_change()
     |> Repo.delete()
+    |> tap(fn
+      {:ok, _} -> Exchanges.broadcast_ticker_update({:ticker_config_changed})
+      _ -> nil
+    end)
   end
 
   @doc """

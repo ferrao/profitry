@@ -4,8 +4,11 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
   alias Profitry.Exchanges.Schema.Quote
   alias Profitry.Exchanges.Subscribers.HistorySubscriber
 
-  # override topic to allow for async tests
-  @topic to_string(__MODULE__) <> "_quotes"
+  # override topics to allow for async tests
+  @topics %{
+    quotes: to_string(__MODULE__) <> "_quotes",
+    ticker_updates: to_string(__MODULE__) <> "_ticker_updates"
+  }
 
   @quote1 %Quote{
     exchange: "IBKR",
@@ -50,7 +53,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
       backlog_size = 3
 
       start_supervised!(
-        {HistorySubscriber, backlog_size: backlog_size, topic: @topic, name: __MODULE__}
+        {HistorySubscriber, backlog_size: backlog_size, topics: @topics, name: __MODULE__}
       )
 
       state = :sys.get_state(__MODULE__)
@@ -63,18 +66,18 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
       backlog_size = 2
 
       start_supervised!(
-        {HistorySubscriber, backlog_size: backlog_size, topic: @topic, name: __MODULE__}
+        {HistorySubscriber, backlog_size: backlog_size, topics: @topics, name: __MODULE__}
       )
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote1})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote2})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote3})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote4})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote5})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote6})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote1})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote2})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote3})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote4})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote5})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote6})
 
       # Give HistorySubscriber time to receive the messages
       Process.sleep(100)
@@ -93,15 +96,15 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
       backlog_size = 2
 
       start_supervised!(
-        {HistorySubscriber, backlog_size: backlog_size, topic: @topic, name: __MODULE__}
+        {HistorySubscriber, backlog_size: backlog_size, topics: @topics, name: __MODULE__}
       )
 
       # Give HistorySubscriber time to subscribe to pubsub
       Process.sleep(100)
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote1})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote3})
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topic, {:new_quote, @quote5})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote1})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote3})
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote5})
 
       # Give HistorySubscriber time to receive the messages
       Process.sleep(100)
@@ -110,10 +113,46 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriberTest do
     end
 
     test "does not find quotes for non existing ticker" do
-      start_supervised!({HistorySubscriber, topic: @topic, name: __MODULE__})
+      start_supervised!({HistorySubscriber, topics: @topics, name: __MODULE__})
 
       assert HistorySubscriber.list_quotes(__MODULE__, "TSLA") === []
       assert HistorySubscriber.get_quote(__MODULE__, "TSLA") === nil
+    end
+  end
+
+  describe "event handling" do
+    test "migrates history when a ticker changes" do
+      start_supervised!({HistorySubscriber, topics: @topics, name: __MODULE__})
+      # Allow time for the subscriber to start and subscribe to the PubSub topic.
+      Process.sleep(100)
+
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.quotes, {:new_quote, @quote1})
+      # Allow time for the subscriber to process the async :new_quote event.
+      Process.sleep(100)
+
+      assert HistorySubscriber.list_quotes(__MODULE__, "TSLA") === [@quote1]
+      assert HistorySubscriber.list_quotes(__MODULE__, "NEW") === []
+
+      Phoenix.PubSub.broadcast(
+        Profitry.PubSub,
+        @topics.ticker_updates,
+        {:ticker_changed, "TSLA", "NEW"}
+      )
+
+      # Allow time for the subscriber to process the async :ticker_changed event.
+      Process.sleep(100)
+
+      assert HistorySubscriber.list_quotes(__MODULE__, "TSLA") === [@quote1]
+      assert HistorySubscriber.list_quotes(__MODULE__, "NEW") === [@quote1]
+    end
+
+    test "restarts when the ticker configuration changes" do
+      {:ok, pid} = start_supervised({HistorySubscriber, topics: @topics, name: __MODULE__})
+      monitor = Process.monitor(pid)
+
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.ticker_updates, {:ticker_config_changed})
+
+      assert_receive {:DOWN, ^monitor, :process, _, _}, 100
     end
   end
 end
