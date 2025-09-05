@@ -99,6 +99,12 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
     {:noreply, new_state}
   end
 
+  # Catch-all for any other messages
+  @impl GenServer
+  def handle_info(_message, state) do
+    {:noreply, state}
+  end
+
   @impl GenServer
   def handle_call({:list_quotes, ticker}, _from, state) do
     {:reply, Map.get(state.quotes, ticker), state}
