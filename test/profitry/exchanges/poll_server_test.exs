@@ -66,7 +66,7 @@ defmodule Profitry.Exchanges.PollServerTest do
 
       refute_receive {:neq_qoote}, @message_timeout
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.ticker_updates, ticker)
+      Phoenix.PubSub.broadcast(Profitry.PubSub, @topics.ticker_updates, {:ticker_added, ticker})
 
       assert_receive {:new_quote, received_quote}, @message_timeout
       assert(received_quote.ticker === ticker)
@@ -81,9 +81,23 @@ defmodule Profitry.Exchanges.PollServerTest do
          {DummyClient, tickers: tickers, interval: 0, topics: @topics, name: __MODULE__}}
       )
 
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
-      Phoenix.PubSub.broadcast(Profitry.PubSub, "update_tickers", hd(tickers))
+      Phoenix.PubSub.broadcast(
+        Profitry.PubSub,
+        @topics.ticker_updates,
+        {:ticker_added, hd(tickers)}
+      )
+
+      Phoenix.PubSub.broadcast(
+        Profitry.PubSub,
+        @topics.ticker_updates,
+        {:ticker_added, hd(tickers)}
+      )
+
+      Phoenix.PubSub.broadcast(
+        Profitry.PubSub,
+        @topics.ticker_updates,
+        {:ticker_added, hd(tickers)}
+      )
 
       # Give PollServer time to receive the messages
       Process.sleep(100)

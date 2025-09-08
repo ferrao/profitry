@@ -84,7 +84,7 @@ defmodule ProfitryWeb.PositionLiveTest do
              |> render() =~ "(2 positions)"
 
       ticker = @create_attrs.ticker
-      assert_receive(^ticker)
+      assert_receive {:ticker_added, ^ticker}
     end
 
     test "updates existing position", %{conn: conn, portfolio: portfolio, position: position} do
@@ -118,7 +118,7 @@ defmodule ProfitryWeb.PositionLiveTest do
              |> render() =~ "(1 positions)"
 
       ticker = @update_attrs.ticker
-      assert_receive(^ticker)
+      assert_receive {:ticker_added, ^ticker}
     end
 
     test "deletes an existing position", %{conn: conn, portfolio: portfolio, position: position} do

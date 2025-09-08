@@ -60,7 +60,7 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
   def handle_info({:ticker_config_changed}, state) do
     # A ticker change was updated/deleted. Restarting is the simplest way to
     # flush the cache and ensure consistency with the new rules.
-    Logger.warning("Ticker configuration changed. Restarting history subscriber to flush cache.")
+    Logger.info("Ticker configuration changed. Restarting history subscriber to flush cache.")
 
     {:stop, :normal, state}
   end
@@ -98,6 +98,9 @@ defmodule Profitry.Exchanges.Subscribers.HistorySubscriber do
 
     {:noreply, new_state}
   end
+
+  @impl GenServer
+  def handle_info({:ticker_added, _}, state), do: {:noreply, state}
 
   # Catch-all for any other messages
   @impl GenServer

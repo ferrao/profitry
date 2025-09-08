@@ -133,7 +133,7 @@ defmodule Profitry.Exchanges.PollServer do
   def handle_info({:ticker_config_changed}, state) do
     # A ticker change was updated/deleted. Restarting is the simplest way to
     # ensure the server reloads its state from the database with the new rules.
-    Logger.warning("Ticker configuration changed. Restarting poll server to reload.")
+    Logger.info("Ticker configuration changed. Restarting poll server to reload.")
 
     {:stop, :normal, state}
   end
@@ -152,8 +152,10 @@ defmodule Profitry.Exchanges.PollServer do
   end
 
   @impl GenServer
-  def handle_info(ticker, %{tickers: tickers, client: client, client_opts: options} = state)
-      when is_binary(ticker) do
+  def handle_info(
+        {:ticker_added, ticker},
+        %{tickers: tickers, client: client, client_opts: options} = state
+      ) do
     Logger.info("Adding #{ticker} to ticker list")
 
     fetch_quote(client, ticker, options)

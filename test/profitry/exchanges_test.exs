@@ -58,17 +58,17 @@ defmodule Profitry.ExchangesTest do
     test "broadcast_ticker_update/1 sends ticker update to subscribers" do
       :ok = Phoenix.PubSub.subscribe(Profitry.PubSub, @topic_updates)
 
-      :ok = Exchanges.broadcast_ticker_update(@ticker, @topic_updates)
+      :ok = Exchanges.broadcast_ticker_update({:ticker_added, @ticker}, @topic_updates)
 
-      assert_receive @ticker
+      assert_receive {:ticker_added, @ticker}
     end
 
     test "subscribe_ticker_updates/0 successfully subscribes to ticker updates channel" do
       :ok = Exchanges.subscribe_ticker_updates(@topic_updates)
 
-      :ok = Phoenix.PubSub.broadcast(Profitry.PubSub, @topic_updates, @ticker)
+      :ok = Phoenix.PubSub.broadcast(Profitry.PubSub, @topic_updates, {:ticker_added, @ticker})
 
-      assert_receive @ticker
+      assert_receive {:ticker_added, @ticker}
     end
   end
 end

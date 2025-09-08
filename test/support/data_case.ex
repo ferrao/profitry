@@ -28,11 +28,6 @@ defmodule Profitry.DataCase do
   end
 
   setup tags do
-    # Start PubSub only if it's not already running.
-    if Process.whereis(Profitry.PubSub) == nil do
-      start_supervised!({Phoenix.PubSub, name: Profitry.PubSub})
-    end
-
     Profitry.DataCase.setup_sandbox(tags)
     :ok
   end
