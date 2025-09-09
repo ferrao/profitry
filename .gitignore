@@ -1,5 +1,6 @@
 # Secrets and environment variables
 .envrc
+.mcp.json
 
 # The directory Mix will write compiled artifacts to.
 /_build/
