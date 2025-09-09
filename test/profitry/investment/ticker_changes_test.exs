@@ -33,7 +33,7 @@ defmodule Profitry.Investment.TickerChangesTest do
       assert Investment.list_ticker_changes() === [ticker_change]
     end
 
-    test "get_ticker_changer!/1 returns existing ticker change" do
+    test "get_ticker_change!/1 returns existing ticker change" do
       ticker_change = ticker_change_fixture()
 
       assert Investment.get_ticker_change!(ticker_change.id) === ticker_change

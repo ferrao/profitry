@@ -9,6 +9,8 @@ defmodule Profitry.Exchanges.Supervisor do
   alias Profitry.Exchanges.{Clients, Subscribers}
   alias Profitry.Exchanges.PollServer
 
+  require Logger
+
   @doc """
 
   Starts the Exchanges supervisor
@@ -24,18 +26,21 @@ defmodule Profitry.Exchanges.Supervisor do
     children =
       [
         Subscribers.LogSubscriber,
-        Subscribers.HistorySubscriber,
-        {PollServer, {Clients.Finnhub.FinnhubClient, tickers: Profitry.Investment.list_tickers()}}
-        # {PollServer, {Clients.DummyClient, tickers: ["TSLA", "SOFI", "HOOD"], interval: 5000}}
+        Subscribers.HistorySubscriber
       ]
 
     children =
       if Application.get_env(:profitry, :start_exchanges, true),
-        do: children,
-        else: [
-          Subscribers.HistorySubscriber
-        ]
+        do: children ++ exchange_servers(),
+        else: children
 
     Supervisor.init(children, strategy: :one_for_one)
+  end
+
+  defp exchange_servers do
+    [
+      {PollServer, {Clients.Finnhub.FinnhubClient, tickers: Profitry.Investment.list_tickers()}}
+      # {PollServer, {Clients.DummyClient, tickers: ["TSLA", "SOFI", "HOOD"], interval: 5000}}
+    ]
   end
 end

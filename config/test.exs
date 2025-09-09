@@ -32,7 +32,7 @@ config :swoosh, :api_client, false
 # Print only warnings and errors during test
 config :logger, level: :warning
 
-# Do not start Exchanges supervision tree
+# Do not start polling for exchange data
 config :profitry, :start_exchanges, false
 
 # Enable new user registration
