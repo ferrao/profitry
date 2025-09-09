@@ -51,9 +51,10 @@ defmodule Profitry.Exchanges do
   Publishes a new ticker
 
   """
-  @spec broadcast_ticker_update(String.t(), String.t()) :: :ok | {:error, any()}
-  def broadcast_ticker_update(ticker, topic \\ @ticker_updates) do
-    PubSub.broadcast(Profitry.PubSub, topic, ticker)
+  @spec broadcast_ticker_update(tuple(), String.t()) :: :ok | {:error, any()}
+  def broadcast_ticker_update(message, topic \\ @ticker_updates)
+      when is_tuple(message) and is_atom(elem(message, 0)) do
+    PubSub.broadcast(Profitry.PubSub, topic, message)
   end
 
   @doc """
