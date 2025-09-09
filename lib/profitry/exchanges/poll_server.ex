@@ -170,8 +170,8 @@ defmodule Profitry.Exchanges.PollServer do
   defp update_tickers(tickers, _ticker, _update), do: tickers
 
   @spec handle_quote({:error, any()}, map()) :: :ok
-  defp handle_quote({:error, reason}, _state),
-    do: Logger.warning("Unable to fetch quote: #{reason}")
+  defp handle_quote({:error, reason}, %{tickers: tickers, index: index}),
+    do: Logger.warning("Unable to fetch #{Enum.at(tickers, index)}: #{reason}")
 
   @spec handle_quote({:ok, Quote.t()}, map()) :: :ok | {:error, any()}
   defp handle_quote({:ok, %Quote{} = quote}, %__MODULE__{topics: nil}) do
