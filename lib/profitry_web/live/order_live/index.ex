@@ -18,7 +18,7 @@ defmodule ProfitryWeb.OrderLive.Index do
     position = Investment.get_position!(position_id)
     ticker = Investment.find_recent_ticker(position.ticker)
     orders = Investment.list_orders_by_insertion(position)
-    splits = Investment.find_splits(ticker)
+    splits = Investment.find_splits(position)
     quote = Profitry.get_quote(ticker)
     report = Investment.make_report(position, quote)
 

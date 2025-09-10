@@ -9,7 +9,7 @@ defmodule Profitry.Investment.Splits do
 
   alias Ecto.Changeset
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.Split
+  alias Profitry.Investment.Schema.{Split, Position}
 
   @doc """
 
@@ -48,13 +48,13 @@ defmodule Profitry.Investment.Splits do
 
   @doc """
 
-  Finds all stock splits for a ticker
+  Finds all stock splits for a position, accounting for ticker changes
 
   """
-  @spec find_splits(String.t()) :: list(Split.t())
-  def find_splits(ticker) do
-    where(Split, ticker: ^ticker)
-    |> Repo.all()
+  @spec find_splits(Position.t()) :: list(Split.t())
+  def find_splits(position) do
+    historical_tickers = Profitry.Investment.fetch_historical_tickers(position.ticker)
+    Repo.all(from s in Split, where: s.ticker in ^historical_tickers)
   end
 
   @doc """

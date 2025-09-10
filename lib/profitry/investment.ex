@@ -39,7 +39,7 @@ defmodule Profitry.Investment do
   defdelegate change_split(split, attrs \\ %{}), to: Splits
   defdelegate list_splits(), to: Splits
   defdelegate get_split!(id), to: Splits
-  defdelegate find_splits(ticker), to: Splits
+  defdelegate find_splits(position), to: Splits
 
   defdelegate create_ticker_change(attrs), to: TickerChanges
   defdelegate update_ticker_change(ticker_change, attrs), to: TickerChanges
