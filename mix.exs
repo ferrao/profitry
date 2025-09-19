@@ -69,7 +69,8 @@ defmodule Profitry.MixProject do
       # Dev deps
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev}
+      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:usage_rules, "~> 0.1"}
     ]
   end
 
