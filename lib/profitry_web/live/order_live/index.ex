@@ -90,10 +90,24 @@ defmodule ProfitryWeb.OrderLive.Index do
   end
 
   @impl Phoenix.LiveView
-  def handle_info({ProfitryWeb.OrderLive.FormComponent, {:saved, order, count}}, socket) do
+  def handle_info({ProfitryWeb.OrderLive.FormComponent, {:saved, order, count, false}}, socket) do
+    # Date didn't change, index remains the same - simple update
     socket =
       assign(socket, :count, count)
       |> stream_insert(:orders, order)
+
+    {:noreply, socket}
+  end
+
+  def handle_info({ProfitryWeb.OrderLive.FormComponent, {:saved, _order, count, true}}, socket) do
+    # Date changed, need to recalculate indexes and reset stream
+    position = socket.assigns.position
+    orders = Investment.list_orders_by_insertion(position)
+    indexed_orders = calculate_order_indexes(orders)
+
+    socket =
+      assign(socket, :count, count)
+      |> stream(:orders, indexed_orders, reset: true)
 
     {:noreply, socket}
   end

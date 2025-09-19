@@ -24,13 +24,23 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
   end
 
   def handle_event("save", %{"order" => order_params}, socket) do
-    save_portfolio(socket, socket.assigns.action, order_params)
+    # Check if the date changed to determine if we need to reset the stream
+    date_changed = date_changed?(socket.assigns.order, order_params)
+    save_portfolio(socket, socket.assigns.action, order_params, date_changed)
   end
 
-  defp save_portfolio(socket, :edit, order_paras) do
+  defp date_changed?(%{inserted_at: nil}, _order_params), do: false
+
+  defp date_changed?(%{inserted_at: original_date}, %{"inserted_at" => new_date_str}) do
+    NaiveDateTime.to_iso8601(original_date) != new_date_str
+  end
+
+  defp date_changed?(_original_order, _order_params), do: false
+
+  defp save_portfolio(socket, :edit, order_paras, date_changed) do
     case Investment.update_order(socket.assigns.order, order_paras) do
       {:ok, order} ->
-        notify_parent({:saved, order, socket.assigns.count})
+        notify_parent({:saved, order, socket.assigns.count, date_changed})
 
         {:noreply,
          socket
@@ -42,10 +52,10 @@ defmodule ProfitryWeb.OrderLive.FormComponent do
     end
   end
 
-  defp save_portfolio(socket, :new, order_params) do
+  defp save_portfolio(socket, :new, order_params, _date_changed) do
     case Investment.create_order(socket.assigns.position, order_params) do
       {:ok, order} ->
-        notify_parent({:saved, order, socket.assigns.count + 1})
+        notify_parent({:saved, order, socket.assigns.count + 1, false})
 
         {:noreply,
          socket
