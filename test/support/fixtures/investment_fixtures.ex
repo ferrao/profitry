@@ -6,7 +6,16 @@ defmodule Profitry.InvestmentFixtures do
 
   """
   alias Profitry.Repo
-  alias Profitry.Investment.Schema.{Portfolio, Position, Order, Option, Split, TickerChange}
+
+  alias Profitry.Investment.Schema.{
+    Portfolio,
+    Position,
+    Order,
+    Option,
+    Split,
+    TickerChange,
+    Delisting
+  }
 
   @doc """
 
@@ -125,6 +134,28 @@ defmodule Profitry.InvestmentFixtures do
       date: ~D[2023-01-02]
     }
     |> TickerChange.changeset(attrs)
+    |> Repo.insert!()
+  end
+
+  @doc """
+
+  Generates a delisting
+
+  """
+  def delisting_fixture() do
+    {portfolio, position} = position_fixture()
+    delisting = delisting_fixture(position)
+
+    {portfolio, position, delisting}
+  end
+
+  def delisting_fixture(position, attrs \\ %{}) do
+    %Delisting{
+      delisted_on: ~D[2023-01-02],
+      payout: Decimal.new("0.10")
+    }
+    |> Delisting.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:position, position)
     |> Repo.insert!()
   end
 end
