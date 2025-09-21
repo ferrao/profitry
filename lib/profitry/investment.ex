@@ -1,5 +1,13 @@
 defmodule Profitry.Investment do
-  alias Profitry.Investment.{Portfolios, Positions, Orders, Splits, Reports, TickerChanges}
+  alias Profitry.Investment.{
+    Portfolios,
+    Positions,
+    Orders,
+    Splits,
+    Reports,
+    TickerChanges,
+    Delistings
+  }
 
   @moduledoc """
 
@@ -50,4 +58,13 @@ defmodule Profitry.Investment do
   defdelegate find_recent_ticker(ticker), to: TickerChanges
   defdelegate fetch_historical_tickers(ticker), to: TickerChanges
   defdelegate find_position_by_ticker(positions, ticker), to: TickerChanges
+
+  defdelegate create_delisting(attrs), to: Delistings
+  defdelegate update_delisting(delisting, attrs), to: Delistings
+  defdelegate delete_delisting(delisting), to: Delistings
+  defdelegate change_delisting(delisting, attrs \\ %{}), to: Delistings
+  defdelegate list_delistings(), to: Delistings
+  defdelegate get_delisting!(id), to: Delistings
+  defdelegate find_delisting(position_id), to: Delistings
+  defdelegate position_delisted?(position_id), to: Delistings
 end
