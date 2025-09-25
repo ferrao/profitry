@@ -57,8 +57,9 @@ end
 ### 🔄 Schema Migration Update
 - **Task**: Update migration to use `ticker` instead of `position_id`
 - **File**: `priv/repo/migrations/20250920151055_create_delistings.exs`
-- **Changes**: Replace `position_id` foreign key with `ticker` string field
+- **Changes**: Replace `position_id` foreign key with `ticker` field using `citext` type
 - **Constraints**: Unique index on `ticker`, remove cascade delete
+- **Performance**: Add index on `ticker` field for fast lookups
 
 ### 🔄 Schema Code Update
 - **Task**: Update delisting schema to use `ticker` field
@@ -69,6 +70,7 @@ end
 - **Task**: Update context functions to work with ticker-based lookup
 - **File**: `lib/profitry/investment/delistings.ex`
 - **Changes**: Update functions to use `ticker` instead of `position_id`
+- **Integration**: Use `Investment.find_recent_ticker/1` for ticker resolution
 - **New Functions**:
   - `ticker_delisted?(ticker)` to check delisting status by ticker
   - `get_delisting_by_ticker(ticker)` to find delisting by ticker symbol
@@ -143,7 +145,10 @@ end
 - **File**: `lib/profitry/investment/reports.ex`
 - **Task**: Modify valuation logic to handle delisted positions
 - **Approach**: Use pattern matching to detect delisted positions
+- **Integration**: Use `Investment.find_recent_ticker/1` to resolve ticker changes
+- **Implementation**: In `calculate_report/2`, check if position ticker is delisted
 - **Expected Behavior**: Delisted positions should return zero value plus any payout
+- **Payout Logic**: Calculate payout as `shares * payout_per_share`
 
 ### 🔄 Reports Tests
 - **File**: `test/profitry/investment/reports_test.exs`
