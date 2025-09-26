@@ -65,6 +65,7 @@ defmodule Profitry.Investment do
   defdelegate change_delisting(delisting, attrs \\ %{}), to: Delistings
   defdelegate list_delistings(), to: Delistings
   defdelegate get_delisting!(id), to: Delistings
-  defdelegate find_delisting(position_id), to: Delistings
-  defdelegate position_delisted?(position_id), to: Delistings
+  defdelegate find_delisting_by_ticker(ticker), to: Delistings
+  defdelegate ticker_delisted?(ticker), to: Delistings
+  defdelegate position_delisted?(position), to: Delistings
 end

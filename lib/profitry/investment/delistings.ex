@@ -44,19 +44,19 @@ defmodule Profitry.Investment.Delistings do
 
   @doc """
 
-  Finds a delisting for a position
+  Finds a delisting by ticker
 
   ## Examples
 
-      iex> find_delisting(position_id)
+      iex> find_delisting_by_ticker("AAPL")
       %Delisting{}
 
-      iex> find_delisting(999)
+      iex> find_delisting_by_ticker("INVALID")
       nil
   """
-  @spec find_delisting(integer()) :: Delisting.t() | nil
-  def find_delisting(position_id) do
-    Repo.get_by(Delisting, position_id: position_id)
+  @spec find_delisting_by_ticker(String.t()) :: Delisting.t() | nil
+  def find_delisting_by_ticker(ticker) do
+    Repo.get_by(Delisting, ticker: ticker)
   end
 
   @doc """
@@ -130,18 +130,35 @@ defmodule Profitry.Investment.Delistings do
 
   @doc """
 
-  Checks if a position is delisted.
+  Checks if a ticker is delisted.
 
   ## Examples
 
-      iex> position_delisted?(1)
+      iex> ticker_delisted?("AAPL")
       true
 
-      iex> position_delisted?(2)
+      iex> ticker_delisted?("INVALID")
       false
   """
-  @spec position_delisted?(integer()) :: boolean()
-  def position_delisted?(position_id) do
-    not is_nil(find_delisting(position_id))
+  @spec ticker_delisted?(String.t()) :: boolean()
+  def ticker_delisted?(ticker) do
+    not is_nil(find_delisting_by_ticker(ticker))
+  end
+
+  @doc """
+
+  Checks if a position is delisted by finding its recent ticker.
+
+  ## Examples
+
+      iex> position_delisted?(position)
+      true
+
+      iex> position_delisted?(position)
+      false
+  """
+  @spec position_delisted?(map()) :: boolean()
+  def position_delisted?(position) do
+    ticker_delisted?(position.ticker)
   end
 end

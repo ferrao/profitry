@@ -143,19 +143,16 @@ defmodule Profitry.InvestmentFixtures do
 
   """
   def delisting_fixture() do
-    {portfolio, position} = position_fixture()
-    delisting = delisting_fixture(position)
-
-    {portfolio, position, delisting}
+    delisting_fixture("AAPL")
   end
 
-  def delisting_fixture(position, attrs \\ %{}) do
+  def delisting_fixture(ticker, attrs \\ %{}) do
     %Delisting{
-      delisted_on: ~D[2023-01-02],
-      payout: Decimal.new("0.10")
+      date: ~D[2023-01-02],
+      payout: Decimal.new("0.10"),
+      ticker: ticker
     }
     |> Delisting.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:position, position)
     |> Repo.insert!()
   end
 end
