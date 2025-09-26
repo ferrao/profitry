@@ -2,14 +2,16 @@ defmodule Profitry.Repo.Migrations.CreateDelistings do
   use Ecto.Migration
 
   def change do
+    execute "CREATE EXTENSION IF NOT EXISTS citext", ""
+
     create table(:delistings) do
-      add :delisted_on, :date, null: false
+      add :date, :date, null: false
       add :payout, :decimal, null: false, default: "0.00"
-      add :position_id, references(:positions, on_delete: :delete_all), null: true
+      add :ticker, :citext, null: false
 
       timestamps()
     end
 
-    create unique_index(:delistings, [:position_id])
+    create unique_index(:delistings, [:ticker])
   end
 end

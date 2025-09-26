@@ -5,21 +5,20 @@ defmodule Profitry.Investment.Schema.Delisting do
   use Ecto.Schema
 
   import Ecto.Changeset
-
-  alias Profitry.Investment.Schema.Position
+  import Profitry.Utils.Ecto
 
   @type t :: %__MODULE__{
-          delisted_on: Date.t() | nil,
+          date: Date.t() | nil,
           payout: Decimal.t() | nil,
-          position: Position.t() | Ecto.Association.NotLoaded.t() | nil,
+          ticker: String.t() | nil,
           inserted_at: NaiveDateTime.t() | nil,
           updated_at: NaiveDateTime.t() | nil
         }
 
   schema "delistings" do
-    field :delisted_on, :date
+    field :date, :date
     field :payout, :decimal, default: Decimal.new("0.00")
-    belongs_to :position, Position
+    field :ticker, :string
 
     timestamps()
   end
@@ -30,10 +29,10 @@ defmodule Profitry.Investment.Schema.Delisting do
   @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(delisting, attrs) do
     delisting
-    |> cast(attrs, [:delisted_on, :payout])
-    |> validate_required([:delisted_on])
+    |> cast(attrs, [:date, :payout, :ticker])
+    |> validate_required([:date, :ticker])
     |> validate_number(:payout, greater_than_or_equal_to: 0)
-    |> assoc_constraint(:position)
-    |> unique_constraint(:position_id, message: "Position already delisted")
+    |> capitalize([:ticker])
+    |> unique_constraint(:ticker, message: "Ticker already delisted")
   end
 end
