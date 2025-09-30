@@ -25,7 +25,6 @@ defmodule Profitry.Investment.Reports do
 
   """
   @spec make_report(Position.t(), Quote.t() | nil, list(Split.t())) :: PositionReport.t()
-
   def make_report(
         %Position{id: id, ticker: ticker, orders: orders},
         quote \\ nil,
