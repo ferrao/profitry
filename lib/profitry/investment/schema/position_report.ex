@@ -5,6 +5,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
 
   """
 
+  alias __MODULE__
   alias Profitry.Investment.Schema.OptionsReport
 
   @type t :: %__MODULE__{
@@ -17,6 +18,8 @@ defmodule Profitry.Investment.Schema.PositionReport do
           price: Decimal.t(),
           value: Decimal.t(),
           profit: Decimal.t(),
+          delisted?: boolean(),
+          delisting_payout: Decimal.t(),
           long_options: list(OptionsReport.t()),
           short_options: list(OptionsReport.t())
         }
@@ -31,6 +34,8 @@ defmodule Profitry.Investment.Schema.PositionReport do
     price: Decimal.new(0),
     value: Decimal.new(0),
     profit: Decimal.new(0),
+    delisted?: false,
+    delisting_payout: Decimal.new(0),
     long_options: [],
     short_options: []
   ]
@@ -58,6 +63,23 @@ defmodule Profitry.Investment.Schema.PositionReport do
   Calculates the profit on a position report
 
   """
+
+  # delisted no quote
+  @spec calculate_profit(t(), nil) :: t()
+  def calculate_profit(%PositionReport{delisted?: true} = report, nil) do
+    profit = calculate_profit_delisted(report)
+    Map.put(report, :profit, profit)
+  end
+
+  # delisted with quote
+  @spec calculate_profit(t(), Decimal.t()) :: t()
+  def calculate_profit(%PositionReport{delisted?: true} = report, price) do
+    profit = calculate_profit_delisted(report)
+
+    Map.put(report, :price, price)
+    |> Map.put(:profit, profit)
+  end
+
   # with no quote
   @spec calculate_profit(t(), nil) :: t()
   def calculate_profit(report, nil) do
@@ -69,7 +91,7 @@ defmodule Profitry.Investment.Schema.PositionReport do
     end
   end
 
-  # with a quote
+  # with quote
   @spec calculate_profit(t(), Decimal.t()) :: t()
   def calculate_profit(report, price) do
     profit =
@@ -80,11 +102,25 @@ defmodule Profitry.Investment.Schema.PositionReport do
     |> Map.put(:profit, profit)
   end
 
+  @doc false
+  defp calculate_profit_delisted(report) do
+    payout = Decimal.mult(report.delisting_payout, report.shares)
+
+    Decimal.negate(report.investment)
+    |> Decimal.add(payout)
+  end
+
   @doc """
 
   Calculates the value of a position report
 
   """
+  # delisted
+  @spec calculate_value(t(), Decimal.t() | nil) :: t()
+  def calculate_value(%PositionReport{delisted?: true} = report, _price) do
+    Map.put(report, :value, Decimal.new(0))
+  end
+
   # with no quote
   @spec calculate_value(t(), nil) :: t()
   def calculate_value(report, nil) do
