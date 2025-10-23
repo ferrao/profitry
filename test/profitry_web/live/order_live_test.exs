@@ -233,6 +233,88 @@ defmodule ProfitryWeb.OrderLiveTest do
              |> render() =~ "(2 orders)"
     end
 
+    test "preserves index field when editing order", %{
+      conn: conn,
+      portfolio: portfolio,
+      position: position,
+      order: order
+    } do
+      # Create a split to ensure the orders table checks for index field
+      split_fixture()
+
+      {:ok, order_live, _html} =
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
+
+      # Verify initial render works (this would fail if index field was missing)
+      html = render(order_live)
+      assert html =~ "1:3 Split"
+      assert html =~ to_string(order.type)
+
+      # Edit the order
+      assert order_live
+             |> element("#orders-#{order.id} a", "Edit")
+             |> render_click() =~ "Edit Order"
+
+      # Update the order without changing the date
+      update_attrs_no_date = %{type: :sell, price: "1.50"}
+
+      assert order_live
+             |> form("#order-form", order: update_attrs_no_date)
+             |> render_submit()
+
+      # Verify the page still renders correctly after the update
+      # This would fail with a KeyError if the index field was missing
+      html = render(order_live)
+      assert html =~ "Order updated successfully"
+      # Split display depends on index field
+      assert html =~ "1:3 Split"
+    end
+
+    test "resets stream when order index changes due to date modification", %{
+      conn: conn,
+      portfolio: portfolio,
+      position: position
+    } do
+      # Create orders with different dates to establish a clear ordering
+      earlier_order = order_fixture(position, %{inserted_at: ~N[2023-01-01 12:00:00]})
+      later_order = order_fixture(position, %{inserted_at: ~N[2023-03-01 12:00:00]})
+
+      {:ok, order_live, _html} =
+        live(conn, ~p"/portfolios/#{portfolio.id}/positions/#{position.id}/orders")
+
+      # Verify initial state - all orders are visible
+      html = render(order_live)
+      assert html =~ to_string(earlier_order.type)
+      assert html =~ to_string(later_order.type)
+
+      # Now edit the later order to have an earlier date, which should change its index
+      new_earlier_date = "2022-12-01T12:00"
+
+      assert order_live
+             |> element("#orders-#{later_order.id} a", "Edit")
+             |> render_click() =~ "Edit Order"
+
+      # Update with an earlier date that should change its sorting position
+      update_with_new_date = %{inserted_at: new_earlier_date}
+
+      assert order_live
+             |> form("#order-form", order: update_with_new_date)
+             |> render_submit()
+
+      # Verify the update succeeded and all orders are still visible
+      html = render(order_live)
+      assert html =~ "Order updated successfully"
+
+      # All orders should still be visible (no index collision errors)
+      assert html =~ to_string(earlier_order.type)
+      assert html =~ to_string(later_order.type)
+
+      # Verify the count is still correct (no orders lost due to stream issues)
+      assert order_live
+             |> element("span#count-orders")
+             |> render() =~ "(4 orders)"
+    end
+
     test "updates existing order with an options contract", %{
       conn: conn,
       portfolio: portfolio,
